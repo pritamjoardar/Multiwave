@@ -1,0 +1,105 @@
+# ==============================================================================
+# MultiWave — Git Ignore Configuration (Tauri 2 + Rust + React + Vite)
+# ==============================================================================
+
+# ------------------------------------------------------------------------------
+# 1. Rust & Cargo Compilation Artifacts
+# ------------------------------------------------------------------------------
+target/
+src-tauri/target/
+src-tauri/gen/schemas/
+**/*.rs.bk
+*.pdb
+*.ilk
+*.exp
+
+# ------------------------------------------------------------------------------
+# 2. Node.js & Frontend Build Outputs
+# ------------------------------------------------------------------------------
+node_modules/
+dist/
+dist-ssr/
+.vite/
+.npm/
+.eslintcache
+.stylelintcache
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# ------------------------------------------------------------------------------
+# 3. Environment Variables & Local Configs
+# ------------------------------------------------------------------------------
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+*.local
+
+# ------------------------------------------------------------------------------
+# 4. Scratch Scripts & Temporary Driver Archives
+# ------------------------------------------------------------------------------
+test_*.ps1
+test_*.cs
+default_checker.cs
+*.zip
+*.tar.gz
+*.7z
+
+# ------------------------------------------------------------------------------
+# 5. Operating System Specific Files
+# ------------------------------------------------------------------------------
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+Desktop.ini
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msm
+*.msp
+*.lnk
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Linux
+*~
+.fuse_hidden*
+.directory
+
+# ------------------------------------------------------------------------------
+# 6. IDEs & Editor Configurations
+# ------------------------------------------------------------------------------
+# Visual Studio Code
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+
+# JetBrains (IntelliJ, WebStorm, CLion, RustRover)
+.idea/
+*.iws
+*.iml
+
+# Visual Studio / Windows SDK
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+*.bak
