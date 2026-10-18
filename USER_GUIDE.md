@@ -1,6 +1,13 @@
 # 🌊 MultiWave — First-Time User Guide
 
-Welcome to **MultiWave**! This complete step-by-step guide will walk you through everything you need to know when opening and using MultiWave for the very first time.
+<p align="center">
+  <img src="docs/images/multiwave_logo.png" alt="MultiWave Logo" width="130" />
+</p>
+
+<p align="center">
+  <strong>Simultaneous Windows Audio Routing & Real-Time Synchronization</strong><br>
+  <em>Play any PC sound through multiple wired, USB, and Bluetooth devices at the same time.</em>
+</p>
 
 ---
 
@@ -18,51 +25,81 @@ By default, Windows only allows audio to play through **one single audio output 
 
 ## 🚀 Step-by-Step: Your First Time Setup
 
-### Step 1: Open MultiWave
-When you launch MultiWave, you will see a clean, modern studio interface:
+### Step 1: First-Time Launch & Interactive Welcome Guide
+
+When you open MultiWave for the very first time, the application automatically launches an **interactive step-by-step onboarding guide** directly on your screen:
+
+<p align="center">
+  <img src="docs/images/guide_step1_welcome.png" alt="MultiWave Step 1 - Welcome Guide" width="620" />
+</p>
+
 1. **Top Navbar**:
    - **Status Indicators**: Shows how many devices are selected and whether playback is `Playing` or `Paused / Stopped`.
    - **Play / Pause Button**: Starts or pauses multi-device audio broadcasting.
    - **Rescan Button (🔄)**: Scans Windows for newly plugged in or connected audio devices.
+   - **Guide Button (❓)**: Re-opens this interactive guide anytime you need a refresher.
    - **Settings Button (⚙️)**: Opens themes, audio driver routing, and application preferences.
 2. **Audio Output Devices Grid**:
-   - Displays all your real physical audio endpoints (Laptop Speakers, Bluetooth Headphones, USB Headsets, AUX/Line Out, HDMI monitors).
+   - Displays all your physical audio endpoints (Laptop Speakers, Bluetooth Headphones, USB Headsets, AUX/Line Out, HDMI monitors).
 
 ---
 
 ### Step 2: One-Click System Audio Routing Setup
 
-To let MultiWave capture and broadcast audio from all your Windows apps (Chrome, Spotify, VLC, games), you need to set MultiWave as your Windows audio bridge.
+To let MultiWave capture and broadcast audio from all your Windows apps (Chrome, Spotify, VLC, games), you need to set MultiWave as your Windows audio bridge:
 
-1. Click the **Settings (⚙️)** button in the top-right navbar.
+<p align="center">
+  <img src="docs/images/guide_step2_routing.png" alt="MultiWave Step 2 - Audio Routing" width="620" />
+</p>
+
+1. You can click **"Open Audio Routing in Settings"** directly from Step 2 of the guide (or click the **⚙️ Settings** icon on the navbar).
 2. In the **Windows Default Audio Routing** section:
-   - **If the driver is not yet installed**: Click **"Install Virtual Speaker Driver"**. Windows will briefly register the MultiWave virtual audio bridge.
+   - **If the driver is not yet installed**: Click **"Install Virtual Speaker Driver"**. Windows will register the MultiWave virtual audio bridge.
    - **Click "Activate MultiWave Routing"**: This sets **MultiWave Virtual Speaker** as your Windows default audio device.
-3. Once activated, the status badge will glow green with **`ROUTED TO MULTIWAVE`**.
-4. Close the Settings modal by clicking **Save & Close** or the **X**.
+3. Once activated, the status badge glows green with **`ROUTED TO MULTIWAVE`**:
 
-> **Note:** Whenever MultiWave is routed, everything you play on your computer goes directly into MultiWave to be shared across your selected outputs! If you ever want to turn off multi-device sharing and return Windows to normal single-speaker mode, open Settings and click **"Restore Direct Audio"**.
+<p align="center">
+  <img src="docs/images/windows_audio_routing.png" alt="MultiWave Windows Audio Routing Active" width="700" />
+</p>
+
+> **Note:** Whenever MultiWave is routed, everything you play on your computer goes directly into MultiWave to be shared across your selected outputs! If you ever want to return Windows to normal single-speaker mode, open Settings and click **"Restore Direct Audio"**.
 
 ---
 
 ### Step 3: Connect and Select Your Audio Output Devices
 
+<p align="center">
+  <img src="docs/images/guide_step3_select_devices.png" alt="MultiWave Step 3 - Selecting Outputs" width="620" />
+</p>
+
 1. Connect all the audio devices you want to use to your PC (e.g., plug in wired speakers and pair your Bluetooth headphones or soundbars).
-2. If you just paired a new Bluetooth device while MultiWave was open, click the **Rescan (🔄)** button on the top navbar.
+2. If you paired a new Bluetooth device while MultiWave was open, click the **Rescan (🔄)** button on the top navbar.
 3. **Select Your Devices**:
    - Simply click on the card of any device you want sound to play through.
    - Selected cards will highlight with a **cyan border** and display a crisp **Checkmark icon (✓)** in the top right.
-   - You can select two, three, four, or as many devices as your computer supports!
+   - You can select two, three, four, or as many devices as your computer supports:
+
+<p align="center">
+  <img src="docs/images/multi_device_grid.png" alt="MultiWave Multi-Device Grid Overview" width="700" />
+</p>
 
 ---
 
 ### Step 4: Start Multi-Device Playback
 
+<p align="center">
+  <img src="docs/images/guide_step4_play_waves.png" alt="MultiWave Step 4 - Live Playback & Waves" width="620" />
+</p>
+
 1. Click the **Play** button on the top navbar.
 2. The button will switch to a glowing cyan **Pause** button, and the navbar status will change to **`Playing (X active)`**.
 3. Open any audio on your computer (play a music track on Spotify, a video on YouTube, or a movie).
 4. **The sound will play out of all your selected devices at the exact same time!**
-5. Notice that each active device card will display a **live audio wave visualizer** that reacts in real-time to the beats and dynamics of your audio.
+5. Notice that each active device card will display a **live audio wave visualizer** that reacts in real-time to the beats and dynamics of your audio:
+
+<p align="center">
+  <img src="docs/images/device_cards_live_wave.png" alt="MultiWave Device Cards Live Waveform" width="700" />
+</p>
 
 ---
 
@@ -71,13 +108,17 @@ To let MultiWave capture and broadcast audio from all your Windows apps (Chrome,
 Different headphones and speakers have different loudness levels. MultiWave gives you full, independent control:
 
 - **Per-Device Volume Slider (0% – 100%)**:
-  Drag the slider on any card to adjust its sound level. For example, you can set your Bluetooth soundbar to 80% and your headphones to 40%.
+  Drag the slider on any card to adjust its sound level. For example, set your external Bluetooth soundbar to 80% and your headphones to 35%.
 - **Instant Mute Toggle**:
   Click the **Speaker icon** on any card to mute or unmute that specific device instantly without interrupting audio on your other speakers.
 
 ---
 
 ### Step 6: Eliminate Bluetooth Audio Echo (Delay Sync)
+
+<p align="center">
+  <img src="docs/images/guide_step5_bluetooth_sync.png" alt="MultiWave Step 5 - Bluetooth Delay Sync" width="620" />
+</p>
 
 #### Why do Bluetooth speakers lag?
 Bluetooth audio transmission wirelessly buffers audio (typically introducing **100 ms to 180 ms** of wireless delay). If you play sound through a wired speaker and a Bluetooth speaker simultaneously, the wired speaker will play slightly ahead, creating an annoying echo effect.

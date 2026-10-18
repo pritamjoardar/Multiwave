@@ -1,6 +1,36 @@
-# MultiWave — Windows Multi-Device Audio Mixer
+<p align="center">
+  <img src="docs/images/multiwave_logo.png" alt="MultiWave Logo" width="130" />
+</p>
 
-**MultiWave** is a high-performance Windows desktop application built with **Rust**, **Tauri 2**, and **React + TypeScript**. It enables simultaneous audio playback across multiple audio output devices recognized by Windows (including Bluetooth speakers, Bluetooth headphones, AUX/3.5mm outputs, USB headsets, and HDMI/DisplayPort audio monitors) with **independent software volume controls**, **soft-knee limiting**, and **Bluetooth latency compensation**.
+<h1 align="center">MultiWave</h1>
+
+<p align="center">
+  <strong>Windows Multi-Device Audio Output Routing & Synchronization</strong><br>
+  <em>Simultaneous audio streaming across Bluetooth, USB, 3.5mm, and HDMI endpoints with zero latency mismatch.</em>
+</p>
+
+<p align="center">
+  <a href="USER_GUIDE.md"><strong>Read the First-Time User Guide »</strong></a>
+</p>
+
+---
+
+## 📸 Application Showcase
+
+<p align="center">
+  <strong>Interactive Step-by-Step User Guide (In-App)</strong><br>
+  <img src="docs/images/guide_step1_welcome.png" alt="MultiWave In-App User Guide" width="680" />
+</p>
+
+<p align="center">
+  <strong>Live Reactive Audio Waveforms & Independent Gain Controls</strong><br>
+  <img src="docs/images/device_cards_live_wave.png" alt="MultiWave Live Audio Waveforms" width="680" />
+</p>
+
+<p align="center">
+  <strong>Windows Audio Routing Bridge & Multi-Device Grid</strong><br>
+  <img src="docs/images/multi_device_grid.png" alt="MultiWave Multi-Device Grid" width="680" />
+</p>
 
 ---
 
@@ -14,14 +44,14 @@
 - **Independent Per-Device Software Gain**: Independent volume sliders (0% to 100%) mapped via perceptual cubic curves ($G = v^{2.5}$), with independent mute toggles and single-sample soft limiters to prevent harsh digital clipping. MultiWave software gain is clearly distinguished from Windows hardware endpoint volume.
 - **Bluetooth Synchronization Strategy**: Built-in ring-buffer delay compensation (0–500 ms) allows delaying low-latency wired outputs to acoustically align with wireless Bluetooth A2DP buffering.
 - **Multi-Tone Audio Generators**: Built-in harmonic C-Major chord, melodic arpeggio chime, 440 Hz / 880 Hz sine tones, and Paul Kellet filtered pink noise for multi-speaker verification.
-- **Settings Persistence**: User preferences, selected devices, individual volume levels, and delay offsets persist locally in `%APPDATA%\MultiWave\config.json`.
+- **Settings Persistence**: User preferences, selected devices, individual volume levels, and delay offsets persist locally in `%APPDATA%\MultiWave\settings.json`.
 - **Per-Application Audio Routing Architecture**: Documented architectural extension point using Windows 10/11 Process Loopback Capture (`ActivateAudioInterfaceAsync` with `AUDIOCLIENT_ACTIVATION_PARAMS` `PROCESS_LOOPBACK_MODE`).
 
 ---
 
 ## 📚 User Guide & Documentation
 
-For a beginner-friendly walkthrough with screenshots and common audio scenarios, see our **[Step-by-Step First-Time User Guide](USER_GUIDE.md)**.
+For a comprehensive beginner-friendly walkthrough with detailed steps and screenshots, see our **[Step-by-Step First-Time User Guide](USER_GUIDE.md)**.
 
 ---
 

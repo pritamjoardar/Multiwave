@@ -14,6 +14,7 @@ import {
   Heart,
   Info,
   Volume2,
+  HelpCircle,
 } from 'lucide-react';
 import { openUrl } from '@tauri-apps/plugin-opener';
 import { AppSettings, AudioDevice } from '../types/audio';
@@ -31,6 +32,7 @@ interface SettingsModalProps {
   onConfigureName: () => Promise<boolean | void>;
   onOpenSoundSettings: () => Promise<void>;
   onInstallDriver: () => Promise<void>;
+  onOpenGuide?: () => void;
 }
 
 export const SettingsModal: React.FC<SettingsModalProps> = ({
@@ -46,6 +48,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
   onConfigureName,
   onOpenSoundSettings,
   onInstallDriver,
+  onOpenGuide,
 }) => {
   const [localSettings, setLocalSettings] = useState<AppSettings>(settings);
   const [savedSuccess, setSavedSuccess] = useState(false);
@@ -326,6 +329,22 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                 <ExternalLink className="w-3 h-3 text-cyan-400" />
               </button>
             </div>
+
+            {onOpenGuide && (
+              <div className="pt-3 border-t border-studio-800/80">
+                <button
+                  type="button"
+                  onClick={() => {
+                    onClose();
+                    onOpenGuide();
+                  }}
+                  className="w-full flex items-center justify-center gap-2 p-2 rounded-xl bg-studio-850 hover:bg-studio-800 border border-cyan-500/30 text-cyan-300 hover:text-white transition-all font-medium text-xs shadow-sm"
+                >
+                  <HelpCircle className="w-4 h-4 text-cyan-400" />
+                  <span>Open Interactive Step-by-Step User Guide</span>
+                </button>
+              </div>
+            )}
           </div>
 
           {/* Technical Diagnostics */}

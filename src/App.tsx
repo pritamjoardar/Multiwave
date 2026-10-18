@@ -3,6 +3,7 @@ import { useAudioMixer } from './hooks/useAudioMixer';
 import { Header } from './components/Header';
 import { DeviceCard } from './components/DeviceCard';
 import { SettingsModal } from './components/SettingsModal';
+import { UserGuideModal } from './components/UserGuideModal';
 import {
   AlertTriangle,
   X,
@@ -38,6 +39,15 @@ export default function App() {
 
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [isGuideOpen, setIsGuideOpen] = useState(false);
+
+  // Automatically open step-by-step User Guide the first time the user opens the application
+  useEffect(() => {
+    const hasSeenGuide = localStorage.getItem('multiwave_has_seen_guide');
+    if (!hasSeenGuide) {
+      setIsGuideOpen(true);
+    }
+  }, []);
 
   // Apply theme dynamically to document root
   useEffect(() => {
@@ -75,6 +85,7 @@ export default function App() {
         isRefreshing={isRefreshing}
         onRefresh={handleRefresh}
         onOpenSettings={() => setIsSettingsOpen(true)}
+        onOpenGuide={() => setIsGuideOpen(true)}
         onTogglePlayback={togglePlayback}
       />
 
@@ -174,6 +185,17 @@ export default function App() {
         onConfigureName={configureVirtualSpeakerName}
         onOpenSoundSettings={openSoundSettings}
         onInstallDriver={installVirtualSpeakerDriver}
+        onOpenGuide={() => setIsGuideOpen(true)}
+      />
+
+      {/* Interactive Step-by-Step User Guide Modal */}
+      <UserGuideModal
+        isOpen={isGuideOpen}
+        onClose={() => setIsGuideOpen(false)}
+        onOpenSettings={() => {
+          setIsGuideOpen(false);
+          setIsSettingsOpen(true);
+        }}
       />
     </div>
   );

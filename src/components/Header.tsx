@@ -1,5 +1,5 @@
 import React from 'react';
-import { RefreshCw, Settings, Play, Pause } from 'lucide-react';
+import { RefreshCw, Settings, Play, Pause, HelpCircle } from 'lucide-react';
 import { PlaybackStatus } from '../types/audio';
 
 interface HeaderProps {
@@ -10,6 +10,7 @@ interface HeaderProps {
   isRefreshing: boolean;
   onRefresh: () => void;
   onOpenSettings: () => void;
+  onOpenGuide: () => void;
   onTogglePlayback: () => void;
 }
 
@@ -21,6 +22,7 @@ export const Header: React.FC<HeaderProps> = ({
   isRefreshing,
   onRefresh,
   onOpenSettings,
+  onOpenGuide,
   onTogglePlayback,
 }) => {
   return (
@@ -95,6 +97,14 @@ export const Header: React.FC<HeaderProps> = ({
             title="Scan for Audio Devices"
           >
             <RefreshCw className={`w-4 h-4 ${isRefreshing ? 'animate-spin text-cyan-400' : ''}`} />
+          </button>
+
+          <button
+            onClick={onOpenGuide}
+            className="p-2 rounded-lg bg-studio-800 hover:bg-studio-700/80 border border-studio-700/70 text-slate-300 hover:text-white transition-all"
+            title="Quick Start User Guide"
+          >
+            <HelpCircle className="w-4 h-4 text-cyan-400 hover:text-cyan-300" />
           </button>
 
           <button
