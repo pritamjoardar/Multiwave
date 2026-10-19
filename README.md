@@ -32,6 +32,16 @@
 
 ---
 
+## 🎧 The Multi-Device Audio Sharing Concept
+
+<p align="center">
+  <img src="public/multiwave_shared_listening.jpg" alt="MultiWave Multi-Person Shared Audio Listening" width="740" />
+  <br>
+  <em>🎧 <strong>One Laptop, Multiple Listeners:</strong> Stream computer audio simultaneously to multiple people with their own individual earbuds, over-ear headphones, and neckbands — each with independent volume control and zero acoustic latency mismatch.</em>
+</p>
+
+---
+
 ## 📸 Application Showcase
 
 <p align="center">

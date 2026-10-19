@@ -37,6 +37,12 @@ By default, Windows only allows audio to play through **one single audio output 
 - **Live reactive audio wave visualizers** that dance to the rhythm of your audio.
 - **Instant hardware testing chimes** to identify every speaker.
 
+<p align="center">
+  <img src="public/multiwave_shared_listening.jpg" alt="MultiWave Multi-Person Shared Listening Concept" width="720" />
+  <br>
+  <em>🎧 <strong>One Laptop, Multiple Listeners:</strong> Share music, movies, or presentations simultaneously with friends or team members using different audio devices — wireless earbuds, over-ear studio headphones, and neckbands — all synchronized in real-time.</em>
+</p>
+
 ---
 
 ## 🚀 Step-by-Step: Your First Time Setup
