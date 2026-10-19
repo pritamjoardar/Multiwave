@@ -19,6 +19,11 @@
   <em>🎬 <strong>Watch the 22-Second MultiWave Overview Video (with Audio & Human Voice Narration)</strong></em>
 </p>
 
+<p align="center">
+  <a href="http://multiwave.pritamjoardar.com/"><strong>🌐 Official Website</strong></a> &nbsp;|&nbsp;
+  <a href="src-tauri/target/release/bundle/nsis/MultiWave_0.1.0_x64-setup.exe"><strong>⬇️ Download & Install MultiWave (.exe)</strong></a>
+</p>
+
 ---
 
 ## 📖 What is MultiWave?
@@ -177,20 +182,23 @@ Click the **Settings (⚙️)** button in the top navbar:
 ### Q3: How do I switch back to normal Windows audio?
 - Open **Settings (⚙️)** in MultiWave and click **"Restore Direct Audio"**. Windows will immediately switch back to sending sound directly to your physical speakers.
 
-### Q4: How do I build the standalone .exe or installer?
-- **Option 1 (Quick Double-Click)**: Simply double-click [`build_exe.bat`](file:///c:/Users/prita/OneDrive/Desktop/MultiWave/build_exe.bat) in the project folder.
+### Q4: Where is the .exe file and how do I build it?
+- **Official Website**: Visit [http://multiwave.pritamjoardar.com/](http://multiwave.pritamjoardar.com/) for online downloads, feature overviews, and updates.
+- **Ready-to-Use Installer**: You can run the built installer right away from:  
+  👉 [`src-tauri/target/release/bundle/nsis/MultiWave_0.1.0_x64-setup.exe`](file:///c:/Users/prita/OneDrive/Desktop/MultiWave/src-tauri/target/release/bundle/nsis/MultiWave_0.1.0_x64-setup.exe)
+- **Option 1 (Quick Double-Click Rebuild)**: Simply double-click [`build_exe.bat`](file:///c:/Users/prita/OneDrive/Desktop/MultiWave/build_exe.bat) in the project folder.
 - **Option 2 (PowerShell)**:
   ```powershell
-  # Portable standalone .exe:
-  .\build_exe.ps1
-
   # Full Windows Setup Installer (.exe):
   .\build_exe.ps1 -Installer
+
+  # Portable standalone .exe:
+  .\build_exe.ps1
   ```
 - **Option 3 (npm scripts)**:
   ```powershell
+  npm run build:installer  # outputs to src-tauri\target\release\bundle\nsis\MultiWave_0.1.0_x64-setup.exe
   npm run build:exe        # outputs to src-tauri\target\release\multiwave.exe
-  npm run build:installer  # outputs to src-tauri\target\release\bundle\nsis\
   ```
 
 ---

@@ -4,6 +4,8 @@ import { Header } from './components/Header';
 import { DeviceCard } from './components/DeviceCard';
 import { SettingsModal } from './components/SettingsModal';
 import { UserGuideModal } from './components/UserGuideModal';
+import { Website } from './components/Website';
+import { TauriAudioService } from './services/tauriService';
 import {
   AlertTriangle,
   X,
@@ -40,6 +42,10 @@ export default function App() {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isGuideOpen, setIsGuideOpen] = useState(false);
+  // Default to 'website' in a web browser, or 'app' inside the native Tauri desktop app
+  const [currentView, setCurrentView] = useState<'app' | 'website'>(() => {
+    return TauriAudioService.isTauri() ? 'app' : 'website';
+  });
 
   // Automatically open step-by-step User Guide the first time the user opens the application
   useEffect(() => {
@@ -73,6 +79,27 @@ export default function App() {
   );
 
   const selectedDevices = physicalDevices.filter((d) => d.is_selected);
+
+  if (currentView === 'website') {
+    return (
+      <>
+        <Website
+          onOpenApp={() => setCurrentView('app')}
+          onOpenGuide={() => setIsGuideOpen(true)}
+        />
+        {/* Interactive Step-by-Step User Guide Modal */}
+        <UserGuideModal
+          isOpen={isGuideOpen}
+          onClose={() => setIsGuideOpen(false)}
+          onOpenSettings={() => {
+            setIsGuideOpen(false);
+            setCurrentView('app');
+            setIsSettingsOpen(true);
+          }}
+        />
+      </>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-studio-950 text-slate-100 flex flex-col selection:bg-cyan-500 selection:text-studio-950 transition-colors duration-200">

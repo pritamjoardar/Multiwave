@@ -10,7 +10,9 @@
 </p>
 
 <p align="center">
-  <a href="USER_GUIDE.md"><strong>Read the First-Time User Guide »</strong></a>
+  <a href="http://multiwave.pritamjoardar.com/"><strong>🌐 Official Website</strong></a> &nbsp;|&nbsp;
+  <a href="src-tauri/target/release/bundle/nsis/MultiWave_0.1.0_x64-setup.exe"><strong>⬇️ Download Windows Installer (.exe)</strong></a> &nbsp;|&nbsp;
+  <a href="USER_GUIDE.md"><strong>Read User Guide »</strong></a>
 </p>
 
 ---
@@ -152,33 +154,39 @@ cd src-tauri
 cargo test
 ```
 
-### 4. Build Production Release Executable (.exe) & Installer
+### 4. Production Release Executable (.exe) & Installer
 
-You have multiple easy ways to build MultiWave for production:
+> [!TIP]
+> **Production Executable & Website:**
+> - 🌐 **Official Product Website**: [http://multiwave.pritamjoardar.com/](http://multiwave.pritamjoardar.com/)
+> - 📦 **Windows Setup Installer (`.exe`)**: [`src-tauri/target/release/bundle/nsis/MultiWave_0.1.0_x64-setup.exe`](file:///c:/Users/prita/OneDrive/Desktop/MultiWave/src-tauri/target/release/bundle/nsis/MultiWave_0.1.0_x64-setup.exe) *(Recommended — 7.7 MB with drivers, Start Menu, & Desktop icons)*
+> - ⚡ **Portable Standalone (`.exe`)**: [`src-tauri/target/release/multiwave.exe`](file:///c:/Users/prita/OneDrive/Desktop/MultiWave/src-tauri/target/release/multiwave.exe) *(10.0 MB)*
+
+#### How to Rebuild:
 
 #### Method A: Double-Click Launcher (Fastest)
 Double-click [`build_exe.bat`](file:///c:/Users/prita/OneDrive/Desktop/MultiWave/build_exe.bat) in the project root. It will verify prerequisites, build the frontend, and compile the `.exe`.
 
 #### Method B: PowerShell Script
 ```powershell
-# 1. Build Standalone Portable .exe:
-.\build_exe.ps1
-# -> Output: src-tauri\target\release\multiwave.exe
-
-# 2. Build Full Windows Setup Installer (.exe with desktop shortcuts & uninstaller):
+# 1. Build Full Windows Setup Installer (.exe with desktop shortcuts & uninstaller):
 .\build_exe.ps1 -Installer
 # -> Output: src-tauri\target\release\bundle\nsis\MultiWave_0.1.0_x64-setup.exe
+
+# 2. Build Standalone Portable .exe:
+.\build_exe.ps1
+# -> Output: src-tauri\target\release\multiwave.exe
 ```
 
 #### Method C: npm / Tauri Commands
 ```powershell
 $env:PATH = "$env:USERPROFILE\.cargo\bin;$env:PATH"
 
-# Portable standalone .exe:
-npm run build:exe
-
 # Full Windows Setup Installer (.exe):
 npm run build:installer
+
+# Portable standalone .exe:
+npm run build:exe
 ```
 
 ---
