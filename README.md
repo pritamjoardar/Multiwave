@@ -152,13 +152,34 @@ cd src-tauri
 cargo test
 ```
 
-### 4. Build Production Release Executable & Installer
-To create the optimized Windows desktop package:
+### 4. Build Production Release Executable (.exe) & Installer
+
+You have multiple easy ways to build MultiWave for production:
+
+#### Method A: Double-Click Launcher (Fastest)
+Double-click [`build_exe.bat`](file:///c:/Users/prita/OneDrive/Desktop/MultiWave/build_exe.bat) in the project root. It will verify prerequisites, build the frontend, and compile the `.exe`.
+
+#### Method B: PowerShell Script
+```powershell
+# 1. Build Standalone Portable .exe:
+.\build_exe.ps1
+# -> Output: src-tauri\target\release\multiwave.exe
+
+# 2. Build Full Windows Setup Installer (.exe with desktop shortcuts & uninstaller):
+.\build_exe.ps1 -Installer
+# -> Output: src-tauri\target\release\bundle\nsis\MultiWave_0.1.0_x64-setup.exe
+```
+
+#### Method C: npm / Tauri Commands
 ```powershell
 $env:PATH = "$env:USERPROFILE\.cargo\bin;$env:PATH"
-npm run tauri build
+
+# Portable standalone .exe:
+npm run build:exe
+
+# Full Windows Setup Installer (.exe):
+npm run build:installer
 ```
-The installer (`.msi` and `.exe`) will be generated in `src-tauri\target\release\bundle\`.
 
 ---
 

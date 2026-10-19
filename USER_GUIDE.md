@@ -177,6 +177,22 @@ Click the **Settings (⚙️)** button in the top navbar:
 ### Q3: How do I switch back to normal Windows audio?
 - Open **Settings (⚙️)** in MultiWave and click **"Restore Direct Audio"**. Windows will immediately switch back to sending sound directly to your physical speakers.
 
+### Q4: How do I build the standalone .exe or installer?
+- **Option 1 (Quick Double-Click)**: Simply double-click [`build_exe.bat`](file:///c:/Users/prita/OneDrive/Desktop/MultiWave/build_exe.bat) in the project folder.
+- **Option 2 (PowerShell)**:
+  ```powershell
+  # Portable standalone .exe:
+  .\build_exe.ps1
+
+  # Full Windows Setup Installer (.exe):
+  .\build_exe.ps1 -Installer
+  ```
+- **Option 3 (npm scripts)**:
+  ```powershell
+  npm run build:exe        # outputs to src-tauri\target\release\multiwave.exe
+  npm run build:installer  # outputs to src-tauri\target\release\bundle\nsis\
+  ```
+
 ---
 
 *MultiWave is crafted with ❤️ by Pritam Joardar.*
