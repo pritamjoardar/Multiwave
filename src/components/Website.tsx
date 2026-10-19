@@ -252,7 +252,7 @@ export const Website: React.FC<WebsiteProps> = () => {
           {activeTab === 'video' && (
             <div className="relative aspect-video rounded-2xl overflow-hidden bg-black flex items-center justify-center">
               <video
-                src="/brag.mp4"
+                src="/multiwave.mp4"
                 controls
                 poster="/images/brag_poster.jpg"
                 className="w-full h-full object-contain"

@@ -21,8 +21,8 @@
 ## 🎥 Product Overview Video
 
 <p align="center">
-  <video src="public/brag.mp4" controls width="740" poster="docs/images/brag_poster.jpg">
-    <a href="public/brag.mp4">
+  <video src="public/multiwave.mp4" controls width="740" poster="docs/images/brag_poster.jpg">
+    <a href="public/multiwave.mp4">
       <img src="docs/images/brag_poster.jpg" alt="MultiWave Feature Walkthrough Video" width="740" />
     </a>
   </video>
