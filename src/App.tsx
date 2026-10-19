@@ -42,13 +42,14 @@ export default function App() {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isGuideOpen, setIsGuideOpen] = useState(false);
-  // Default to 'website' in a web browser, or 'app' inside the native Tauri desktop app
-  const [currentView, setCurrentView] = useState<'app' | 'website'>(() => {
-    return TauriAudioService.isTauri() ? 'app' : 'website';
-  });
+  // Render Website in standard web browsers, or Native Mixer in Tauri desktop app
+  const isTauriApp = TauriAudioService.isTauri();
 
-  // Automatically open step-by-step User Guide the first time the user opens the application
+  // Automatically open step-by-step User Guide the first time the user opens the PC application
   useEffect(() => {
+    if (!TauriAudioService.isTauri()) {
+      return; // Never auto-open step guide on the website
+    }
     const hasSeenGuide = localStorage.getItem('multiwave_has_seen_guide');
     if (!hasSeenGuide) {
       setIsGuideOpen(true);
@@ -80,25 +81,8 @@ export default function App() {
 
   const selectedDevices = physicalDevices.filter((d) => d.is_selected);
 
-  if (currentView === 'website') {
-    return (
-      <>
-        <Website
-          onOpenApp={() => setCurrentView('app')}
-          onOpenGuide={() => setIsGuideOpen(true)}
-        />
-        {/* Interactive Step-by-Step User Guide Modal */}
-        <UserGuideModal
-          isOpen={isGuideOpen}
-          onClose={() => setIsGuideOpen(false)}
-          onOpenSettings={() => {
-            setIsGuideOpen(false);
-            setCurrentView('app');
-            setIsSettingsOpen(true);
-          }}
-        />
-      </>
-    );
+  if (!isTauriApp) {
+    return <Website />;
   }
 
   return (

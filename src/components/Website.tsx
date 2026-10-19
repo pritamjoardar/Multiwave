@@ -10,7 +10,6 @@ import {
   Headphones,
   Laptop,
   Tv,
-  ArrowRight,
   ExternalLink,
   BookOpen,
   Monitor,
@@ -19,12 +18,9 @@ import {
   Check
 } from 'lucide-react';
 
-interface WebsiteProps {
-  onOpenApp?: () => void;
-  onOpenGuide?: () => void;
-}
+interface WebsiteProps {}
 
-export const Website: React.FC<WebsiteProps> = ({ onOpenApp, onOpenGuide }) => {
+export const Website: React.FC<WebsiteProps> = () => {
   const [copiedCmd, setCopiedCmd] = useState(false);
   const [activeTab, setActiveTab] = useState<'video' | 'screenshots' | 'routing'>('video');
   const [selectedScreenshot, setSelectedScreenshot] = useState('/images/guide_step1_welcome.png');
@@ -70,16 +66,6 @@ export const Website: React.FC<WebsiteProps> = ({ onOpenApp, onOpenGuide }) => {
           </nav>
 
           <div className="flex items-center gap-3">
-            {onOpenApp && (
-              <button
-                onClick={onOpenApp}
-                className="hidden sm:inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold bg-studio-800 hover:bg-studio-700 border border-studio-600/60 text-slate-200 transition-all shadow-sm active:scale-95"
-              >
-                <Sliders className="w-3.5 h-3.5 text-cyan-400" />
-                Live Mixer App
-              </button>
-            )}
-
             <a
               href={installerUrl}
               download="MultiWave_0.1.0_x64-setup.exe"
@@ -126,26 +112,13 @@ export const Website: React.FC<WebsiteProps> = ({ onOpenApp, onOpenGuide }) => {
             </span>
           </a>
 
-          {onOpenApp && (
-            <button
-              onClick={onOpenApp}
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-6 py-4 rounded-2xl font-semibold text-base bg-studio-850 hover:bg-studio-800 border border-studio-700/80 hover:border-cyan-500/40 text-slate-200 transition-all active:scale-95 shadow-lg"
-            >
-              <Sliders className="w-5 h-5 text-cyan-400" />
-              <span>Launch Desktop UI</span>
-              <ArrowRight className="w-4 h-4 text-slate-400" />
-            </button>
-          )}
-
-          {onOpenGuide && (
-            <button
-              onClick={onOpenGuide}
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-4 rounded-2xl font-semibold text-sm text-slate-300 hover:text-white transition-colors"
-            >
-              <BookOpen className="w-4 h-4 text-slate-400" />
-              <span>User Guide</span>
-            </button>
-          )}
+          <a
+            href="#demo"
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-4 rounded-2xl font-semibold text-sm text-slate-300 hover:text-white bg-studio-850 hover:bg-studio-800 border border-studio-700/80 hover:border-cyan-500/40 transition-all shadow-sm"
+          >
+            <BookOpen className="w-4 h-4 text-cyan-400" />
+            <span>Watch Demo &amp; Guide</span>
+          </a>
         </div>
 
         {/* Compatibility badge */}
@@ -452,15 +425,6 @@ export const Website: React.FC<WebsiteProps> = ({ onOpenApp, onOpenGuide }) => {
               <Download className="w-5 h-5 stroke-[2.5]" />
               <span>Download MultiWave_0.1.0_x64-setup.exe</span>
             </a>
-
-            {onOpenApp && (
-              <button
-                onClick={onOpenApp}
-                className="px-6 py-4 rounded-2xl font-semibold text-sm bg-studio-800 hover:bg-studio-700 text-slate-200 border border-studio-600 transition-all"
-              >
-                Open Live Web App
-              </button>
-            )}
           </div>
         </div>
       </section>
