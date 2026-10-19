@@ -33,6 +33,10 @@
       "icons/128x128@2x.png",
       "icons/icon.icns",
       "icons/icon.ico"
+    ],
+    "resources": [
+      "vbcable_driver/**/*",
+      "install_virtual_speaker.ps1"
     ]
   }
 }

@@ -9,6 +9,16 @@
   <em>Play any PC sound through multiple wired, USB, and Bluetooth devices at the same time.</em>
 </p>
 
+<p align="center">
+  <video src="public/brag.mp4" controls width="720" poster="docs/images/brag_poster.jpg">
+    <a href="public/brag.mp4">
+      <img src="docs/images/brag_poster.jpg" alt="MultiWave Feature Walkthrough Video" width="720" />
+    </a>
+  </video>
+  <br>
+  <em>🎬 <strong>Watch the 22-Second MultiWave Overview Video (with Audio & Human Voice Narration)</strong></em>
+</p>
+
 ---
 
 ## 📖 What is MultiWave?
@@ -54,7 +64,7 @@ To let MultiWave capture and broadcast audio from all your Windows apps (Chrome,
 
 1. You can click **"Open Audio Routing in Settings"** directly from Step 2 of the guide (or click the **⚙️ Settings** icon on the navbar).
 2. In the **Windows Default Audio Routing** section:
-   - **If the driver is not yet installed**: Click **"Install Virtual Speaker Driver"**. Windows will register the MultiWave virtual audio bridge.
+   - **Automatic Virtual Speaker Setup**: MultiWave automatically includes and provisions its built-in **MultiWave Virtual Speaker** bridge on startup. If ever needed, click **"Enable MultiWave Virtual Speaker"** in Settings.
    - **Click "Activate MultiWave Routing"**: This sets **MultiWave Virtual Speaker** as your Windows default audio device.
 3. Once activated, the status badge glows green with **`ROUTED TO MULTIWAVE`**:
 

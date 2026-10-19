@@ -35,6 +35,9 @@ $driverDir = $null
 $candidates = @(
     "$scriptDir\vbcable_driver",
     "$scriptDir\..\vbcable_driver",
+    "$scriptDir\resources\vbcable_driver",
+    "$scriptDir\..\resources\vbcable_driver",
+    "$scriptDir\src-tauri\vbcable_driver",
     "c:\Users\prita\OneDrive\Desktop\MultiWave\vbcable_driver",
     "c:\Users\prita\OneDrive\Desktop\MultiWave\src-tauri\vbcable_driver"
 )
@@ -125,9 +128,9 @@ Add-Type -AssemblyName UIAutomationTypes -ErrorAction SilentlyContinue
 
 # 4. Check if working device is already registered in Windows
 $alreadyInstalled = $false
-$existingPnp = Get-PnpDevice -FriendlyName "*CABLE*" -ErrorAction SilentlyContinue | Where-Object { $_.Status -eq "OK" -and $_.Class -eq "MEDIA" }
+$existingPnp = Get-PnpDevice -Class "MEDIA" -ErrorAction SilentlyContinue | Where-Object { ($_.FriendlyName -like "*CABLE*" -or $_.FriendlyName -like "*MultiWave*" -or $_.InstanceId -like "*0000*" -or $_.InstanceId -like "*VBCABLE*") -and $_.Status -eq "OK" }
 if ($existingPnp) {
-    Write-Host "Working Virtual Cable device already detected in Windows PnP." -ForegroundColor Green
+    Write-Host "MultiWave Virtual Speaker device detected in Windows PnP." -ForegroundColor Green
     $alreadyInstalled = $true
 }
 

@@ -207,7 +207,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                   className="flex items-center justify-center gap-2 p-2.5 rounded-lg bg-cyan-600 hover:bg-cyan-500 text-white font-medium transition-all"
                 >
                   <Download className="w-4 h-4" />
-                  <span>{isInstalling ? 'Installing Driver...' : 'Install Virtual Speaker Driver'}</span>
+                  <span>{isInstalling ? 'Setting up MultiWave Speaker...' : 'Enable MultiWave Virtual Speaker'}</span>
                 </button>
               ) : !isVirtualDefault ? (
                 <button
