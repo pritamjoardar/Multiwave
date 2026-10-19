@@ -21,6 +21,7 @@
 
 <p align="center">
   <a href="http://multiwave.pritamjoardar.com/"><strong>🌐 Official Website</strong></a> &nbsp;|&nbsp;
+  <a href="https://github.com/pritamjoardar/Multiwave"><strong>⭐ GitHub Repository</strong></a> &nbsp;|&nbsp;
   <a href="src-tauri/target/release/bundle/nsis/MultiWave_0.1.0_x64-setup.exe"><strong>⬇️ Download & Install MultiWave (.exe)</strong></a>
 </p>
 

@@ -11,6 +11,7 @@
 
 <p align="center">
   <a href="http://multiwave.pritamjoardar.com/"><strong>🌐 Official Website</strong></a> &nbsp;|&nbsp;
+  <a href="https://github.com/pritamjoardar/Multiwave"><strong>⭐ GitHub Repository</strong></a> &nbsp;|&nbsp;
   <a href="src-tauri/target/release/bundle/nsis/MultiWave_0.1.0_x64-setup.exe"><strong>⬇️ Download Windows Installer (.exe)</strong></a> &nbsp;|&nbsp;
   <a href="USER_GUIDE.md"><strong>Read User Guide »</strong></a>
 </p>
@@ -228,6 +229,9 @@ MultiWave provides a documented extension point based on Microsoft's **Process L
 
 ---
 
-## License
+## License & Open Source
 
-MIT License. Designed and engineered for Windows 10 & 11.
+This project is open-source under the **MIT License** for individual use.  
+- **GitHub Repository**: [https://github.com/pritamjoardar/Multiwave](https://github.com/pritamjoardar/Multiwave)  
+- **Official Website**: [http://multiwave.pritamjoardar.com/](http://multiwave.pritamjoardar.com/)  
+- **Author**: [Pritam Joardar](https://www.pritamjoardar.com/)
