@@ -15,7 +15,7 @@ import {
   Sliders,
   ChevronDown,
   ChevronUp,
-  Sparkles,
+  SlidersHorizontal,
   Zap,
   Mic,
   Music,
@@ -180,7 +180,7 @@ export const DeviceCard: React.FC<DeviceCardProps> = ({
       <div className="mt-3 pt-2.5 border-t border-studio-800/70">
         <div className="flex items-center justify-between text-[11px] mb-1.5 font-mono">
           <span className="text-slate-300 font-medium flex items-center gap-1.5 font-sans">
-            <Sparkles className="w-3 h-3 text-cyan-400" />
+            <SlidersHorizontal className="w-3 h-3 text-cyan-400" />
             Acoustic Profile
           </span>
           <span className="text-[10px] text-cyan-400/90 font-mono capitalize">

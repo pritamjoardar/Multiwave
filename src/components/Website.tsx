@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {
-  Play,
   Volume2,
-  VolumeX,
   Clock,
   Radio,
   Sliders,
@@ -10,9 +8,6 @@ import {
   Headphones,
   Laptop,
   Tv,
-  Bluetooth,
-  Speaker,
-  Sparkles,
   ExternalLink,
   BookOpen,
   Monitor,
@@ -22,11 +17,8 @@ import {
   Menu,
   X,
   ChevronRight,
-  Zap,
-  Mic
 } from 'lucide-react';
-import { DeviceWaveVisualizer } from './DeviceWaveVisualizer';
-import { AudioEffectType } from '../types/audio';
+import { LiveSimulator } from './LiveSimulator';
 
 interface WebsiteProps {}
 
@@ -44,101 +36,10 @@ const WindowsIcon: React.FC<{ className?: string }> = ({ className = "w-4 h-4" }
 
 export const Website: React.FC<WebsiteProps> = () => {
   const [copiedCmd, setCopiedCmd] = useState(false);
-  const [activeTab, setActiveTab] = useState<'video' | 'simulator' | 'screenshots' | 'routing'>('video');
+  const [galleryTab, setGalleryTab] = useState<'screenshots' | 'routing'>('screenshots');
   const [selectedScreenshot, setSelectedScreenshot] = useState('/images/guide_step1_welcome.png');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [buildPlatform, setBuildPlatform] = useState<'mac' | 'windows'>('mac');
-
-  // Interactive Live Device Cards Simulator state
-  const [simDevices, setSimDevices] = useState<{
-    id: string;
-    name: string;
-    type: 'bluetooth' | 'auxline' | 'hdmidisplayport';
-    format: string;
-    isSelected: boolean;
-    volume: number;
-    isMuted: boolean;
-    isTesting: boolean;
-    audioEffect: AudioEffectType;
-  }[]>([
-    {
-      id: 'headphones',
-      name: 'Headphones (realme Buds Wireless 3)',
-      type: 'bluetooth',
-      format: '48.0 kHz • Stereo',
-      isSelected: true,
-      volume: 1.0,
-      isMuted: false,
-      isTesting: false,
-      audioEffect: 'spatial_3d',
-    },
-    {
-      id: 'speaker',
-      name: 'Speaker (Realtek(R) Audio)',
-      type: 'auxline',
-      format: '48.0 kHz • Stereo',
-      isSelected: false,
-      volume: 1.0,
-      isMuted: false,
-      isTesting: false,
-      audioEffect: 'bass_boost',
-    },
-    {
-      id: 'monitor',
-      name: 'GS27QC (NVIDIA High Definition Audio)',
-      type: 'hdmidisplayport',
-      format: '48.0 kHz • Stereo',
-      isSelected: false,
-      volume: 1.0,
-      isMuted: false,
-      isTesting: false,
-      audioEffect: 'studio',
-    },
-  ]);
-  const [simInputLevel, setSimInputLevel] = useState(0.24);
-
-  // Subtle real-time audio signal pulse for the interactive web simulator
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setSimInputLevel(0.18 + Math.sin(Date.now() / 320) * 0.08 + (Math.random() - 0.5) * 0.03);
-    }, 80);
-    return () => clearInterval(timer);
-  }, []);
-
-  const toggleSimDevice = (id: string) => {
-    setSimDevices((prev) =>
-      prev.map((d) => (d.id === id ? { ...d, isSelected: !d.isSelected } : d))
-    );
-  };
-
-  const toggleSimMute = (id: string) => {
-    setSimDevices((prev) =>
-      prev.map((d) => (d.id === id ? { ...d, isMuted: !d.isMuted } : d))
-    );
-  };
-
-  const setSimVolume = (id: string, vol: number) => {
-    setSimDevices((prev) =>
-      prev.map((d) => (d.id === id ? { ...d, volume: vol } : d))
-    );
-  };
-
-  const setSimEffect = (id: string, effect: AudioEffectType) => {
-    setSimDevices((prev) =>
-      prev.map((d) => (d.id === id ? { ...d, audioEffect: effect } : d))
-    );
-  };
-
-  const testSimDevice = (id: string) => {
-    setSimDevices((prev) =>
-      prev.map((d) => (d.id === id ? { ...d, isTesting: true } : d))
-    );
-    setTimeout(() => {
-      setSimDevices((prev) =>
-        prev.map((d) => (d.id === id ? { ...d, isTesting: false } : d))
-      );
-    }, 2500);
-  };
 
   const windowsInstallerUrl = '/MultiWave_0.1.0_x64-setup.exe';
   const macInstallerUrl = '/MultiWave_0.1.0_macOS.dmg';
@@ -457,330 +358,114 @@ export const Website: React.FC<WebsiteProps> = () => {
             See MultiWave in Action
           </h2>
           <p className="mt-2.5 sm:mt-3 text-slate-400 text-sm sm:text-base max-w-xl mx-auto">
-            Watch the official 22-second product introduction or browse live screenshots of the user interface.
+            Watch the official 22-second product introduction, then test live audio routing and acoustic DSP effects in the interactive simulator below.
           </p>
+        </div>
 
-          {/* Tab Switcher - Fully Responsive Grid on Mobile */}
-          <div className="mt-6 sm:mt-8 w-full max-w-2xl mx-auto grid grid-cols-2 sm:grid-cols-4 p-1 rounded-xl sm:rounded-2xl bg-studio-900 border border-studio-700/70 gap-1">
-            <button
-              onClick={() => setActiveTab('video')}
-              className={`px-2 sm:px-3 py-2 sm:py-2.5 rounded-lg sm:rounded-xl text-xs sm:text-sm font-semibold transition-all flex items-center justify-center gap-1.5 ${
-                activeTab === 'video'
-                  ? 'bg-cyan-500 text-slate-950 shadow-md font-bold'
-                  : 'text-slate-400 hover:text-white'
-              }`}
+        {/* Video Player Container */}
+        <div className="rounded-2xl sm:rounded-3xl border border-studio-700/80 bg-studio-900/90 shadow-2xl overflow-hidden p-2 sm:p-4 backdrop-blur-xl">
+          <div className="relative aspect-video rounded-xl sm:rounded-2xl overflow-hidden bg-black flex items-center justify-center">
+            <video
+              src="/multiwave.mp4"
+              controls
+              poster="/images/brag_poster.jpg"
+              className="w-full h-full object-contain"
             >
-              <Play className="w-3.5 h-3.5 sm:w-4 sm:h-4 fill-current shrink-0" />
-              <span>Video</span>
-            </button>
-            <button
-              onClick={() => setActiveTab('simulator')}
-              className={`px-2 sm:px-3 py-2 sm:py-2.5 rounded-lg sm:rounded-xl text-xs sm:text-sm font-semibold transition-all flex items-center justify-center gap-1.5 ${
-                activeTab === 'simulator'
-                  ? 'bg-cyan-500 text-slate-950 shadow-md font-bold'
-                  : 'text-slate-400 hover:text-white'
-              }`}
-            >
-              <Sparkles className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-300 shrink-0" />
-              <span>Live Simulator</span>
-            </button>
-            <button
-              onClick={() => setActiveTab('screenshots')}
-              className={`px-2 sm:px-3 py-2 sm:py-2.5 rounded-lg sm:rounded-xl text-xs sm:text-sm font-semibold transition-all flex items-center justify-center gap-1.5 ${
-                activeTab === 'screenshots'
-                  ? 'bg-cyan-500 text-slate-950 shadow-md font-bold'
-                  : 'text-slate-400 hover:text-white'
-              }`}
-            >
-              <Monitor className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" />
-              <span>Screenshots</span>
-            </button>
-            <button
-              onClick={() => setActiveTab('routing')}
-              className={`px-2 sm:px-3 py-2 sm:py-2.5 rounded-lg sm:rounded-xl text-xs sm:text-sm font-semibold transition-all flex items-center justify-center gap-1.5 ${
-                activeTab === 'routing'
-                  ? 'bg-cyan-500 text-slate-950 shadow-md font-bold'
-                  : 'text-slate-400 hover:text-white'
-              }`}
-            >
-              <Activity className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" />
-              <span>Routing</span>
-            </button>
+              Your browser does not support the video tag.
+            </video>
           </div>
         </div>
 
-        {/* Media Container */}
-        <div className="rounded-2xl sm:rounded-3xl border border-studio-700/80 bg-studio-900/90 shadow-2xl overflow-hidden p-2 sm:p-4 backdrop-blur-xl">
-          {activeTab === 'video' && (
-            <div className="relative aspect-video rounded-xl sm:rounded-2xl overflow-hidden bg-black flex items-center justify-center">
-              <video
-                src="/multiwave.mp4"
-                controls
-                poster="/images/brag_poster.jpg"
-                className="w-full h-full object-contain"
-              >
-                Your browser does not support the video tag.
-              </video>
+        {/* Live Simulator Component - Displayed Directly at the Bottom of the Video */}
+        <div className="mt-8">
+          <LiveSimulator />
+        </div>
+
+        {/* Interactive Screenshots & Routing Explorer */}
+        <div className="mt-12 pt-8 border-t border-studio-800">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-6">
+            <div>
+              <h3 className="text-lg sm:text-xl font-bold text-white flex items-center gap-2">
+                <Monitor className="w-5 h-5 text-cyan-400" />
+                App Screenshots &amp; Routing Explorer
+              </h3>
+              <p className="text-xs sm:text-sm text-slate-400 mt-0.5">
+                Inspect onboarding walkthroughs, multi-device grid, and kernel audio routing diagrams.
+              </p>
             </div>
-          )}
 
-          {activeTab === 'simulator' && (
-            <div className="p-3 sm:p-6 space-y-4">
-              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 border-b border-studio-800 pb-3">
-                <div>
-                  <h3 className="text-sm sm:text-base font-bold text-white flex items-center gap-2">
-                    <Sparkles className="w-4 h-4 text-cyan-400" />
-                    Interactive Audio Output &amp; DSP Effects Simulator
-                  </h3>
-                  <p className="text-xs text-slate-400 mt-0.5">
-                    Click checkboxes to select or unselect devices. Toggle between Studio, 3D Spatial Surround, Bass Punch, Concert Hall, and Vocal Clarity acoustic profiles in real-time. Unselected devices immediately silence and stay IDLE.
-                  </p>
-                </div>
-                <div className="flex items-center gap-2 text-xs font-mono text-cyan-400 bg-cyan-950/60 border border-cyan-500/30 px-3 py-1 rounded-lg">
-                  <span className="w-2 h-2 rounded-full bg-cyan-400 animate-ping" />
-                  <span>Interactive 60 FPS Studio Meter</span>
-                </div>
-              </div>
+            <div className="flex p-1 rounded-xl bg-studio-900 border border-studio-700/70 gap-1 shrink-0">
+              <button
+                onClick={() => setGalleryTab('screenshots')}
+                className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 ${
+                  galleryTab === 'screenshots'
+                    ? 'bg-cyan-500 text-slate-950 font-bold shadow-md'
+                    : 'text-slate-400 hover:text-white'
+                }`}
+              >
+                <Monitor className="w-3.5 h-3.5" />
+                <span>Screenshots</span>
+              </button>
+              <button
+                onClick={() => setGalleryTab('routing')}
+                className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 ${
+                  galleryTab === 'routing'
+                    ? 'bg-cyan-500 text-slate-950 font-bold shadow-md'
+                    : 'text-slate-400 hover:text-white'
+                }`}
+              >
+                <Activity className="w-3.5 h-3.5" />
+                <span>Routing Architecture</span>
+              </button>
+            </div>
+          </div>
 
-              {/* Grid of Interactive Simulator Cards */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4 text-left">
-                {simDevices.map((dev) => {
-                  const volPercent = Math.round(dev.volume * 100);
-                  return (
-                    <div
-                      key={dev.id}
-                      className={`relative rounded-xl p-4 transition-all duration-200 border ${
-                        dev.isSelected
-                          ? 'bg-studio-900/90 border-cyan-500/50 shadow-[0_0_25px_rgba(0,242,254,0.08)]'
-                          : 'bg-studio-900/40 border-studio-700/50 hover:border-studio-600/70 opacity-85 hover:opacity-100'
+          <div className="rounded-2xl sm:rounded-3xl border border-studio-700/80 bg-studio-900/90 shadow-xl overflow-hidden p-3 sm:p-5 backdrop-blur-xl">
+            {galleryTab === 'screenshots' ? (
+              <div className="flex flex-col gap-3 sm:gap-4">
+                <div className="relative aspect-[16/10] rounded-xl sm:rounded-2xl overflow-hidden bg-studio-950 border border-studio-700/60">
+                  <img
+                    src={selectedScreenshot}
+                    alt="MultiWave App Screen"
+                    className="w-full h-full object-contain"
+                  />
+                </div>
+
+                {/* Thumbnail Strip */}
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3 pt-1 sm:pt-2">
+                  {[
+                    { title: 'Interactive Guide', src: '/images/guide_step1_welcome.png' },
+                    { title: 'Live Spectrum Analyzer', src: '/images/device_cards_live_wave.png' },
+                    { title: 'Multi-Device Grid', src: '/images/multi_device_grid.png' },
+                    { title: 'Bluetooth Sync', src: '/images/guide_step5_bluetooth_sync.png' },
+                  ].map((thumb) => (
+                    <button
+                      key={thumb.src}
+                      onClick={() => setSelectedScreenshot(thumb.src)}
+                      className={`relative rounded-xl overflow-hidden border p-1 text-left transition-all ${
+                        selectedScreenshot === thumb.src
+                          ? 'border-cyan-400 ring-2 ring-cyan-500/30 bg-cyan-950/20'
+                          : 'border-studio-700 hover:border-studio-600 bg-studio-850'
                       }`}
                     >
-                      <div className="flex items-start justify-between gap-2.5">
-                        <div className="flex items-start gap-2.5 min-w-0">
-                          <div
-                            className={`p-2 rounded-xl border flex items-center justify-center shrink-0 ${
-                              dev.isSelected
-                                ? 'bg-studio-800 border-cyan-500/40'
-                                : 'bg-studio-850 border-studio-700/60'
-                            }`}
-                          >
-                            {dev.type === 'bluetooth' ? (
-                              <Bluetooth className="w-4 h-4 text-cyan-400" />
-                            ) : dev.type === 'hdmidisplayport' ? (
-                              <Tv className="w-4 h-4 text-amber-400" />
-                            ) : (
-                              <Speaker className="w-4 h-4 text-teal-400" />
-                            )}
-                          </div>
-                          <div className="min-w-0">
-                            <h4 className="text-xs font-semibold text-white truncate" title={dev.name}>
-                              {dev.name}
-                            </h4>
-                            <div className="text-[10px] text-slate-400 font-mono mt-0.5">
-                              {dev.format}
-                            </div>
-                          </div>
-                        </div>
-
-                        {/* Selection Checkbox */}
-                        <button
-                          type="button"
-                          onClick={() => toggleSimDevice(dev.id)}
-                          className={`shrink-0 flex items-center justify-center w-6 h-6 rounded-lg border transition-all cursor-pointer ${
-                            dev.isSelected
-                              ? 'bg-cyan-500 border-cyan-400 text-studio-950 shadow-[0_0_10px_rgba(0,242,254,0.45)]'
-                              : 'border-studio-700 bg-studio-850 hover:border-cyan-500/50 text-slate-500'
-                          }`}
-                          title={dev.isSelected ? 'Unselect card' : 'Select card'}
-                        >
-                          {dev.isSelected ? (
-                            <Check className="w-3.5 h-3.5 stroke-[2.75]" />
-                          ) : (
-                            <div className="w-1.5 h-1.5 rounded-full bg-slate-600" />
-                          )}
-                        </button>
-                      </div>
-
-                      {/* Live Reactive Studio Spectrum Visualizer */}
-                      <div className="mt-3">
-                        <DeviceWaveVisualizer
-                          isActive={dev.isSelected && !dev.isMuted && dev.volume > 0}
-                          isSelected={dev.isSelected}
-                          isTesting={dev.isTesting}
-                          isMuted={dev.isMuted}
-                          volume={dev.volume}
-                          inputLevel={simInputLevel}
-                          audioEffect={dev.audioEffect}
-                          deviceName={dev.name}
-                        />
-                      </div>
-
-                      {/* DSP Acoustic Effect Profile Selector */}
-                      <div className="mt-2.5 pt-2 border-t border-studio-800/70">
-                        <div className="flex items-center justify-between text-[10px] mb-1 font-mono">
-                          <span className="text-slate-300 font-medium flex items-center gap-1 font-sans">
-                            <Sparkles className="w-2.5 h-2.5 text-cyan-400" />
-                            Acoustic Profile
-                          </span>
-                          <span className="text-[9px] text-cyan-400/90 font-mono capitalize">
-                            {dev.audioEffect === 'spatial_3d'
-                              ? '3D Spatial'
-                              : dev.audioEffect === 'bass_boost'
-                              ? 'Bass Punch'
-                              : dev.audioEffect === 'concert_hall'
-                              ? 'Concert Hall'
-                              : dev.audioEffect === 'vocal_clarity'
-                              ? 'Vocal Clarity'
-                              : 'Studio Master'}
-                          </span>
-                        </div>
-
-                        <div className="grid grid-cols-5 gap-1">
-                          {(
-                            [
-                              { id: 'studio', label: 'Studio', icon: <Sliders className="w-2.5 h-2.5" /> },
-                              { id: 'spatial_3d', label: '3D', icon: <Radio className="w-2.5 h-2.5" /> },
-                              { id: 'bass_boost', label: 'Bass', icon: <Zap className="w-2.5 h-2.5" /> },
-                              { id: 'concert_hall', label: 'Concert', icon: <Music className="w-2.5 h-2.5" /> },
-                              { id: 'vocal_clarity', label: 'Vocal', icon: <Mic className="w-2.5 h-2.5" /> },
-                            ] as const
-                          ).map((eff) => {
-                            const isCur = dev.audioEffect === eff.id;
-                            return (
-                              <button
-                                key={eff.id}
-                                type="button"
-                                disabled={!dev.isSelected}
-                                onClick={() => setSimEffect(dev.id, eff.id)}
-                                className={`py-1 px-0.5 rounded text-[9px] font-medium border flex flex-col items-center justify-center gap-0.5 transition-all cursor-pointer ${
-                                  isCur && dev.isSelected
-                                    ? eff.id === 'spatial_3d'
-                                      ? 'bg-purple-950/80 border-purple-500/70 text-purple-200 shadow-[0_0_8px_rgba(192,132,252,0.25)] font-semibold'
-                                      : eff.id === 'bass_boost'
-                                      ? 'bg-amber-950/80 border-amber-500/70 text-amber-200 shadow-[0_0_8px_rgba(245,158,11,0.25)] font-semibold'
-                                      : eff.id === 'concert_hall'
-                                      ? 'bg-emerald-950/80 border-emerald-500/70 text-emerald-200 shadow-[0_0_8px_rgba(16,185,129,0.25)] font-semibold'
-                                      : eff.id === 'vocal_clarity'
-                                      ? 'bg-rose-950/80 border-rose-500/70 text-rose-200 shadow-[0_0_8px_rgba(251,113,133,0.25)] font-semibold'
-                                      : 'bg-cyan-950/80 border-cyan-500/70 text-cyan-200 shadow-[0_0_8px_rgba(6,182,212,0.25)] font-semibold'
-                                    : 'bg-studio-850/60 border-studio-800 text-slate-400 hover:text-slate-200 hover:bg-studio-800'
-                                } disabled:opacity-30 disabled:cursor-not-allowed`}
-                              >
-                                {eff.icon}
-                                <span className="truncate w-full text-center text-[8px]">{eff.label}</span>
-                              </button>
-                            );
-                          })}
-                        </div>
-                      </div>
-
-                      {/* Volume & Test Controls */}
-                      <div className="mt-3 space-y-2">
-                        <div className="flex items-center justify-between text-[11px]">
-                          <span className="text-slate-300 font-medium flex items-center gap-1">
-                            <Sliders className="w-3 h-3 text-cyan-400" />
-                            Gain
-                          </span>
-                          <span className={`font-mono font-semibold ${dev.isMuted ? 'text-rose-400' : 'text-cyan-300'}`}>
-                            {dev.isMuted ? 'MUTED' : `${volPercent}%`}
-                          </span>
-                        </div>
-
-                        <div className="flex items-center gap-2">
-                          <button
-                            type="button"
-                            onClick={() => toggleSimMute(dev.id)}
-                            disabled={!dev.isSelected}
-                            className={`p-1.5 rounded-lg border transition-all ${
-                              dev.isMuted
-                                ? 'bg-rose-950/60 border-rose-500/50 text-rose-300'
-                                : 'bg-studio-800 border-studio-700 text-slate-300'
-                            } disabled:opacity-40 disabled:cursor-not-allowed`}
-                            title={dev.isMuted ? 'Unmute' : 'Mute'}
-                          >
-                            {dev.isMuted ? <VolumeX className="w-3.5 h-3.5" /> : <Volume2 className="w-3.5 h-3.5" />}
-                          </button>
-
-                          <input
-                            type="range"
-                            min="0"
-                            max="1"
-                            step="0.05"
-                            value={dev.volume}
-                            disabled={!dev.isSelected}
-                            onChange={(e) => setSimVolume(dev.id, parseFloat(e.target.value))}
-                            className="w-full volume-slider disabled:opacity-40"
-                          />
-
-                          <button
-                            type="button"
-                            onClick={() => testSimDevice(dev.id)}
-                            disabled={dev.isTesting}
-                            className={`px-2.5 py-1.5 rounded-lg text-[10px] font-medium border flex items-center gap-1 transition-all ${
-                              dev.isTesting
-                                ? 'bg-cyan-500 text-studio-950 border-cyan-400 font-semibold'
-                                : 'bg-studio-800 hover:bg-studio-700 border-studio-700 text-slate-300'
-                            }`}
-                            title="Test chime"
-                          >
-                            <Play className="w-3 h-3 fill-current" />
-                            <span>{dev.isTesting ? 'Testing' : 'Test'}</span>
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })}
+                      <img src={thumb.src} alt={thumb.title} className="rounded-lg w-full h-14 sm:h-16 object-cover" />
+                      <span className="block text-[10px] sm:text-[11px] font-semibold text-slate-300 mt-1 truncate">
+                        {thumb.title}
+                      </span>
+                    </button>
+                  ))}
+                </div>
               </div>
-            </div>
-          )}
-
-          {activeTab === 'screenshots' && (
-            <div className="flex flex-col gap-3 sm:gap-4">
-              <div className="relative aspect-[16/10] rounded-xl sm:rounded-2xl overflow-hidden bg-studio-950 border border-studio-700/60">
+            ) : (
+              <div className="relative aspect-video rounded-xl sm:rounded-2xl overflow-hidden bg-studio-950 border border-studio-700/60 p-2 sm:p-4 flex items-center justify-center">
                 <img
-                  src={selectedScreenshot}
-                  alt="MultiWave App Screen"
+                  src="/images/windows_audio_routing.png"
+                  alt="MultiWave Audio Routing Architecture"
                   className="w-full h-full object-contain"
                 />
               </div>
-
-              {/* Thumbnail Strip */}
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3 pt-1 sm:pt-2">
-                {[
-                  { title: 'Interactive Guide', src: '/images/guide_step1_welcome.png' },
-                  { title: 'Live Reactive Waves', src: '/images/device_cards_live_wave.png' },
-                  { title: 'Multi-Device Grid', src: '/images/multi_device_grid.png' },
-                  { title: 'Bluetooth Sync', src: '/images/guide_step5_bluetooth_sync.png' },
-                ].map((thumb) => (
-                  <button
-                    key={thumb.src}
-                    onClick={() => setSelectedScreenshot(thumb.src)}
-                    className={`relative rounded-xl overflow-hidden border p-1 text-left transition-all ${
-                      selectedScreenshot === thumb.src
-                        ? 'border-cyan-400 ring-2 ring-cyan-500/30 bg-cyan-950/20'
-                        : 'border-studio-700 hover:border-studio-600 bg-studio-850'
-                    }`}
-                  >
-                    <img src={thumb.src} alt={thumb.title} className="rounded-lg w-full h-14 sm:h-16 object-cover" />
-                    <span className="block text-[10px] sm:text-[11px] font-semibold text-slate-300 mt-1 truncate">
-                      {thumb.title}
-                    </span>
-                  </button>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {activeTab === 'routing' && (
-            <div className="relative aspect-video rounded-xl sm:rounded-2xl overflow-hidden bg-studio-950 border border-studio-700/60 p-2 sm:p-4 flex items-center justify-center">
-              <img
-                src="/images/windows_audio_routing.png"
-                alt="MultiWave Audio Routing Architecture"
-                className="w-full h-full object-contain"
-              />
-            </div>
-          )}
+            )}
+          </div>
         </div>
       </section>
 
