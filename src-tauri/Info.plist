@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>MultiWave requires microphone / loopback audio capture permission to route and synchronize your system audio across multiple output devices.</string>
+    <key>NSAppleEventsUsageDescription</key>
+    <string>MultiWave uses Apple Events to manage and configure system audio output settings.</string>
+</dict>
+</plist>

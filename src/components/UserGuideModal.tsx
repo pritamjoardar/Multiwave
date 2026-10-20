@@ -40,11 +40,11 @@ export const UserGuideModal: React.FC<UserGuideModalProps> = ({
       icon: Radio,
       iconColor: 'text-cyan-400',
       iconBg: 'bg-cyan-950/60 border-cyan-500/30',
-      summary: 'Play your PC audio through multiple outputs at the exact same time.',
+      summary: 'Play your computer audio through multiple outputs at the exact same time.',
       content: (
         <div className="space-y-4">
           <p className="text-sm text-slate-300 leading-relaxed">
-            By default, Windows only sends sound to <strong className="text-white">one device</strong> at a time. If you connect headphones, your speakers go silent.
+            By default, your operating system (macOS / Windows) only sends sound to <strong className="text-white">one device</strong> at a time. If you connect headphones, your speakers go silent.
           </p>
           <div className="p-4 rounded-xl bg-studio-950/80 border border-studio-700/70 space-y-2">
             <h4 className="text-xs font-bold text-cyan-300 uppercase tracking-wider flex items-center gap-2">
@@ -68,24 +68,24 @@ export const UserGuideModal: React.FC<UserGuideModalProps> = ({
       icon: ShieldCheck,
       iconColor: 'text-emerald-400',
       iconBg: 'bg-emerald-950/60 border-emerald-500/30',
-      summary: 'Set MultiWave as your default Windows playback device to capture all app sounds.',
+      summary: 'Set MultiWave as your default system playback device to capture all app sounds.',
       content: (
         <div className="space-y-4">
           <p className="text-sm text-slate-300 leading-relaxed">
-            To capture audio from all your apps, Windows routes sound into the <strong className="text-white">MultiWave Virtual Speaker</strong> bridge.
+            To capture audio from all your apps, macOS / Windows routes sound into the <strong className="text-white">MultiWave Virtual Speaker</strong> (or BlackHole on macOS) bridge.
           </p>
           <div className="p-4 rounded-xl bg-studio-950/80 border border-emerald-500/30 space-y-3">
             <div className="flex items-center justify-between">
               <span className="text-xs font-semibold text-white flex items-center gap-2">
                 <ShieldCheck className="w-4 h-4 text-emerald-400" />
-                Windows Default Audio Routing
+                System Default Audio Routing
               </span>
               <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-950 border border-emerald-500/40 text-emerald-300 font-bold">
                 ONE-CLICK SETUP
               </span>
             </div>
             <p className="text-xs text-slate-400 leading-relaxed">
-              Open Settings (⚙️ in the top navbar) and click <strong className="text-white">&quot;Activate MultiWave Routing&quot;</strong>. Everything you play on your PC will automatically stream through MultiWave!
+              Open Settings (⚙️ in the top navbar) and click <strong className="text-white">&quot;Activate MultiWave Routing&quot;</strong>. Everything you play on your computer will automatically stream through MultiWave!
             </p>
             {onOpenSettings && (
               <button
@@ -102,7 +102,7 @@ export const UserGuideModal: React.FC<UserGuideModalProps> = ({
             )}
           </div>
           <p className="text-xs text-slate-400">
-            You can restore Windows to normal single-speaker audio anytime by clicking <em className="text-slate-300">&quot;Restore Direct Audio&quot;</em> in Settings.
+            You can restore normal single-speaker audio anytime by clicking <em className="text-slate-300">&quot;Restore Direct Audio&quot;</em> in Settings.
           </p>
         </div>
       ),

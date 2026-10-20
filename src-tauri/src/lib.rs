@@ -1,6 +1,7 @@
 pub mod audio;
 pub mod commands;
 pub mod errors;
+pub mod macos;
 pub mod models;
 pub mod persistence;
 pub mod windows;
@@ -9,7 +10,6 @@ use commands::device_commands::AppState;
 use parking_lot::Mutex;
 use persistence::ConfigStore;
 use tauri::Manager;
-use windows::device_notifications::DeviceNotifier;
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
@@ -30,9 +30,14 @@ pub fn run() {
         .manage(app_state)
         .setup(|app| {
             let handle = app.handle().clone();
-            // Start listening for Windows Core Audio device notifications
-            if let Err(e) = DeviceNotifier::start_listening(handle.clone()) {
+            // Start listening for audio device notifications (Windows COM / macOS CoreAudio)
+            #[cfg(windows)]
+            if let Err(e) = windows::device_notifications::DeviceNotifier::start_listening(handle.clone()) {
                 log::warn!("Could not start Windows Core Audio device listener: {e}");
+            }
+            #[cfg(target_os = "macos")]
+            if let Err(e) = macos::MacDeviceNotifier::start_listening(handle.clone()) {
+                log::warn!("Could not start macOS CoreAudio device listener: {e}");
             }
 
             // Run initial device setup and audio routing on a BACKGROUND thread
@@ -46,6 +51,8 @@ pub fn run() {
                         let n = d.name.to_lowercase();
                         (d.device_type == models::audio_device::DeviceType::Virtual
                             || n.contains("virtual")
+                            || n.contains("blackhole")
+                            || n.contains("soundflower")
                             || n.contains("audiorelay")
                             || n.contains("multiwave")
                             || n.contains("cable"))
@@ -54,19 +61,31 @@ pub fn run() {
                     }).cloned();
 
                     if let Some(vdev) = virtual_dev {
-                        // Extract GUID from ID (e.g. {0.0.0.00000000}.{ed382e76-6803-46b5-b67e-04866917a932})
-                        if let Some(pos) = vdev.id.rfind(".{") {
-                            let guid = &vdev.id[pos + 1..];
-                            let _ = windows::WindowsAudioPolicy::rename_endpoint_to_multiwave(guid);
-                        } else if vdev.id.starts_with('{') {
-                            let _ = windows::WindowsAudioPolicy::rename_endpoint_to_multiwave(&vdev.id);
+                        #[cfg(windows)]
+                        {
+                            // Extract GUID from ID (e.g. {0.0.0.00000000}.{ed382e76-6803-46b5-b67e-04866917a932})
+                            if let Some(pos) = vdev.id.rfind(".{") {
+                                let guid = &vdev.id[pos + 1..];
+                                let _ = windows::WindowsAudioPolicy::rename_endpoint_to_multiwave(guid);
+                            } else if vdev.id.starts_with('{') {
+                                let _ = windows::WindowsAudioPolicy::rename_endpoint_to_multiwave(&vdev.id);
+                            }
+
+                            // Set Windows default audio endpoint to MultiWave Virtual Speaker
+                            if let Err(e) = windows::WindowsAudioPolicy::set_default_endpoint(&vdev.id) {
+                                log::warn!("Failed to set default endpoint to virtual speaker: {e}");
+                            } else {
+                                log::info!("Windows default audio output successfully set to MultiWave Virtual Speaker!");
+                            }
                         }
 
-                        // Set Windows default audio endpoint to MultiWave Virtual Speaker
-                        if let Err(e) = windows::WindowsAudioPolicy::set_default_endpoint(&vdev.id) {
-                            log::warn!("Failed to set default endpoint to virtual speaker: {e}");
-                        } else {
-                            log::info!("Windows default audio output successfully set to MultiWave Virtual Speaker!");
+                        #[cfg(target_os = "macos")]
+                        {
+                            if let Err(e) = macos::MacAudioPolicy::set_default_endpoint(&vdev.id) {
+                                log::warn!("Failed to set macOS default endpoint to virtual speaker: {e}");
+                            } else {
+                                log::info!("macOS default audio output successfully set to MultiWave Virtual Speaker ({})!", vdev.name);
+                            }
                         }
 
                         let mut engine = state.engine.lock();

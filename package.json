@@ -8,6 +8,9 @@
     "build": "tsc && vite build",
     "build:exe": "tauri build -- --no-bundle",
     "build:installer": "tauri build",
+    "build:mac": "tauri build",
+    "build:mac:app": "tauri build --bundles app",
+    "build:mac:dmg": "tauri build --bundles dmg",
     "preview": "vite preview",
     "tauri": "tauri"
   },

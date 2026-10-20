@@ -5,14 +5,15 @@
 <h1 align="center">MultiWave</h1>
 
 <p align="center">
-  <strong>Windows Multi-Device Audio Output Routing & Synchronization</strong><br>
-  <em>Simultaneous audio streaming across Bluetooth, USB, 3.5mm, and HDMI endpoints with zero latency mismatch.</em>
+  <strong>macOS & Windows Multi-Device Audio Output Routing & Synchronization</strong><br>
+  <em>Simultaneous audio streaming across AirPods, Bluetooth headphones, USB DACs, 3.5mm, and HDMI endpoints with zero latency mismatch.</em>
 </p>
 
 <p align="center">
   <a href="http://multiwave.pritamjoardar.com/"><strong>🌐 Official Website</strong></a> &nbsp;|&nbsp;
   <a href="https://github.com/pritamjoardar/Multiwave"><strong>⭐ GitHub Repository</strong></a> &nbsp;|&nbsp;
-  <a href="src-tauri/target/release/bundle/nsis/MultiWave_0.1.0_x64-setup.exe"><strong>⬇️ Download Windows Installer (.exe)</strong></a> &nbsp;|&nbsp;
+  <a href="public/MultiWave_0.1.0_macOS.dmg"><strong>🍏 macOS Installer (.dmg)</strong></a> &nbsp;|&nbsp;
+  <a href="public/MultiWave_0.1.0_x64-setup.exe"><strong>🪟 Windows Installer (.exe)</strong></a> &nbsp;|&nbsp;
   <a href="USER_GUIDE.md"><strong>Read User Guide »</strong></a>
 </p>
 
@@ -96,38 +97,51 @@ MultiWave (Tauri 2 Desktop Application)
 │   ├── hooks/useAudioMixer.ts         # Central state management & event listener hook
 │   └── services/tauriService.ts       # Typed IPC bridge to Tauri backend commands
 │
-└── Backend (Rust Core Audio Engine)
-    ├── windows/
+└── Backend (Cross-Platform Rust Core Audio Engine)
+    ├── macos/                         # macOS CoreAudio Native Integration
+    │   ├── core_audio.rs              # macOS CoreAudio device enumeration & classification
+    │   ├── device_notifications.rs    # Dynamic Bluetooth/USB connection monitor & event emitter
+    │   └── policy_config.rs           # macOS default audio device switcher & Sound Settings opener
+    ├── windows/                       # Windows WASAPI Core Audio Native Integration
     │   ├── core_audio.rs              # IMMDeviceEnumerator, endpoint property extraction
-    │   └── device_notifications.rs    # IMMNotificationClient COM event sink
+    │   ├── device_notifications.rs    # IMMNotificationClient COM event sink
+    │   └── policy_config.rs           # IPolicyConfig COM interface default audio router
     ├── audio/
-    │   ├── device_manager.rs          # Cross-maps Windows Core Audio with cpal WASAPI host
-    │   ├── playback_engine.rs         # Master playback engine coordinating output streams
+    │   ├── device_manager.rs          # Cross-maps native platform CoreAudio with cpal host
+    │   ├── playback_engine.rs         # Master playback engine coordinating simultaneous output streams
     │   ├── output_stream.rs           # Dedicated cpal::Stream per device
     │   ├── resampler.rs               # Real-time linear sample rate converter & channel mapper
     │   ├── volume.rs                  # Perceptual volume curves and soft-knee limiters
     │   └── audio_mixer.rs             # Multi-tone generators & ring-buffer delay lines
     ├── commands/                      # Typed Tauri IPC commands
-    └── persistence/config_store.rs    # Local configuration store (%APPDATA%\MultiWave\settings.json)
+    └── persistence/config_store.rs    # Cross-platform config store (macOS ~/Library/ & Windows %APPDATA%)
 ```
 
 ---
 
 ## Prerequisites
 
-Before running or building MultiWave on Windows:
+### A. For MacBook & macOS (Apple Silicon M1-M4 & Intel):
+1. **Xcode Command Line Tools**:
+   ```bash
+   xcode-select --install
+   ```
+2. **Rust Toolchain**:
+   ```bash
+   curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+   ```
+3. **Node.js**:
+   - Node.js 18+ (`brew install node`).
+4. **Virtual Audio Driver (for loopback capture)**:
+   - Automated via `install_virtual_speaker_mac.sh` or `brew install blackhole-2ch`.
 
+### B. For Windows:
 1. **Rust Toolchain**:
-   - Install Rust via [rustup.rs](https://win.rustup.rs/):
-     ```powershell
-     curl.exe -Lo rustup-init.exe https://win.rustup.rs
-     .\rustup-init.exe -y --default-host x86_64-pc-windows-msvc
-     ```
-   - Ensure `%USERPROFILE%\.cargo\bin` is in your `PATH`.
+   - Install Rust via [rustup.rs](https://win.rustup.rs/) (`x86_64-pc-windows-msvc`).
 2. **Node.js**:
    - Node.js 18+ (tested with Node.js v22.12.0 and npm 10.9.0).
 3. **C++ Build Tools**:
-   - Visual Studio 2022 or 2026 Build Tools with the **Desktop development with C++** workload (provides the MSVC compiler and Windows SDK).
+   - Visual Studio 2022 Build Tools with Desktop development with C++.
 4. **WebView2**:
    - Pre-installed on Windows 10 and 11.
 
@@ -165,40 +179,58 @@ cd src-tauri
 cargo test
 ```
 
-### 4. Production Release Executable (.exe) & Installer
+### 4. Production Release Installers & Packages
+
+| Platform | Format | File Name | Architecture | Download Link |
+|---|---|---|---|---|
+| **macOS** | Disk Image (`.dmg`) | `MultiWave_0.1.0_macOS.dmg` | Apple Silicon (M1-M4) & Intel | [**Download .dmg**](public/MultiWave_0.1.0_macOS.dmg) (15.6 MB) |
+| **macOS** | Portable (`.zip`) | `MultiWave_0.1.0_macOS.zip` | Universal macOS Application | [**Download .zip**](public/MultiWave_0.1.0_macOS.zip) (15.5 MB) |
+| **Windows** | Setup Installer (`.exe`) | `MultiWave_0.1.0_x64-setup.exe` | x64 (Windows 10 & 11) | [**Download .exe**](public/MultiWave_0.1.0_x64-setup.exe) (7.7 MB) |
+| **Windows** | Portable (`.exe`) | `multiwave.exe` | x64 Standalone Executable | [**Download Standalone**](src-tauri/target/release/multiwave.exe) (10.0 MB) |
+
 
 > [!TIP]
-> **Production Executable & Website:**
 > - 🌐 **Official Product Website**: [http://multiwave.pritamjoardar.com/](http://multiwave.pritamjoardar.com/)
-> - 📦 **Windows Setup Installer (`.exe`)**: [`src-tauri/target/release/bundle/nsis/MultiWave_0.1.0_x64-setup.exe`](file:///c:/Users/prita/OneDrive/Desktop/MultiWave/src-tauri/target/release/bundle/nsis/MultiWave_0.1.0_x64-setup.exe) *(Recommended — 7.7 MB with drivers, Start Menu, & Desktop icons)*
-> - ⚡ **Portable Standalone (`.exe`)**: [`src-tauri/target/release/multiwave.exe`](file:///c:/Users/prita/OneDrive/Desktop/MultiWave/src-tauri/target/release/multiwave.exe) *(10.0 MB)*
+> - 🍏 **macOS Installer (`.dmg`)**: [`public/MultiWave_0.1.0_macOS.dmg`](file:///c:/Users/prita/OneDrive/Desktop/MultiWave/public/MultiWave_0.1.0_macOS.dmg)
+> - 🪟 **Windows Installer (`.exe`)**: [`public/MultiWave_0.1.0_x64-setup.exe`](file:///c:/Users/prita/OneDrive/Desktop/MultiWave/public/MultiWave_0.1.0_x64-setup.exe)
 
-#### How to Rebuild:
+#### macOS Installation:
+1. Mount `MultiWave_0.1.0_macOS.dmg`.
+2. Drag `MultiWave.app` to `/Applications`.
+3. Open MultiWave. If Apple Gatekeeper warns about an unidentified developer, right-click `MultiWave.app` and select **Open**, or run:
+   ```bash
+   xattr -cr /Applications/MultiWave.app
+   ```
+4. Allow Microphone / Loopback permission when prompted.
 
-#### Method A: Double-Click Launcher (Fastest)
-Double-click [`build_exe.bat`](file:///c:/Users/prita/OneDrive/Desktop/MultiWave/build_exe.bat) in the project root. It will verify prerequisites, build the frontend, and compile the `.exe`.
+#### How to Rebuild for macOS:
+```bash
+# Automated packager (.dmg & .zip):
+python package_mac.py
 
-#### Method B: PowerShell Script
-```powershell
-# 1. Build Full Windows Setup Installer (.exe with desktop shortcuts & uninstaller):
-.\build_exe.ps1 -Installer
-# -> Output: src-tauri\target\release\bundle\nsis\MultiWave_0.1.0_x64-setup.exe
+# Native shell script:
+chmod +x build_mac.sh
+./build_mac.sh
 
-# 2. Build Standalone Portable .exe:
-.\build_exe.ps1
-# -> Output: src-tauri\target\release\multiwave.exe
+# Or with npm / Tauri:
+npm run build:mac      # builds both .app and .dmg
+npm run build:mac:dmg  # builds installer .dmg
 ```
 
-#### Method C: npm / Tauri Commands
+#### How to Rebuild for Windows:
 ```powershell
-$env:PATH = "$env:USERPROFILE\.cargo\bin;$env:PATH"
+# Method A: Double-click launcher
+build_exe.bat
 
-# Full Windows Setup Installer (.exe):
+# Method B: PowerShell script
+.\build_exe.ps1 -Installer  # outputs to src-tauri\target\release\bundle\nsis\MultiWave_0.1.0_x64-setup.exe
+.\build_exe.ps1             # outputs to src-tauri\target\release\multiwave.exe
+
+# Method C: npm scripts
 npm run build:installer
-
-# Portable standalone .exe:
 npm run build:exe
 ```
+
 
 ---
 

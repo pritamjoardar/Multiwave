@@ -172,12 +172,12 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
             </div>
           </div>
 
-          {/* Windows Audio Routing Management */}
+          {/* System Audio Routing Management */}
           <div className="p-4 rounded-xl bg-studio-950/80 border border-studio-800 space-y-3">
             <div className="flex items-center justify-between">
               <label className="font-semibold text-white flex items-center gap-2">
                 <ShieldCheck className="w-4 h-4 text-emerald-400" />
-                Windows Default Audio Routing
+                System Default Audio Routing
               </label>
               <span
                 className={`text-[10px] font-mono px-2 py-0.5 rounded font-bold border ${
@@ -191,7 +191,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
             </div>
 
             <p className="text-[11px] text-slate-400 leading-relaxed">
-              When routed to MultiWave, Windows sends all sound from VLC, browsers, Spotify, and games to the MultiWave Virtual Speaker, broadcasting in real-time to your selected output devices simultaneously.
+              When routed to MultiWave, your system sends all sound from VLC, browsers, Spotify, Apple Music, and games to the MultiWave Virtual Speaker (or BlackHole on macOS), broadcasting in real-time to your selected output devices simultaneously.
             </p>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1">
@@ -249,7 +249,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                 className="flex items-center justify-center gap-2 p-2.5 rounded-lg bg-studio-800 hover:bg-studio-700 border border-studio-700 text-slate-200 transition-all"
               >
                 <Tag className="w-3.5 h-3.5 text-cyan-400" />
-                <span>{isRenaming ? 'Setting Name...' : 'Rename to "MultiWave Speaker"'}</span>
+                <span>{isRenaming ? 'Setting Name...' : 'Configure Virtual Speaker'}</span>
               </button>
 
               <button
@@ -258,7 +258,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                 className="col-span-1 sm:col-span-2 flex items-center justify-center gap-2 p-2 rounded-lg bg-studio-850 hover:bg-studio-800 border border-studio-700/60 text-slate-300 hover:text-white transition-all text-[11px]"
               >
                 <ExternalLink className="w-3.5 h-3.5" />
-                <span>Open Windows Sound Control Panel</span>
+                <span>Open System Sound Settings & Audio MIDI Setup</span>
               </button>
             </div>
           </div>
@@ -300,7 +300,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                   </span>
                 </div>
                 <p className="text-[11px] text-slate-400 mt-1 leading-relaxed">
-                  MultiWave is a high-performance Windows multi-device audio routing and synchronization engine. It captures system sound from media players, browsers, and desktop apps, broadcasting simultaneously to multiple Bluetooth headphones, USB DACs, and speakers with continuous sub-sample linear interpolation.
+                  MultiWave is a high-performance multi-device audio routing and synchronization engine for macOS and Windows. It captures system sound from media players, browsers, and desktop apps, broadcasting simultaneously to multiple Bluetooth headphones (including Apple AirPods), USB DACs, and speakers with continuous sub-sample linear interpolation.
                 </p>
               </div>
             </div>

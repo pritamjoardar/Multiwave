@@ -5,8 +5,8 @@
 </p>
 
 <p align="center">
-  <strong>Simultaneous Windows Audio Routing & Real-Time Synchronization</strong><br>
-  <em>Play any PC sound through multiple wired, USB, and Bluetooth devices at the same time.</em>
+  <strong>Simultaneous macOS & Windows Multi-Device Audio Routing & Real-Time Synchronization</strong><br>
+  <em>Stream computer audio simultaneously across AirPods, Bluetooth headphones, USB DACs, and built-in speakers with zero latency mismatch.</em>
 </p>
 
 <p align="center">
@@ -22,16 +22,18 @@
 <p align="center">
   <a href="http://multiwave.pritamjoardar.com/"><strong>🌐 Official Website</strong></a> &nbsp;|&nbsp;
   <a href="https://github.com/pritamjoardar/Multiwave"><strong>⭐ GitHub Repository</strong></a> &nbsp;|&nbsp;
-  <a href="src-tauri/target/release/bundle/nsis/MultiWave_0.1.0_x64-setup.exe"><strong>⬇️ Download & Install MultiWave (.exe)</strong></a>
+  <a href="public/MultiWave_0.1.0_macOS.dmg"><strong>🍏 macOS Installer (.dmg)</strong></a> &nbsp;|&nbsp;
+  <a href="public/MultiWave_0.1.0_x64-setup.exe"><strong>🪟 Windows Installer (.exe)</strong></a> &nbsp;|&nbsp;
+  <a href="#-macbook--macos-quickstart--permissions"><strong>🍎 MacBook (macOS) Guide »</strong></a>
 </p>
 
 ---
 
 ## 📖 What is MultiWave?
 
-By default, Windows only allows audio to play through **one single audio output device** at a time. If you plug in headphones, your speakers go silent. If you connect a Bluetooth speaker, your headphones turn off.
+By default, macOS and Windows only allow audio to play through **one single audio output device** at a time. If you connect headphones, your speakers go silent. If you connect a Bluetooth speaker, your headphones turn off.
 
-**MultiWave solves this!** It is a high-performance Windows Audio Session API (WASAPI) application that lets you broadcast and stream your computer's audio (YouTube, Spotify, games, movies, system sounds) across **multiple audio outputs simultaneously** — with:
+**MultiWave solves this!** It is a high-performance cross-platform audio routing and synchronization engine (using Apple CoreAudio on macOS and WASAPI on Windows) that lets you broadcast and stream your computer's audio (YouTube, Spotify, Apple Music, games, movies, system sounds) across **multiple audio outputs simultaneously** — with:
 - **Zero audio lag or echo** (via built-in Bluetooth delay compensation).
 - **Independent volume controls** for each individual speaker or headphone.
 - **Live reactive audio wave visualizers** that dance to the rhythm of your audio.
@@ -170,8 +172,104 @@ Click the **Settings (⚙️)** button in the top navbar:
 - **About MultiWave**:
   - View application architecture and credits to **Pritam Joardar** (with a clickable link to [pritamjoardar.com](https://www.pritamjoardar.com/)).
 - **Automatic Persistence**:
-  - Every time you change device selections, volume levels, delay sync values, or themes, MultiWave automatically saves your preferences to `%APPDATA%\MultiWave\settings.json`.
+  - Every time you change device selections, volume levels, delay sync values, or themes, MultiWave automatically saves your preferences locally (`%APPDATA%\MultiWave\settings.json` on Windows or `~/Library/Application Support/MultiWave/settings.json` on macOS).
   - Next time you open MultiWave, all your settings are restored automatically!
+
+---
+
+## 🍎 MacBook & macOS Quickstart & Permissions
+
+MultiWave runs natively on macOS (Apple Silicon M1/M2/M3/M4 & Intel MacBooks/Macs), integrating directly with **Apple CoreAudio**.
+
+### 1. Download MultiWave for macOS
+You can download and run the ready macOS packages directly:
+- 🍏 **macOS Disk Image Installer (`.dmg`)**:  
+  👉 [`public/MultiWave_0.1.0_macOS.dmg`](file:///c:/Users/prita/OneDrive/Desktop/MultiWave/public/MultiWave_0.1.0_macOS.dmg) *(Mountable Apple Disk Image with Applications drag-and-drop)*
+- 📦 **macOS Portable Application Archive (`.zip`)**:  
+  👉 [`public/MultiWave_0.1.0_macOS.zip`](file:///c:/Users/prita/OneDrive/Desktop/MultiWave/public/MultiWave_0.1.0_macOS.zip) *(Unzip and run directly)*
+- 📱 **macOS Application Bundle (`.app`)**:  
+  👉 [`src-tauri/target/release/bundle/macos/MultiWave.app`](file:///c:/Users/prita/OneDrive/Desktop/MultiWave/src-tauri/target/release/bundle/macos/MultiWave.app)
+
+#### Installation on macOS:
+1. Double-click **`MultiWave_0.1.0_macOS.dmg`** to open the disk image window.
+2. Drag **`MultiWave.app`** into your **`Applications`** folder.
+3. Launch **MultiWave** from Applications or Spotlight (`Cmd + Space` > type `MultiWave`).
+4. **Apple Gatekeeper / First-Time Open Note**: If macOS shows an alert stating the app cannot be opened because it is from an unidentified developer:
+   - **Method A**: Right-click (or Control-click) `MultiWave.app` in Finder and select **Open** > click **Open**.
+   - **Method B (Terminal)**: Run:
+     ```bash
+     xattr -cr /Applications/MultiWave.app
+     ```
+
+---
+
+### 2. Mandatory macOS Microphone / Loopback Permission
+macOS protects audio capture devices through strict sandboxing and user consent permissions:
+- When you first run MultiWave or start loopback broadcast, macOS displays an authorization dialog:
+  > **"MultiWave" would like to access the microphone.**
+- Click **"OK" / "Allow"**.
+- If you accidentally clicked "Don't Allow" or need to verify:
+  1. Open **System Settings** ( Apple Menu > System Settings).
+  2. Navigate to **Privacy & Security** > **Microphone**.
+  3. Ensure the toggle switch for **MultiWave** is turned **ON (Enabled)**.
+
+> [!NOTE]
+> *Why is microphone permission needed?* MultiWave captures your computer's audio loopback stream so it can route and sync music, videos, and game sounds across all your connected outputs. In macOS CoreAudio security architecture, all system audio capture endpoints are categorized under microphone permissions.
+
+---
+
+### 3. macOS Virtual Audio Driver Setup (BlackHole 2ch)
+Unlike Windows which provides WASAPI loopback, macOS requires a virtual audio loopback driver to capture system-wide sound from apps without physical loop cables.
+MultiWave uses **BlackHole 2ch** (the standard signed open-source macOS audio driver):
+
+#### Automated Setup (Fastest):
+In MultiWave, open **Settings (⚙️)** > click **"Enable MultiWave Virtual Speaker"**. MultiWave runs `install_virtual_speaker_mac.sh` to install and kickstart the CoreAudio daemon automatically.
+
+#### Manual Terminal Setup:
+```bash
+# Using Homebrew:
+brew install blackhole-2ch
+
+# Or run the included script:
+chmod +x install_virtual_speaker_mac.sh
+./install_virtual_speaker_mac.sh
+```
+
+---
+
+### 4. Setting Up Audio in macOS Audio MIDI Setup
+1. In MultiWave, click **"Open System Sound Settings & Audio MIDI Setup"** in Settings.
+2. In **Audio MIDI Setup**, you will see **BlackHole 2ch** / **MultiWave Virtual Speaker**.
+3. Set your system sound output to **BlackHole 2ch**.
+4. MultiWave captures sound from BlackHole and broadcasts it simultaneously to:
+   - **AirPods / AirPods Pro / AirPods Max**
+   - **MacBook Pro / MacBook Air Built-in Speakers**
+   - **External 3.5mm Headphones**
+   - **USB Audio DACs / Interfaces (Focusrite, Scarlett, FiiO)**
+   - **HDMI / Thunderbolt Displays (Studio Display, LG UltraFine, Dell)**
+
+---
+
+### 5. How to Build & Package for macOS:
+```bash
+# Development mode:
+npm run tauri dev
+
+# Build production macOS Application (.app) and Disk Image (.dmg):
+chmod +x build_mac.sh
+./build_mac.sh
+
+# Or with automated packager:
+python package_mac.py
+
+# Or with npm:
+npm run build:mac      # builds both .app and .dmg
+npm run build:mac:dmg  # builds installer .dmg
+```
+Output packages will be generated in:
+- `public/MultiWave_0.1.0_macOS.dmg` & `src-tauri/target/release/bundle/dmg/MultiWave_0.1.0_macOS.dmg`
+- `public/MultiWave_0.1.0_macOS.zip` & `src-tauri/target/release/bundle/dmg/MultiWave_0.1.0_macOS.zip`
+- `src-tauri/target/release/bundle/macos/MultiWave.app`
 
 ---
 
@@ -180,34 +278,40 @@ Click the **Settings (⚙️)** button in the top navbar:
 ### Q1: I don't hear any sound from my devices.
 1. Make sure you clicked the **Play** button on the top navbar (status should say `Playing`).
 2. Make sure you selected at least one device (the card has a cyan border and checkmark).
-3. Open **Settings (⚙️)** and verify that Windows Default Audio Routing says **`ROUTED TO MULTIWAVE`**.
+3. Open **Settings (⚙️)** and verify that System Default Audio Routing says **`ROUTED TO MULTIWAVE`**.
 4. Check that your device volume sliders in MultiWave are turned up (not at 0%) and not muted.
 
 ### Q2: I plugged in my headphones or connected Bluetooth, but it's not showing.
-- Click the **Rescan (🔄)** button on the top navbar. MultiWave will re-query the Windows Core Audio endpoint manager and list the new device immediately.
+- Click the **Rescan (🔄)** button on the top navbar. MultiWave will re-query the native CoreAudio / WASAPI endpoint manager and list the new device immediately.
 
-### Q3: How do I switch back to normal Windows audio?
-- Open **Settings (⚙️)** in MultiWave and click **"Restore Direct Audio"**. Windows will immediately switch back to sending sound directly to your physical speakers.
+### Q3: How do I switch back to normal computer audio?
+- Open **Settings (⚙️)** in MultiWave and click **"Restore Direct Audio"**. Your computer will immediately switch back to sending sound directly to your physical speakers.
 
-### Q4: Where is the .exe file and how do I build it?
+### Q4: Where are the macOS and Windows download files and how do I build them?
 - **Official Website**: Visit [http://multiwave.pritamjoardar.com/](http://multiwave.pritamjoardar.com/) for online downloads, feature overviews, and updates.
-- **Ready-to-Use Installer**: You can run the built installer right away from:  
-  👉 [`src-tauri/target/release/bundle/nsis/MultiWave_0.1.0_x64-setup.exe`](file:///c:/Users/prita/OneDrive/Desktop/MultiWave/src-tauri/target/release/bundle/nsis/MultiWave_0.1.0_x64-setup.exe)
-- **Option 1 (Quick Double-Click Rebuild)**: Simply double-click [`build_exe.bat`](file:///c:/Users/prita/OneDrive/Desktop/MultiWave/build_exe.bat) in the project folder.
-- **Option 2 (PowerShell)**:
+- **Ready-to-Use macOS Packages**:
+  - 🍏 **macOS Disk Image (`.dmg`)**: [`public/MultiWave_0.1.0_macOS.dmg`](file:///c:/Users/prita/OneDrive/Desktop/MultiWave/public/MultiWave_0.1.0_macOS.dmg) (15.6 MB)
+  - 📦 **macOS Portable Archive (`.zip`)**: [`public/MultiWave_0.1.0_macOS.zip`](file:///c:/Users/prita/OneDrive/Desktop/MultiWave/public/MultiWave_0.1.0_macOS.zip) (15.5 MB)
+  - 📱 **macOS App Bundle (`.app`)**: [`src-tauri/target/release/bundle/macos/MultiWave.app`](file:///c:/Users/prita/OneDrive/Desktop/MultiWave/src-tauri/target/release/bundle/macos/MultiWave.app)
+- **Ready-to-Use Windows Packages**:
+  - 🪟 **Windows Setup Installer (`.exe`)**: [`public/MultiWave_0.1.0_x64-setup.exe`](file:///c:/Users/prita/OneDrive/Desktop/MultiWave/public/MultiWave_0.1.0_x64-setup.exe) *(7.7 MB — with desktop shortcuts & virtual driver)*
+  - ⚡ **Portable Standalone (`.exe`)**: [`src-tauri/target/release/multiwave.exe`](file:///c:/Users/prita/OneDrive/Desktop/MultiWave/src-tauri/target/release/multiwave.exe)
+- **How to Rebuild macOS**:
+  ```bash
+  chmod +x build_mac.sh && ./build_mac.sh
+  # or
+  python package_mac.py
+  ```
+- **How to Rebuild Windows**:
   ```powershell
   # Full Windows Setup Installer (.exe):
   .\build_exe.ps1 -Installer
 
-  # Portable standalone .exe:
+  # Standalone portable .exe:
   .\build_exe.ps1
-  ```
-- **Option 3 (npm scripts)**:
-  ```powershell
-  npm run build:installer  # outputs to src-tauri\target\release\bundle\nsis\MultiWave_0.1.0_x64-setup.exe
-  npm run build:exe        # outputs to src-tauri\target\release\multiwave.exe
   ```
 
 ---
 
 *MultiWave is crafted with ❤️ by Pritam Joardar.*
+

@@ -50,6 +50,7 @@ test_*.ps1
 test_*.cs
 default_checker.cs
 *.zip
+!public/*.zip
 *.tar.gz
 *.7z
 

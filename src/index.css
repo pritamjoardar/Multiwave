@@ -56,7 +56,16 @@
     @apply bg-studio-950 text-slate-100 antialiased font-sans select-none overflow-x-hidden;
     margin: 0;
     padding: 0;
+    font-family: 'Plus Jakarta Sans', Outfit, Inter, system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
     transition: background-color 0.25s ease, color 0.25s ease;
+  }
+
+  h1, h2, h3, h4, .font-display {
+    font-family: Outfit, 'Plus Jakarta Sans', Inter, sans-serif;
+    letter-spacing: -0.02em;
   }
 }
 

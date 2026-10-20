@@ -3,7 +3,10 @@ use crate::errors::{MultiWaveError, Result};
 use crate::models::audio_device::DeviceType;
 use crate::models::playback_state::{PlaybackMetrics, ToneType};
 use crate::persistence::ConfigStore;
+#[cfg(windows)]
 use crate::windows::WindowsAudioPolicy;
+#[cfg(target_os = "macos")]
+use crate::macos::MacAudioPolicy;
 use tauri::State;
 
 
@@ -198,12 +201,28 @@ pub fn open_windows_sound_settings() -> Result<()> {
             .args(["-NoProfile", "-Command", "Start-Process 'ms-settings:sound'"])
             .spawn();
     }
+    #[cfg(target_os = "macos")]
+    {
+        crate::macos::MacAudioPolicy::open_sound_preferences();
+    }
     Ok(())
 }
 
 #[tauri::command]
 pub fn set_default_output_device(device_id: String) -> Result<()> {
-    WindowsAudioPolicy::set_default_endpoint(&device_id)
+    #[cfg(windows)]
+    {
+        WindowsAudioPolicy::set_default_endpoint(&device_id)
+    }
+    #[cfg(target_os = "macos")]
+    {
+        MacAudioPolicy::set_default_endpoint(&device_id)
+    }
+    #[cfg(not(any(windows, target_os = "macos")))]
+    {
+        let _ = device_id;
+        Ok(())
+    }
 }
 
 #[tauri::command]
@@ -214,6 +233,8 @@ pub fn activate_multiwave_routing(state: State<'_, AppState>) -> Result<Playback
         let n = d.name.to_lowercase();
         (d.device_type == DeviceType::Virtual
             || n.contains("virtual")
+            || n.contains("blackhole")
+            || n.contains("soundflower")
             || n.contains("audiorelay")
             || n.contains("multiwave")
             || n.contains("cable"))
@@ -222,8 +243,12 @@ pub fn activate_multiwave_routing(state: State<'_, AppState>) -> Result<Playback
     }).cloned();
 
     if let Some(vdev) = virtual_dev {
-        // Set Windows default audio endpoint to this virtual speaker
+        // Set system default audio endpoint to this virtual speaker
+        #[cfg(windows)]
         let _ = WindowsAudioPolicy::set_default_endpoint(&vdev.id);
+
+        #[cfg(target_os = "macos")]
+        let _ = MacAudioPolicy::set_default_endpoint(&vdev.id);
 
         let mut engine = state.engine.lock();
         engine.set_capture_device(Some(vdev.name));
@@ -293,6 +318,10 @@ pub fn install_virtual_speaker_driver() -> Result<()> {
             ])
             .spawn();
     }
+    #[cfg(target_os = "macos")]
+    {
+        MacAudioPolicy::install_virtual_speaker_mac();
+    }
     Ok(())
 }
 
@@ -304,6 +333,13 @@ pub fn configure_virtual_speaker_name() -> Result<()> {
         let bat_path = exe_dir.join("setup_multiwave_virtual_speaker.bat");
         let _ = std::process::Command::new("cmd.exe")
             .args(["/c", bat_path.to_str().unwrap_or("setup_multiwave_virtual_speaker.bat")])
+            .spawn();
+    }
+    #[cfg(target_os = "macos")]
+    {
+        // On macOS, launch Audio MIDI Setup
+        let _ = std::process::Command::new("open")
+            .args(["-a", "Audio MIDI Setup"])
             .spawn();
     }
     Ok(())

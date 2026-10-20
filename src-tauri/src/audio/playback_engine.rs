@@ -107,12 +107,18 @@ impl PlaybackEngine {
             }
         }
 
-        // Look for Virtual Speakers
+        // Look for Virtual Speakers (MultiWave, BlackHole, Soundflower, CABLE)
         if chosen_device.is_none() {
             for dev in &devices {
                 if let Ok(name) = dev.name() {
                     let n_low = name.to_lowercase();
-                    if n_low.contains("multiwave") || n_low.contains("virtual") || n_low.contains("audiorelay") || n_low.contains("cable") {
+                    if n_low.contains("multiwave")
+                        || n_low.contains("virtual")
+                        || n_low.contains("blackhole")
+                        || n_low.contains("soundflower")
+                        || n_low.contains("audiorelay")
+                        || n_low.contains("cable")
+                    {
                         chosen_device = Some(dev.clone());
                         *self.capture_device_name.lock() = name;
                         break;
@@ -271,6 +277,8 @@ impl PlaybackEngine {
             let n_low = dev.name.to_lowercase();
             if dev.device_type == crate::models::audio_device::DeviceType::Virtual
                 || n_low.contains("virtual")
+                || n_low.contains("blackhole")
+                || n_low.contains("soundflower")
                 || n_low.contains("audiorelay")
                 || n_low.contains("multiwave")
             {

@@ -1,6 +1,5 @@
 use crate::errors::{MultiWaveError, Result};
 use crate::models::audio_device::AudioDevice;
-use crate::windows::WindowsCoreAudio;
 use cpal::traits::{DeviceTrait, HostTrait};
 
 pub struct DeviceManager;
@@ -8,8 +7,18 @@ pub struct DeviceManager;
 impl DeviceManager {
     /// Retrieve full enumerated audio output devices with Core Audio properties + cpal stream capabilities
     pub fn get_available_devices() -> Result<Vec<AudioDevice>> {
-        // Fast enumeration directly from Windows Core Audio WASAPI endpoints (~5ms instead of 2000ms)
-        WindowsCoreAudio::enumerate_output_devices()
+        #[cfg(windows)]
+        {
+            crate::windows::WindowsCoreAudio::enumerate_output_devices()
+        }
+        #[cfg(target_os = "macos")]
+        {
+            crate::macos::MacCoreAudio::enumerate_output_devices()
+        }
+        #[cfg(not(any(windows, target_os = "macos")))]
+        {
+            crate::macos::MacCoreAudio::enumerate_output_devices()
+        }
     }
 
     /// Find a cpal::Device that matches the given device ID or device name
@@ -21,7 +30,11 @@ impl DeviceManager {
 
         let mut matched: Option<cpal::Device> = None;
         let target_lower = device_name.to_lowercase();
-        let is_virtual_target = target_lower.contains("virtual") || target_lower.contains("multiwave") || target_lower.contains("cable");
+        let is_virtual_target = target_lower.contains("virtual")
+            || target_lower.contains("multiwave")
+            || target_lower.contains("cable")
+            || target_lower.contains("blackhole")
+            || target_lower.contains("soundflower");
 
         for dev in devices {
             if let Ok(name) = dev.name() {
@@ -31,12 +44,20 @@ impl DeviceManager {
                     continue;
                 }
 
-                if is_virtual_target && (name_lower.contains("cable input") || name_lower.contains("multiwave") || name_lower.contains("virtual cable")) {
+                if is_virtual_target && (
+                    name_lower.contains("cable input")
+                    || name_lower.contains("multiwave")
+                    || name_lower.contains("virtual cable")
+                    || name_lower.contains("blackhole 2ch")
+                    || name_lower.contains("blackhole")
+                    || name_lower.contains("soundflower (2ch)")
+                    || name_lower.contains("soundflower")
+                ) {
                     matched = Some(dev);
                     break;
                 }
 
-                if name == device_name || device_name.contains(&name) || name.contains(device_name) {
+                if name == device_name || device_name.contains(&name) || name.contains(&device_name) {
                     matched = Some(dev);
                     break;
                 }
