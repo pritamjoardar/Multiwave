@@ -291,7 +291,7 @@ export const Website: React.FC<WebsiteProps> = () => {
                 className="flex items-center justify-center gap-2 w-full py-2.5 rounded-xl font-bold text-xs bg-studio-800 hover:bg-studio-750 border border-cyan-500/50 text-white shadow-md"
               >
                 <AppleIcon className="w-4 h-4 text-cyan-400" />
-                <span>Download for macOS (.dmg) • 15.6 MB</span>
+                <span>Download for macOS (.dmg)</span>
               </a>
 
               <a
@@ -300,7 +300,7 @@ export const Website: React.FC<WebsiteProps> = () => {
                 className="flex items-center justify-center gap-2 w-full py-2.5 rounded-xl font-bold text-xs bg-gradient-to-r from-cyan-400 to-blue-500 text-slate-950 shadow-md"
               >
                 <WindowsIcon className="w-4 h-4" />
-                <span>Download for Windows (.exe) • 7.7 MB</span>
+                <span>Download for Windows (.exe)</span>
               </a>
 
               <a
@@ -352,9 +352,6 @@ export const Website: React.FC<WebsiteProps> = () => {
               <span className="text-[10px] font-mono text-cyan-300 uppercase tracking-wider leading-none">Apple Silicon &amp; Intel</span>
               <span className="leading-snug">Download for macOS (.dmg)</span>
             </div>
-            <span className="text-[11px] sm:text-xs px-2 py-0.5 rounded-full bg-cyan-950/80 text-cyan-300 border border-cyan-500/30 font-mono shrink-0 ml-1">
-              15.6 MB
-            </span>
           </a>
 
           {/* Windows Download */}
@@ -368,9 +365,6 @@ export const Website: React.FC<WebsiteProps> = () => {
               <span className="text-[10px] font-mono text-slate-900/80 uppercase tracking-wider leading-none">Windows 10 &amp; 11</span>
               <span className="leading-snug">Download for Windows (.exe)</span>
             </div>
-            <span className="text-[11px] sm:text-xs px-2 py-0.5 rounded-full bg-slate-950/20 text-slate-900 font-mono shrink-0 ml-1">
-              7.7 MB
-            </span>
           </a>
         </div>
 
@@ -382,7 +376,7 @@ export const Website: React.FC<WebsiteProps> = () => {
             download="MultiWave_0.1.0_macOS.zip"
             className="text-cyan-400 hover:text-cyan-300 underline underline-offset-4 decoration-cyan-500/40 hover:decoration-cyan-300 font-medium transition-colors"
           >
-            Download macOS (.zip) • 15.5 MB
+            Download macOS (.zip)
           </a>
           <span>•</span>
           <a href="#demo" className="text-slate-300 hover:text-white transition-colors flex items-center gap-1">
@@ -972,9 +966,6 @@ export const Website: React.FC<WebsiteProps> = () => {
             >
               <AppleIcon className="w-4 h-4 sm:w-5 sm:h-5 text-cyan-400 shrink-0" />
               <span>Download for macOS (.dmg)</span>
-              <span className="text-[11px] sm:text-xs px-2 py-0.5 rounded-full bg-cyan-950/80 text-cyan-300 font-mono shrink-0">
-                15.6 MB
-              </span>
             </a>
 
             {/* Windows (.exe) */}
@@ -985,9 +976,6 @@ export const Website: React.FC<WebsiteProps> = () => {
             >
               <WindowsIcon className="w-4 h-4 sm:w-5 sm:h-5 shrink-0" />
               <span>Download for Windows (.exe)</span>
-              <span className="text-[11px] sm:text-xs px-2 py-0.5 rounded-full bg-slate-950/20 text-slate-900 font-mono shrink-0">
-                7.7 MB
-              </span>
             </a>
           </div>
 
@@ -998,7 +986,7 @@ export const Website: React.FC<WebsiteProps> = () => {
               download="MultiWave_0.1.0_macOS.zip"
               className="text-cyan-400 hover:text-cyan-300 underline underline-offset-4 decoration-cyan-500/40"
             >
-              macOS Portable (.zip) • 15.5 MB
+              macOS Portable (.zip)
             </a>
           </div>
 
