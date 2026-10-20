@@ -177,25 +177,44 @@ export function useAudioMixer() {
     const target = devices.find((d) => d.id === deviceId);
     if (!target) return;
 
+    const nextSelected = !target.is_selected;
+    // Optimistically update device selection and streaming state immediately
+    setDevices((prev) =>
+      prev.map((d) =>
+        d.id === deviceId
+          ? {
+              ...d,
+              is_selected: nextSelected,
+              is_active_streaming: nextSelected ? d.is_active_streaming : false,
+            }
+          : d
+      )
+    );
+
     try {
-      if (target.is_selected) {
+      if (!nextSelected) {
         await TauriAudioService.deselectOutputDevice(deviceId);
       } else {
         await TauriAudioService.selectOutputDevice(deviceId);
       }
-      setDevices((prev) =>
-        prev.map((d) => (d.id === deviceId ? { ...d, is_selected: !d.is_selected } : d))
-      );
     } catch (err: unknown) {
+      // Revert if API call fails
+      setDevices((prev) =>
+        prev.map((d) =>
+          d.id === deviceId
+            ? { ...d, is_selected: target.is_selected, is_active_streaming: target.is_active_streaming }
+            : d
+        )
+      );
       setErrorMessage(typeof err === 'string' ? err : (err as Error).message);
     }
   };
 
   const selectAll = async () => {
     clearError();
+    setDevices((prev) => prev.map((d) => ({ ...d, is_selected: true })));
     try {
       await TauriAudioService.selectAllDevices();
-      setDevices((prev) => prev.map((d) => ({ ...d, is_selected: true })));
     } catch (err: unknown) {
       setErrorMessage(typeof err === 'string' ? err : (err as Error).message);
     }
@@ -203,9 +222,11 @@ export function useAudioMixer() {
 
   const deselectAll = async () => {
     clearError();
+    setDevices((prev) =>
+      prev.map((d) => ({ ...d, is_selected: false, is_active_streaming: false }))
+    );
     try {
       await TauriAudioService.deselectAllDevices();
-      setDevices((prev) => prev.map((d) => ({ ...d, is_selected: false })));
     } catch (err: unknown) {
       setErrorMessage(typeof err === 'string' ? err : (err as Error).message);
     }

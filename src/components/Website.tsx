@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import {
   Play,
   Volume2,
+  VolumeX,
   Clock,
   Radio,
   Sliders,
@@ -9,6 +10,9 @@ import {
   Headphones,
   Laptop,
   Tv,
+  Bluetooth,
+  Speaker,
+  Sparkles,
   ExternalLink,
   BookOpen,
   Monitor,
@@ -19,6 +23,7 @@ import {
   X,
   ChevronRight
 } from 'lucide-react';
+import { DeviceWaveVisualizer } from './DeviceWaveVisualizer';
 
 interface WebsiteProps {}
 
@@ -36,10 +41,82 @@ const WindowsIcon: React.FC<{ className?: string }> = ({ className = "w-4 h-4" }
 
 export const Website: React.FC<WebsiteProps> = () => {
   const [copiedCmd, setCopiedCmd] = useState(false);
-  const [activeTab, setActiveTab] = useState<'video' | 'screenshots' | 'routing'>('video');
+  const [activeTab, setActiveTab] = useState<'video' | 'simulator' | 'screenshots' | 'routing'>('video');
   const [selectedScreenshot, setSelectedScreenshot] = useState('/images/guide_step1_welcome.png');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [buildPlatform, setBuildPlatform] = useState<'mac' | 'windows'>('mac');
+
+  // Interactive Live Device Cards Simulator state
+  const [simDevices, setSimDevices] = useState([
+    {
+      id: 'headphones',
+      name: 'Headphones (realme Buds Wireless 3)',
+      type: 'bluetooth' as const,
+      format: '48.0 kHz • Stereo',
+      isSelected: true,
+      volume: 1.0,
+      isMuted: false,
+      isTesting: false,
+    },
+    {
+      id: 'speaker',
+      name: 'Speaker (Realtek(R) Audio)',
+      type: 'auxline' as const,
+      format: '48.0 kHz • Stereo',
+      isSelected: false,
+      volume: 1.0,
+      isMuted: false,
+      isTesting: false,
+    },
+    {
+      id: 'monitor',
+      name: 'GS27QC (NVIDIA High Definition Audio)',
+      type: 'hdmidisplayport' as const,
+      format: '48.0 kHz • Stereo',
+      isSelected: false,
+      volume: 1.0,
+      isMuted: false,
+      isTesting: false,
+    },
+  ]);
+  const [simInputLevel, setSimInputLevel] = useState(0.24);
+
+  // Subtle real-time audio signal pulse for the interactive web simulator
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setSimInputLevel(0.18 + Math.sin(Date.now() / 320) * 0.08 + (Math.random() - 0.5) * 0.03);
+    }, 80);
+    return () => clearInterval(timer);
+  }, []);
+
+  const toggleSimDevice = (id: string) => {
+    setSimDevices((prev) =>
+      prev.map((d) => (d.id === id ? { ...d, isSelected: !d.isSelected } : d))
+    );
+  };
+
+  const toggleSimMute = (id: string) => {
+    setSimDevices((prev) =>
+      prev.map((d) => (d.id === id ? { ...d, isMuted: !d.isMuted } : d))
+    );
+  };
+
+  const setSimVolume = (id: string, vol: number) => {
+    setSimDevices((prev) =>
+      prev.map((d) => (d.id === id ? { ...d, volume: vol } : d))
+    );
+  };
+
+  const testSimDevice = (id: string) => {
+    setSimDevices((prev) =>
+      prev.map((d) => (d.id === id ? { ...d, isTesting: true } : d))
+    );
+    setTimeout(() => {
+      setSimDevices((prev) =>
+        prev.map((d) => (d.id === id ? { ...d, isTesting: false } : d))
+      );
+    }, 2500);
+  };
 
   const windowsInstallerUrl = '/MultiWave_0.1.0_x64-setup.exe';
   const macInstallerUrl = '/MultiWave_0.1.0_macOS.dmg';
@@ -225,7 +302,7 @@ export const Website: React.FC<WebsiteProps> = () => {
         {/* Release Tag */}
         <div className="inline-flex items-center gap-2 px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full bg-cyan-950/60 border border-cyan-500/40 text-cyan-300 text-[11px] sm:text-xs font-medium mb-5 sm:mb-6 backdrop-blur-md max-w-full text-center">
           <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse shrink-0" />
-          <span className="truncate">MultiWave 2.0 • 100% Free &amp; Open Source</span>
+          <span className="truncate">MultiWave 2.0.1 • 100% Free &amp; Open Source</span>
         </div>
 
         <h1 className="text-3xl xs:text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-white max-w-4xl leading-[1.12]">
@@ -368,42 +445,50 @@ export const Website: React.FC<WebsiteProps> = () => {
           </p>
 
           {/* Tab Switcher - Fully Responsive Grid on Mobile */}
-          <div className="mt-6 sm:mt-8 w-full max-w-md mx-auto grid grid-cols-3 p-1 rounded-xl sm:rounded-2xl bg-studio-900 border border-studio-700/70 gap-1">
+          <div className="mt-6 sm:mt-8 w-full max-w-2xl mx-auto grid grid-cols-2 sm:grid-cols-4 p-1 rounded-xl sm:rounded-2xl bg-studio-900 border border-studio-700/70 gap-1">
             <button
               onClick={() => setActiveTab('video')}
-              className={`px-2 sm:px-4 py-2 sm:py-2.5 rounded-lg sm:rounded-xl text-xs sm:text-sm font-semibold transition-all flex items-center justify-center gap-1.5 sm:gap-2 ${
+              className={`px-2 sm:px-3 py-2 sm:py-2.5 rounded-lg sm:rounded-xl text-xs sm:text-sm font-semibold transition-all flex items-center justify-center gap-1.5 ${
                 activeTab === 'video'
                   ? 'bg-cyan-500 text-slate-950 shadow-md font-bold'
                   : 'text-slate-400 hover:text-white'
               }`}
             >
               <Play className="w-3.5 h-3.5 sm:w-4 sm:h-4 fill-current shrink-0" />
-              <span className="hidden sm:inline">Product Video</span>
-              <span className="sm:hidden">Video</span>
+              <span>Video</span>
+            </button>
+            <button
+              onClick={() => setActiveTab('simulator')}
+              className={`px-2 sm:px-3 py-2 sm:py-2.5 rounded-lg sm:rounded-xl text-xs sm:text-sm font-semibold transition-all flex items-center justify-center gap-1.5 ${
+                activeTab === 'simulator'
+                  ? 'bg-cyan-500 text-slate-950 shadow-md font-bold'
+                  : 'text-slate-400 hover:text-white'
+              }`}
+            >
+              <Sparkles className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-300 shrink-0" />
+              <span>Live Simulator</span>
             </button>
             <button
               onClick={() => setActiveTab('screenshots')}
-              className={`px-2 sm:px-4 py-2 sm:py-2.5 rounded-lg sm:rounded-xl text-xs sm:text-sm font-semibold transition-all flex items-center justify-center gap-1.5 sm:gap-2 ${
+              className={`px-2 sm:px-3 py-2 sm:py-2.5 rounded-lg sm:rounded-xl text-xs sm:text-sm font-semibold transition-all flex items-center justify-center gap-1.5 ${
                 activeTab === 'screenshots'
                   ? 'bg-cyan-500 text-slate-950 shadow-md font-bold'
                   : 'text-slate-400 hover:text-white'
               }`}
             >
               <Monitor className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" />
-              <span className="hidden sm:inline">App Interface</span>
-              <span className="sm:hidden">Screens</span>
+              <span>Screenshots</span>
             </button>
             <button
               onClick={() => setActiveTab('routing')}
-              className={`px-2 sm:px-4 py-2 sm:py-2.5 rounded-lg sm:rounded-xl text-xs sm:text-sm font-semibold transition-all flex items-center justify-center gap-1.5 sm:gap-2 ${
+              className={`px-2 sm:px-3 py-2 sm:py-2.5 rounded-lg sm:rounded-xl text-xs sm:text-sm font-semibold transition-all flex items-center justify-center gap-1.5 ${
                 activeTab === 'routing'
                   ? 'bg-cyan-500 text-slate-950 shadow-md font-bold'
                   : 'text-slate-400 hover:text-white'
               }`}
             >
               <Activity className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" />
-              <span className="hidden sm:inline">Audio Routing</span>
-              <span className="sm:hidden">Routing</span>
+              <span>Routing</span>
             </button>
           </div>
         </div>
@@ -420,6 +505,156 @@ export const Website: React.FC<WebsiteProps> = () => {
               >
                 Your browser does not support the video tag.
               </video>
+            </div>
+          )}
+
+          {activeTab === 'simulator' && (
+            <div className="p-3 sm:p-6 space-y-4">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 border-b border-studio-800 pb-3">
+                <div>
+                  <h3 className="text-sm sm:text-base font-bold text-white flex items-center gap-2">
+                    <Sparkles className="w-4 h-4 text-cyan-400" />
+                    Interactive Audio Output Simulator
+                  </h3>
+                  <p className="text-xs text-slate-400 mt-0.5">
+                    Click checkboxes to select or unselect devices. Unselected devices immediately silence and stay IDLE.
+                  </p>
+                </div>
+                <div className="flex items-center gap-2 text-xs font-mono text-cyan-400 bg-cyan-950/60 border border-cyan-500/30 px-3 py-1 rounded-lg">
+                  <span className="w-2 h-2 rounded-full bg-cyan-400 animate-ping" />
+                  <span>Interactive 60 FPS Web Meter</span>
+                </div>
+              </div>
+
+              {/* Grid of Interactive Simulator Cards */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4 text-left">
+                {simDevices.map((dev) => {
+                  const volPercent = Math.round(dev.volume * 100);
+                  return (
+                    <div
+                      key={dev.id}
+                      className={`relative rounded-xl p-4 transition-all duration-200 border ${
+                        dev.isSelected
+                          ? 'bg-studio-900/90 border-cyan-500/50 shadow-[0_0_25px_rgba(0,242,254,0.08)]'
+                          : 'bg-studio-900/40 border-studio-700/50 hover:border-studio-600/70 opacity-85 hover:opacity-100'
+                      }`}
+                    >
+                      <div className="flex items-start justify-between gap-2.5">
+                        <div className="flex items-start gap-2.5 min-w-0">
+                          <div
+                            className={`p-2 rounded-xl border flex items-center justify-center shrink-0 ${
+                              dev.isSelected
+                                ? 'bg-studio-800 border-cyan-500/40'
+                                : 'bg-studio-850 border-studio-700/60'
+                            }`}
+                          >
+                            {dev.type === 'bluetooth' ? (
+                              <Bluetooth className="w-4 h-4 text-cyan-400" />
+                            ) : dev.type === 'hdmidisplayport' ? (
+                              <Tv className="w-4 h-4 text-amber-400" />
+                            ) : (
+                              <Speaker className="w-4 h-4 text-teal-400" />
+                            )}
+                          </div>
+                          <div className="min-w-0">
+                            <h4 className="text-xs font-semibold text-white truncate" title={dev.name}>
+                              {dev.name}
+                            </h4>
+                            <div className="text-[10px] text-slate-400 font-mono mt-0.5">
+                              {dev.format}
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Selection Checkbox */}
+                        <button
+                          type="button"
+                          onClick={() => toggleSimDevice(dev.id)}
+                          className={`shrink-0 flex items-center justify-center w-6 h-6 rounded-lg border transition-all cursor-pointer ${
+                            dev.isSelected
+                              ? 'bg-cyan-500 border-cyan-400 text-studio-950 shadow-[0_0_10px_rgba(0,242,254,0.45)]'
+                              : 'border-studio-700 bg-studio-850 hover:border-cyan-500/50 text-slate-500'
+                          }`}
+                          title={dev.isSelected ? 'Unselect card' : 'Select card'}
+                        >
+                          {dev.isSelected ? (
+                            <Check className="w-3.5 h-3.5 stroke-[2.75]" />
+                          ) : (
+                            <div className="w-1.5 h-1.5 rounded-full bg-slate-600" />
+                          )}
+                        </button>
+                      </div>
+
+                      {/* Live Reactive Wave Visualizer */}
+                      <div className="mt-3">
+                        <DeviceWaveVisualizer
+                          isActive={dev.isSelected && !dev.isMuted && dev.volume > 0}
+                          isSelected={dev.isSelected}
+                          isTesting={dev.isTesting}
+                          isMuted={dev.isMuted}
+                          volume={dev.volume}
+                          inputLevel={simInputLevel}
+                        />
+                      </div>
+
+                      {/* Volume & Test Controls */}
+                      <div className="mt-3 space-y-2">
+                        <div className="flex items-center justify-between text-[11px]">
+                          <span className="text-slate-300 font-medium flex items-center gap-1">
+                            <Sliders className="w-3 h-3 text-cyan-400" />
+                            Gain
+                          </span>
+                          <span className={`font-mono font-semibold ${dev.isMuted ? 'text-rose-400' : 'text-cyan-300'}`}>
+                            {dev.isMuted ? 'MUTED' : `${volPercent}%`}
+                          </span>
+                        </div>
+
+                        <div className="flex items-center gap-2">
+                          <button
+                            type="button"
+                            onClick={() => toggleSimMute(dev.id)}
+                            disabled={!dev.isSelected}
+                            className={`p-1.5 rounded-lg border transition-all ${
+                              dev.isMuted
+                                ? 'bg-rose-950/60 border-rose-500/50 text-rose-300'
+                                : 'bg-studio-800 border-studio-700 text-slate-300'
+                            } disabled:opacity-40 disabled:cursor-not-allowed`}
+                            title={dev.isMuted ? 'Unmute' : 'Mute'}
+                          >
+                            {dev.isMuted ? <VolumeX className="w-3.5 h-3.5" /> : <Volume2 className="w-3.5 h-3.5" />}
+                          </button>
+
+                          <input
+                            type="range"
+                            min="0"
+                            max="1"
+                            step="0.05"
+                            value={dev.volume}
+                            disabled={!dev.isSelected}
+                            onChange={(e) => setSimVolume(dev.id, parseFloat(e.target.value))}
+                            className="w-full volume-slider disabled:opacity-40"
+                          />
+
+                          <button
+                            type="button"
+                            onClick={() => testSimDevice(dev.id)}
+                            disabled={dev.isTesting}
+                            className={`px-2.5 py-1.5 rounded-lg text-[10px] font-medium border flex items-center gap-1 transition-all ${
+                              dev.isTesting
+                                ? 'bg-cyan-500 text-studio-950 border-cyan-400 font-semibold'
+                                : 'bg-studio-800 hover:bg-studio-700 border-studio-700 text-slate-300'
+                            }`}
+                            title="Test chime"
+                          >
+                            <Play className="w-3 h-3 fill-current" />
+                            <span>{dev.isTesting ? 'Testing' : 'Test'}</span>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
             </div>
           )}
 
@@ -527,7 +762,7 @@ export const Website: React.FC<WebsiteProps> = () => {
             </div>
             <h3 className="text-base sm:text-lg font-bold text-white font-display">Real-Time Reactive Waveforms</h3>
             <p className="mt-2 text-xs sm:text-sm text-slate-300/80 leading-relaxed">
-              60 FPS audio visualizers react to actual volume and frequencies for every output device, verifying audio transmission at a glance.
+              60 FPS audio visualizers react to actual volume and frequencies for every output device. Output meters synchronize instantly with selection states so unselected cards immediately drop to silent IDLE.
             </p>
           </div>
 

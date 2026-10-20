@@ -159,6 +159,7 @@ export const DeviceCard: React.FC<DeviceCardProps> = ({
       <div className="mt-4">
         <DeviceWaveVisualizer
           isActive={isAudioWorking}
+          isSelected={device.is_selected}
           isTesting={isTesting}
           isMuted={isMuted || isMasterMuted}
           volume={device.software_volume}

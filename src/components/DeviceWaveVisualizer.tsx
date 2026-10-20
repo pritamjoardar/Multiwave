@@ -7,6 +7,7 @@ interface DeviceWaveVisualizerProps {
   isMuted: boolean;
   volume: number;
   inputLevel?: number;
+  isSelected?: boolean;
 }
 
 const BAR_COUNT = 24;
@@ -17,13 +18,25 @@ export const DeviceWaveVisualizer: React.FC<DeviceWaveVisualizerProps> = ({
   isMuted,
   volume,
   inputLevel = 0,
+  isSelected = true,
 }) => {
   const [hasAudioSignal, setHasAudioSignal] = useState(false);
   const holdTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // Smooth audio detection with a hold timer to eliminate flickering during micro-pauses
+  const isEffectivelyActive = isTesting || (isSelected && isActive && !isMuted && volume > 0);
+
+  // Smooth audio detection: instant cutoff when unselected/inactive, with hold timer ONLY during active micro-pauses
   useEffect(() => {
-    const isAudible = isTesting || (isActive && !isMuted && (inputLevel ?? 0) > 0.002);
+    if (!isEffectivelyActive) {
+      if (holdTimerRef.current) {
+        clearTimeout(holdTimerRef.current);
+        holdTimerRef.current = null;
+      }
+      setHasAudioSignal(false);
+      return;
+    }
+
+    const isAudible = isTesting || ((inputLevel ?? 0) > 0.002);
     if (isAudible) {
       if (holdTimerRef.current) {
         clearTimeout(holdTimerRef.current);
@@ -31,26 +44,30 @@ export const DeviceWaveVisualizer: React.FC<DeviceWaveVisualizerProps> = ({
       }
       setHasAudioSignal(true);
     } else {
+      // While actively playing, bridge micro-pauses without cancelling timer on every level polling tick
       if (!holdTimerRef.current) {
         holdTimerRef.current = setTimeout(() => {
           setHasAudioSignal(false);
           holdTimerRef.current = null;
-        }, 500);
+        }, 300);
       }
     }
+  }, [isEffectivelyActive, isTesting, inputLevel]);
 
+  // Cleanup timer on unmount
+  useEffect(() => {
     return () => {
       if (holdTimerRef.current) {
         clearTimeout(holdTimerRef.current);
         holdTimerRef.current = null;
       }
     };
-  }, [isActive, isTesting, isMuted, inputLevel]);
+  }, []);
 
   const [bars, setBars] = useState<number[]>(Array(BAR_COUNT).fill(10));
 
   useEffect(() => {
-    if (!hasAudioSignal) {
+    if (!isEffectivelyActive || !hasAudioSignal) {
       setBars(Array(BAR_COUNT).fill(10));
       return;
     }
@@ -74,19 +91,21 @@ export const DeviceWaveVisualizer: React.FC<DeviceWaveVisualizerProps> = ({
     }, 60);
 
     return () => clearInterval(interval);
-  }, [hasAudioSignal, isTesting, volume, inputLevel]);
+  }, [isEffectivelyActive, hasAudioSignal, isTesting, volume, inputLevel]);
+
+  const activeVisual = isEffectivelyActive && hasAudioSignal;
 
   return (
     <div className="px-3 py-2.5 rounded-xl border border-studio-800/80 bg-studio-950/60 transition-colors duration-200">
       {/* Header telemetry row with fixed dimensions so card never flickers or shifts */}
       <div className="flex items-center justify-between mb-2 text-[10px] font-mono select-none">
         <span className="flex items-center gap-1.5 text-slate-400 min-w-0">
-          {isMuted ? (
+          {isMuted && isSelected ? (
             <VolumeX className="w-3.5 h-3.5 text-rose-400 shrink-0" />
           ) : (
             <AudioWaveform
               className={`w-3.5 h-3.5 shrink-0 ${
-                hasAudioSignal ? 'text-cyan-400 animate-pulse' : 'text-slate-500'
+                activeVisual ? 'text-cyan-400 animate-pulse' : 'text-slate-500'
               }`}
             />
           )}
@@ -99,14 +118,20 @@ export const DeviceWaveVisualizer: React.FC<DeviceWaveVisualizerProps> = ({
           className={`shrink-0 text-right font-semibold font-mono text-[10px] uppercase tracking-wider w-16 transition-colors duration-150 ${
             isTesting
               ? 'text-cyan-300'
-              : hasAudioSignal
+              : activeVisual
               ? 'text-cyan-300'
-              : isMuted
+              : isMuted && isSelected
               ? 'text-rose-400'
               : 'text-slate-500'
           }`}
         >
-          {isTesting ? 'TEST' : hasAudioSignal ? 'ACTIVE' : isMuted ? 'MUTED' : 'IDLE'}
+          {isTesting
+            ? 'TEST'
+            : activeVisual
+            ? 'ACTIVE'
+            : isMuted && isSelected
+            ? 'MUTED'
+            : 'IDLE'}
         </span>
       </div>
 
@@ -117,15 +142,15 @@ export const DeviceWaveVisualizer: React.FC<DeviceWaveVisualizerProps> = ({
             key={idx}
             className="flex-1 rounded-full transition-all duration-75"
             style={{
-              height: `${hasAudioSignal ? height : 10}%`,
-              background: hasAudioSignal
+              height: `${activeVisual ? height : 10}%`,
+              background: activeVisual
                 ? height > 75
                   ? '#00f2fe'
                   : height > 45
                   ? '#06b6d4'
                   : '#10b981'
                 : '#334155',
-              opacity: hasAudioSignal ? (height > 55 ? 1 : 0.85) : 0.25,
+              opacity: activeVisual ? (height > 55 ? 1 : 0.85) : 0.25,
             }}
           />
         ))}

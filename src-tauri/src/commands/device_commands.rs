@@ -105,6 +105,7 @@ pub fn deselect_output_device(device_id: String, state: State<'_, AppState>) -> 
     for dev in devices.iter_mut() {
         if dev.id == device_id {
             dev.is_selected = false;
+            dev.is_active_streaming = false;
             break;
         }
     }
@@ -154,6 +155,7 @@ pub fn deselect_all_devices(state: State<'_, AppState>) -> Result<()> {
     settings.selected_device_ids.clear();
     for dev in devices.iter_mut() {
         dev.is_selected = false;
+        dev.is_active_streaming = false;
     }
 
     let _ = ConfigStore::save_settings(&settings);
