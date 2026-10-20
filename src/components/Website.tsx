@@ -71,7 +71,7 @@ export const Website: React.FC<WebsiteProps> = () => {
       <div className="fixed bottom-0 right-0 w-[300px] sm:w-[500px] h-[300px] sm:h-[400px] bg-gradient-to-t from-purple-600/10 to-transparent blur-[100px] sm:blur-[140px] pointer-events-none -z-10" />
 
       {/* Navigation Bar */}
-      <header className="sticky top-0 z-50 border-b border-studio-700/50 bg-[#090d18]/90 backdrop-blur-xl px-4 sm:px-6 py-3 sm:py-4 transition-all">
+      <header className="fixed top-0 inset-x-0 z-50 border-b border-studio-700/60 bg-[#070b14]/75 backdrop-blur-md px-4 sm:px-6 py-3 sm:py-3.5 transition-all shadow-lg shadow-black/30">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <a href="#" className="flex items-center gap-2.5 sm:gap-3 group">
             <img
@@ -149,7 +149,7 @@ export const Website: React.FC<WebsiteProps> = () => {
 
         {/* Mobile Dropdown Drawer */}
         {mobileMenuOpen && (
-          <div className="md:hidden pt-4 pb-2 border-t border-studio-700/60 mt-3 flex flex-col gap-2 animate-in fade-in slide-in-from-top-2 duration-200">
+          <div className="md:hidden pt-4 pb-2 border-t border-studio-700/60 mt-3 flex flex-col gap-2 max-h-[calc(100vh-80px)] overflow-y-auto animate-in fade-in slide-in-from-top-2 duration-200">
             <nav className="flex flex-col gap-1">
               <a
                 href="#features"
@@ -221,7 +221,7 @@ export const Website: React.FC<WebsiteProps> = () => {
       </header>
 
       {/* Hero Section */}
-      <section className="relative pt-10 sm:pt-16 pb-16 sm:pb-20 px-4 sm:px-6 max-w-7xl mx-auto text-center flex flex-col items-center">
+      <section className="relative pt-24 sm:pt-32 pb-16 sm:pb-20 px-4 sm:px-6 max-w-7xl mx-auto text-center flex flex-col items-center">
         {/* Release Tag */}
         <div className="inline-flex items-center gap-2 px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full bg-cyan-950/60 border border-cyan-500/40 text-cyan-300 text-[11px] sm:text-xs font-medium mb-5 sm:mb-6 backdrop-blur-md max-w-full text-center">
           <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse shrink-0" />
