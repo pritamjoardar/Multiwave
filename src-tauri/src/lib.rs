@@ -179,6 +179,7 @@ pub fn run() {
             commands::set_device_volume,
             commands::set_device_mute,
             commands::set_device_delay,
+            commands::set_device_audio_effect,
             commands::set_master_volume,
             commands::set_master_mute,
             commands::set_tone_type,

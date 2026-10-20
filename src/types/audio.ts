@@ -20,6 +20,13 @@ export type ToneType =
   | 'pink_noise'
   | 'white_noise';
 
+export type AudioEffectType =
+  | 'studio'
+  | 'spatial_3d'
+  | 'bass_boost'
+  | 'concert_hall'
+  | 'vocal_clarity';
+
 export interface AudioDevice {
   id: string;
   name: string;
@@ -30,6 +37,7 @@ export interface AudioDevice {
   is_selected: boolean;
   software_volume: number; // 0.0 to 1.0
   software_mute: boolean;
+  audio_effect?: AudioEffectType;
   system_volume?: number | null; // 0.0 to 1.0 (from Windows Core Audio)
   system_mute?: boolean | null;
   sample_rate?: number | null;

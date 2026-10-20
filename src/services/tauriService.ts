@@ -57,6 +57,11 @@ export class TauriAudioService {
     await invoke('set_device_delay', { deviceId, delayMs });
   }
 
+  static async setDeviceAudioEffect(deviceId: string, effect: string): Promise<void> {
+    if (!this.isTauri()) return;
+    await invoke('set_device_audio_effect', { deviceId, effect });
+  }
+
   static async setMasterVolume(volume: number): Promise<PlaybackMetrics | null> {
     if (!this.isTauri()) return null;
     return await invoke<PlaybackMetrics>('set_master_volume', { volume });

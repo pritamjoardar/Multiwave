@@ -168,3 +168,15 @@ pub fn deselect_all_devices(state: State<'_, AppState>) -> Result<()> {
     Ok(())
 }
 
+#[tauri::command]
+pub fn set_device_audio_effect(
+    device_id: String,
+    effect: String,
+    state: State<'_, AppState>,
+) -> Result<()> {
+    let effect_enum = crate::audio::dsp_effects::AudioEffect::from_str(&effect);
+    let mut engine = state.engine.lock();
+    engine.set_device_effect(&device_id, effect_enum.to_u32());
+    Ok(())
+}
+

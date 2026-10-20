@@ -23,6 +23,7 @@ pub struct PlaybackEngine {
     device_volumes: HashMap<String, f32>,
     device_mutes: HashMap<String, bool>,
     device_delays: HashMap<String, u32>,
+    device_effects: HashMap<String, u32>,
 }
 
 impl PlaybackEngine {
@@ -44,6 +45,7 @@ impl PlaybackEngine {
             device_volumes: HashMap::new(),
             device_mutes: HashMap::new(),
             device_delays: HashMap::new(),
+            device_effects: HashMap::new(),
         }
     }
 
@@ -238,6 +240,13 @@ impl PlaybackEngine {
         }
     }
 
+    pub fn set_device_effect(&mut self, device_id: &str, effect_code: u32) {
+        self.device_effects.insert(device_id.to_string(), effect_code);
+        if let Some(stream) = self.active_streams.get(device_id) {
+            stream.set_effect(effect_code);
+        }
+    }
+
     fn apply_effective_volumes(&self) {
         for (id, stream) in &self.active_streams {
             let dev_vol = self.device_volumes.get(id).copied().unwrap_or(1.0);
@@ -293,6 +302,7 @@ impl PlaybackEngine {
                         let effective_vol = if self.master_mute { 0.0 } else { vol * self.master_volume };
                         let mute = self.device_mutes.get(&dev.id).copied().unwrap_or(dev.software_mute);
                         let delay = self.device_delays.get(&dev.id).copied().unwrap_or(dev.sync_delay_ms);
+                        let effect = self.device_effects.get(&dev.id).copied().unwrap_or(0);
 
                         match OutputStream::new(
                             &cpal_dev,
@@ -301,6 +311,7 @@ impl PlaybackEngine {
                             effective_vol,
                             mute || self.master_mute,
                             delay,
+                            effect,
                             self.shared_generator.clone(),
                         ) {
                             Ok(mut stream) => {
@@ -368,6 +379,7 @@ impl PlaybackEngine {
     pub fn test_single_device(&mut self, device: &AudioDevice) -> Result<()> {
         let cpal_dev = DeviceManager::find_cpal_device(&device.id, &device.name)?;
         let test_vol = self.device_volumes.get(&device.id).copied().unwrap_or(0.85);
+        let effect = self.device_effects.get(&device.id).copied().unwrap_or(0);
 
         let mut stream = OutputStream::new(
             &cpal_dev,
@@ -376,6 +388,7 @@ impl PlaybackEngine {
             test_vol,
             false,
             0,
+            effect,
             self.shared_generator.clone(),
         )?;
 

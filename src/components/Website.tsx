@@ -21,9 +21,12 @@ import {
   Check,
   Menu,
   X,
-  ChevronRight
+  ChevronRight,
+  Zap,
+  Mic
 } from 'lucide-react';
 import { DeviceWaveVisualizer } from './DeviceWaveVisualizer';
+import { AudioEffectType } from '../types/audio';
 
 interface WebsiteProps {}
 
@@ -47,36 +50,49 @@ export const Website: React.FC<WebsiteProps> = () => {
   const [buildPlatform, setBuildPlatform] = useState<'mac' | 'windows'>('mac');
 
   // Interactive Live Device Cards Simulator state
-  const [simDevices, setSimDevices] = useState([
+  const [simDevices, setSimDevices] = useState<{
+    id: string;
+    name: string;
+    type: 'bluetooth' | 'auxline' | 'hdmidisplayport';
+    format: string;
+    isSelected: boolean;
+    volume: number;
+    isMuted: boolean;
+    isTesting: boolean;
+    audioEffect: AudioEffectType;
+  }[]>([
     {
       id: 'headphones',
       name: 'Headphones (realme Buds Wireless 3)',
-      type: 'bluetooth' as const,
+      type: 'bluetooth',
       format: '48.0 kHz • Stereo',
       isSelected: true,
       volume: 1.0,
       isMuted: false,
       isTesting: false,
+      audioEffect: 'spatial_3d',
     },
     {
       id: 'speaker',
       name: 'Speaker (Realtek(R) Audio)',
-      type: 'auxline' as const,
+      type: 'auxline',
       format: '48.0 kHz • Stereo',
       isSelected: false,
       volume: 1.0,
       isMuted: false,
       isTesting: false,
+      audioEffect: 'bass_boost',
     },
     {
       id: 'monitor',
       name: 'GS27QC (NVIDIA High Definition Audio)',
-      type: 'hdmidisplayport' as const,
+      type: 'hdmidisplayport',
       format: '48.0 kHz • Stereo',
       isSelected: false,
       volume: 1.0,
       isMuted: false,
       isTesting: false,
+      audioEffect: 'studio',
     },
   ]);
   const [simInputLevel, setSimInputLevel] = useState(0.24);
@@ -104,6 +120,12 @@ export const Website: React.FC<WebsiteProps> = () => {
   const setSimVolume = (id: string, vol: number) => {
     setSimDevices((prev) =>
       prev.map((d) => (d.id === id ? { ...d, volume: vol } : d))
+    );
+  };
+
+  const setSimEffect = (id: string, effect: AudioEffectType) => {
+    setSimDevices((prev) =>
+      prev.map((d) => (d.id === id ? { ...d, audioEffect: effect } : d))
     );
   };
 
@@ -514,15 +536,15 @@ export const Website: React.FC<WebsiteProps> = () => {
                 <div>
                   <h3 className="text-sm sm:text-base font-bold text-white flex items-center gap-2">
                     <Sparkles className="w-4 h-4 text-cyan-400" />
-                    Interactive Audio Output Simulator
+                    Interactive Audio Output &amp; DSP Effects Simulator
                   </h3>
                   <p className="text-xs text-slate-400 mt-0.5">
-                    Click checkboxes to select or unselect devices. Unselected devices immediately silence and stay IDLE.
+                    Click checkboxes to select or unselect devices. Toggle between Studio, 3D Spatial Surround, Bass Punch, Concert Hall, and Vocal Clarity acoustic profiles in real-time. Unselected devices immediately silence and stay IDLE.
                   </p>
                 </div>
                 <div className="flex items-center gap-2 text-xs font-mono text-cyan-400 bg-cyan-950/60 border border-cyan-500/30 px-3 py-1 rounded-lg">
                   <span className="w-2 h-2 rounded-full bg-cyan-400 animate-ping" />
-                  <span>Interactive 60 FPS Web Meter</span>
+                  <span>Interactive 60 FPS Studio Meter</span>
                 </div>
               </div>
 
@@ -585,7 +607,7 @@ export const Website: React.FC<WebsiteProps> = () => {
                         </button>
                       </div>
 
-                      {/* Live Reactive Wave Visualizer */}
+                      {/* Live Reactive Studio Spectrum Visualizer */}
                       <div className="mt-3">
                         <DeviceWaveVisualizer
                           isActive={dev.isSelected && !dev.isMuted && dev.volume > 0}
@@ -594,7 +616,68 @@ export const Website: React.FC<WebsiteProps> = () => {
                           isMuted={dev.isMuted}
                           volume={dev.volume}
                           inputLevel={simInputLevel}
+                          audioEffect={dev.audioEffect}
+                          deviceName={dev.name}
                         />
+                      </div>
+
+                      {/* DSP Acoustic Effect Profile Selector */}
+                      <div className="mt-2.5 pt-2 border-t border-studio-800/70">
+                        <div className="flex items-center justify-between text-[10px] mb-1 font-mono">
+                          <span className="text-slate-300 font-medium flex items-center gap-1 font-sans">
+                            <Sparkles className="w-2.5 h-2.5 text-cyan-400" />
+                            Acoustic Profile
+                          </span>
+                          <span className="text-[9px] text-cyan-400/90 font-mono capitalize">
+                            {dev.audioEffect === 'spatial_3d'
+                              ? '3D Spatial'
+                              : dev.audioEffect === 'bass_boost'
+                              ? 'Bass Punch'
+                              : dev.audioEffect === 'concert_hall'
+                              ? 'Concert Hall'
+                              : dev.audioEffect === 'vocal_clarity'
+                              ? 'Vocal Clarity'
+                              : 'Studio Master'}
+                          </span>
+                        </div>
+
+                        <div className="grid grid-cols-5 gap-1">
+                          {(
+                            [
+                              { id: 'studio', label: 'Studio', icon: <Sliders className="w-2.5 h-2.5" /> },
+                              { id: 'spatial_3d', label: '3D', icon: <Radio className="w-2.5 h-2.5" /> },
+                              { id: 'bass_boost', label: 'Bass', icon: <Zap className="w-2.5 h-2.5" /> },
+                              { id: 'concert_hall', label: 'Concert', icon: <Music className="w-2.5 h-2.5" /> },
+                              { id: 'vocal_clarity', label: 'Vocal', icon: <Mic className="w-2.5 h-2.5" /> },
+                            ] as const
+                          ).map((eff) => {
+                            const isCur = dev.audioEffect === eff.id;
+                            return (
+                              <button
+                                key={eff.id}
+                                type="button"
+                                disabled={!dev.isSelected}
+                                onClick={() => setSimEffect(dev.id, eff.id)}
+                                className={`py-1 px-0.5 rounded text-[9px] font-medium border flex flex-col items-center justify-center gap-0.5 transition-all cursor-pointer ${
+                                  isCur && dev.isSelected
+                                    ? eff.id === 'spatial_3d'
+                                      ? 'bg-purple-950/80 border-purple-500/70 text-purple-200 shadow-[0_0_8px_rgba(192,132,252,0.25)] font-semibold'
+                                      : eff.id === 'bass_boost'
+                                      ? 'bg-amber-950/80 border-amber-500/70 text-amber-200 shadow-[0_0_8px_rgba(245,158,11,0.25)] font-semibold'
+                                      : eff.id === 'concert_hall'
+                                      ? 'bg-emerald-950/80 border-emerald-500/70 text-emerald-200 shadow-[0_0_8px_rgba(16,185,129,0.25)] font-semibold'
+                                      : eff.id === 'vocal_clarity'
+                                      ? 'bg-rose-950/80 border-rose-500/70 text-rose-200 shadow-[0_0_8px_rgba(251,113,133,0.25)] font-semibold'
+                                      : 'bg-cyan-950/80 border-cyan-500/70 text-cyan-200 shadow-[0_0_8px_rgba(6,182,212,0.25)] font-semibold'
+                                    : 'bg-studio-850/60 border-studio-800 text-slate-400 hover:text-slate-200 hover:bg-studio-800'
+                                } disabled:opacity-30 disabled:cursor-not-allowed`}
+                              >
+                                {eff.icon}
+                                <span className="truncate w-full text-center text-[8px]">{eff.label}</span>
+                              </button>
+                            );
+                          })}
+                        </div>
                       </div>
 
                       {/* Volume & Test Controls */}
@@ -760,9 +843,9 @@ export const Website: React.FC<WebsiteProps> = () => {
             <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-emerald-950/80 border border-emerald-500/30 flex items-center justify-center text-emerald-400 mb-4 sm:mb-5">
               <Activity className="w-5 h-5 sm:w-6 sm:h-6" />
             </div>
-            <h3 className="text-base sm:text-lg font-bold text-white font-display">Real-Time Reactive Waveforms</h3>
+            <h3 className="text-base sm:text-lg font-bold text-white font-display">Studio Spectrum &amp; 5 DSP Effects</h3>
             <p className="mt-2 text-xs sm:text-sm text-slate-300/80 leading-relaxed">
-              60 FPS audio visualizers react to actual volume and frequencies for every output device. Output meters synchronize instantly with selection states so unselected cards immediately drop to silent IDLE.
+              16-Band high-resolution LED spectrum meters with floating peak-hold bars and Dual Stereo VU meters. Real-time acoustic profiles: 3D Spatial Surround soundstage widening, Studio Mastering, Bass Boost, Concert Hall convolution diffusion, and Vocal Dialogue clarity.
             </p>
           </div>
 

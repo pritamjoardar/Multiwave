@@ -1,4 +1,5 @@
 use crate::audio::audio_mixer::{DelayLine, ToneGenerator};
+use crate::audio::dsp_effects::DspProcessor;
 use crate::audio::volume::{apply_gain_and_limit, VolumeGain};
 use crate::errors::{MultiWaveError, Result};
 use cpal::traits::{DeviceTrait, StreamTrait};
@@ -15,6 +16,7 @@ pub struct OutputStream {
     volume: Arc<AtomicU32>, // f32 to_bits
     muted: Arc<AtomicBool>,
     delay_ms: Arc<AtomicU32>,
+    pub effect_type: Arc<AtomicU32>, // 0: Studio, 1: 3D, 2: Bass, 3: Concert, 4: Vocal
     is_active: Arc<AtomicBool>,
     _underrun_count: Arc<AtomicU64>,
     last_error: Arc<Mutex<Option<String>>>,
@@ -28,6 +30,7 @@ impl OutputStream {
         initial_volume: f32,
         initial_mute: bool,
         initial_delay_ms: u32,
+        initial_effect_code: u32,
         shared_generator: Arc<Mutex<ToneGenerator>>,
     ) -> Result<Self> {
         let config = device
@@ -40,6 +43,7 @@ impl OutputStream {
         let volume_bits = Arc::new(AtomicU32::new(initial_volume.clamp(0.0, 1.0).to_bits()));
         let muted = Arc::new(AtomicBool::new(initial_mute));
         let delay_ms = Arc::new(AtomicU32::new(initial_delay_ms.min(500)));
+        let effect_type = Arc::new(AtomicU32::new(initial_effect_code));
         let is_active = Arc::new(AtomicBool::new(false));
         let underrun_count = Arc::new(AtomicU64::new(0));
         let last_error = Arc::new(Mutex::new(None));
@@ -47,6 +51,7 @@ impl OutputStream {
         let vol_clone = volume_bits.clone();
         let muted_clone = muted.clone();
         let delay_clone = delay_ms.clone();
+        let effect_clone = effect_type.clone();
         let active_clone = is_active.clone();
         let error_clone = last_error.clone();
 
@@ -69,6 +74,7 @@ impl OutputStream {
                 let gen = shared_generator.clone();
                 let mut reader_frame = 0usize;
                 let mut resampler_phase = 0.0f64;
+                let mut dsp = DspProcessor::new(effect_clone.clone());
                 device.build_output_stream(
                     &stream_config,
                     move |data: &mut [f32], _: &cpal::OutputCallbackInfo| {
@@ -101,6 +107,9 @@ impl OutputStream {
                             }
                         }
 
+                        // Apply Acoustic DSP Effect (Studio, 3D Spatial, Bass Boost, Concert Hall, Vocal Clarity)
+                        dsp.process_buffer(data, channels);
+
                         // Apply software volume & soft limiting
                         let vol = f32::from_bits(vol_clone.load(Ordering::Relaxed));
                         let is_muted = muted_clone.load(Ordering::Relaxed);
@@ -117,6 +126,7 @@ impl OutputStream {
                 let mut reader_frame = 0usize;
                 let mut resampler_phase = 0.0f64;
                 let mut float_dst = vec![0.0f32; 2048];
+                let mut dsp = DspProcessor::new(effect_clone.clone());
                 device.build_output_stream(
                     &stream_config,
                     move |data: &mut [i16], _: &cpal::OutputCallbackInfo| {
@@ -153,6 +163,9 @@ impl OutputStream {
                             }
                         }
 
+                        // Apply Acoustic DSP Effect (Studio, 3D Spatial, Bass Boost, Concert Hall, Vocal Clarity)
+                        dsp.process_buffer(target_slice, channels);
+
                         let vol = f32::from_bits(vol_clone.load(Ordering::Relaxed));
                         let is_muted = muted_clone.load(Ordering::Relaxed);
                         let gain_calc = VolumeGain::new(vol, is_muted).calculate_gain();
@@ -186,6 +199,7 @@ impl OutputStream {
             volume: volume_bits,
             muted,
             delay_ms,
+            effect_type,
             is_active,
             _underrun_count: underrun_count,
             last_error,
@@ -223,6 +237,10 @@ impl OutputStream {
 
     pub fn set_delay_ms(&self, delay_ms: u32) {
         self.delay_ms.store(delay_ms.min(500), Ordering::Relaxed);
+    }
+
+    pub fn set_effect(&self, effect_code: u32) {
+        self.effect_type.store(effect_code, Ordering::SeqCst);
     }
 
     pub fn is_active(&self) -> bool {

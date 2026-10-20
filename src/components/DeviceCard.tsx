@@ -15,8 +15,12 @@ import {
   Sliders,
   ChevronDown,
   ChevronUp,
+  Sparkles,
+  Zap,
+  Mic,
+  Music,
 } from 'lucide-react';
-import { AudioDevice, DeviceType } from '../types/audio';
+import { AudioDevice, DeviceType, AudioEffectType } from '../types/audio';
 import { DeviceWaveVisualizer } from './DeviceWaveVisualizer';
 
 interface DeviceCardProps {
@@ -30,6 +34,7 @@ interface DeviceCardProps {
   onVolumeChange: (id: string, volume: number) => void;
   onToggleMute: (id: string) => void;
   onDelayChange: (id: string, delayMs: number) => void;
+  onEffectChange?: (id: string, effect: AudioEffectType) => void;
   onTestOutput: (id: string) => void;
 }
 
@@ -63,6 +68,7 @@ export const DeviceCard: React.FC<DeviceCardProps> = ({
   onVolumeChange,
   onToggleMute,
   onDelayChange,
+  onEffectChange,
   onTestOutput,
 }) => {
   const [showAdvanced, setShowAdvanced] = useState(false);
@@ -70,8 +76,8 @@ export const DeviceCard: React.FC<DeviceCardProps> = ({
   const volPercent = Math.round(device.software_volume * 100);
   const isMuted = device.software_mute;
 
-  // Individual audio works when active playback is running, device is selected, gain > 0 and not muted
-  const isAudioWorking =
+  // Individual audio works strictly when playback is running, device is selected, gain > 0 and not muted
+  const isAudioWorking = Boolean(
     ((isPlaying || device.is_active_streaming) &&
       device.is_selected &&
       !device.software_mute &&
@@ -79,7 +85,8 @@ export const DeviceCard: React.FC<DeviceCardProps> = ({
       device.software_volume > 0 &&
       masterVolume > 0 &&
       device.device_type !== 'virtual') ||
-    isTesting;
+    isTesting
+  );
 
   return (
     <div
@@ -155,7 +162,7 @@ export const DeviceCard: React.FC<DeviceCardProps> = ({
         </button>
       </div>
 
-      {/* Individual Audio Wave Animation on this device card */}
+      {/* Studio Segmented LED Spectrum & Peak Meter on this device card */}
       <div className="mt-4">
         <DeviceWaveVisualizer
           isActive={isAudioWorking}
@@ -164,7 +171,69 @@ export const DeviceCard: React.FC<DeviceCardProps> = ({
           isMuted={isMuted || isMasterMuted}
           volume={device.software_volume}
           inputLevel={inputLevel}
+          audioEffect={device.audio_effect || 'studio'}
+          deviceName={device.name}
         />
+      </div>
+
+      {/* DSP Acoustic Effect Profile Selector */}
+      <div className="mt-3 pt-2.5 border-t border-studio-800/70">
+        <div className="flex items-center justify-between text-[11px] mb-1.5 font-mono">
+          <span className="text-slate-300 font-medium flex items-center gap-1.5 font-sans">
+            <Sparkles className="w-3 h-3 text-cyan-400" />
+            Acoustic Profile
+          </span>
+          <span className="text-[10px] text-cyan-400/90 font-mono capitalize">
+            {device.audio_effect === 'spatial_3d'
+              ? '3D Spatial'
+              : device.audio_effect === 'bass_boost'
+              ? 'Bass Punch'
+              : device.audio_effect === 'concert_hall'
+              ? 'Concert Hall'
+              : device.audio_effect === 'vocal_clarity'
+              ? 'Vocal Clarity'
+              : 'Studio Master'}
+          </span>
+        </div>
+
+        <div className="grid grid-cols-5 gap-1.5">
+          {(
+            [
+              { id: 'studio', label: 'Studio', icon: <Sliders className="w-3 h-3" />, desc: 'Linear reference response & mastering soft-limiter' },
+              { id: 'spatial_3d', label: '3D Spatial', icon: <Radio className="w-3 h-3" />, desc: 'Binaural crossfeed & wide immersive soundstage' },
+              { id: 'bass_boost', label: 'Bass', icon: <Zap className="w-3 h-3" />, desc: 'Low-frequency punch & harmonic warmth' },
+              { id: 'concert_hall', label: 'Concert', icon: <Music className="w-3 h-3" />, desc: 'Amphitheater acoustic reverb & reflections' },
+              { id: 'vocal_clarity', label: 'Vocal', icon: <Mic className="w-3 h-3" />, desc: 'Dialogue presence boost for clear voice' },
+            ] as const
+          ).map((eff) => {
+            const isCur = (device.audio_effect || 'studio') === eff.id;
+            return (
+              <button
+                key={eff.id}
+                type="button"
+                disabled={!device.is_selected}
+                onClick={() => onEffectChange?.(device.id, eff.id)}
+                className={`py-1 px-1 rounded-lg text-[10px] font-medium border flex flex-col items-center justify-center gap-0.5 transition-all cursor-pointer ${
+                  isCur && device.is_selected
+                    ? eff.id === 'spatial_3d'
+                      ? 'bg-purple-950/80 border-purple-500/70 text-purple-200 shadow-[0_0_10px_rgba(192,132,252,0.25)] font-semibold'
+                      : eff.id === 'bass_boost'
+                      ? 'bg-amber-950/80 border-amber-500/70 text-amber-200 shadow-[0_0_10px_rgba(245,158,11,0.25)] font-semibold'
+                      : eff.id === 'concert_hall'
+                      ? 'bg-emerald-950/80 border-emerald-500/70 text-emerald-200 shadow-[0_0_10px_rgba(16,185,129,0.25)] font-semibold'
+                      : eff.id === 'vocal_clarity'
+                      ? 'bg-rose-950/80 border-rose-500/70 text-rose-200 shadow-[0_0_10px_rgba(251,113,133,0.25)] font-semibold'
+                      : 'bg-cyan-950/80 border-cyan-500/70 text-cyan-200 shadow-[0_0_10px_rgba(6,182,212,0.25)] font-semibold'
+                    : 'bg-studio-850/60 border-studio-800 text-slate-400 hover:text-slate-200 hover:bg-studio-800'
+                } disabled:opacity-30 disabled:cursor-not-allowed`}
+                title={`${eff.label}: ${eff.desc}`}
+              >
+                {eff.icon}
+                <span className="truncate w-full text-center tracking-tight text-[9px]">{eff.label}</span>
+              </button>
+            );
+          })}
+        </div>
       </div>
 
       {/* Main Volume Controls */}

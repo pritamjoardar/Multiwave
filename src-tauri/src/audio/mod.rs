@@ -1,5 +1,6 @@
 pub mod audio_mixer;
 pub mod device_manager;
+pub mod dsp_effects;
 pub mod output_stream;
 pub mod playback_engine;
 pub mod resampler;
@@ -7,6 +8,7 @@ pub mod volume;
 
 pub use audio_mixer::{DelayLine, ToneGenerator};
 pub use device_manager::DeviceManager;
+pub use dsp_effects::{AudioEffect, DspProcessor};
 pub use output_stream::{OutputStream, SafeStream};
 pub use playback_engine::PlaybackEngine;
 pub use resampler::Resampler;

@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { AudioDevice, PlaybackMetrics, AppSettings, ToneType } from '../types/audio';
+import { AudioDevice, PlaybackMetrics, AppSettings, ToneType, AudioEffectType } from '../types/audio';
 import { TauriAudioService } from '../services/tauriService';
 
 export function useAudioMixer() {
@@ -271,6 +271,18 @@ export function useAudioMixer() {
     }
   };
 
+  const setDeviceAudioEffect = async (deviceId: string, effect: AudioEffectType) => {
+    setDevices((prev) =>
+      prev.map((d) => (d.id === deviceId ? { ...d, audio_effect: effect } : d))
+    );
+    try {
+      localStorage.setItem(`multiwave_effect_${deviceId}`, effect);
+      await TauriAudioService.setDeviceAudioEffect(deviceId, effect);
+    } catch (err: unknown) {
+      console.warn('Set audio effect notice:', err);
+    }
+  };
+
   const setMasterVolume = async (volume: number) => {
     const clamped = Math.max(0, Math.min(1, volume));
     setMetrics((prev) => ({ ...prev, master_volume: clamped }));
@@ -470,6 +482,7 @@ export function useAudioMixer() {
     setDeviceVolume,
     toggleDeviceMute,
     setDeviceDelay,
+    setDeviceAudioEffect,
     setMasterVolume,
     toggleMasterMute,
     setToneType,

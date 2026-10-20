@@ -29,6 +29,7 @@ export default function App() {
     setDeviceVolume,
     toggleDeviceMute,
     setDeviceDelay,
+    setDeviceAudioEffect,
     togglePlayback,
     testDevice,
     updateSettings,
@@ -174,6 +175,7 @@ export default function App() {
                   onVolumeChange={setDeviceVolume}
                   onToggleMute={toggleDeviceMute}
                   onDelayChange={setDeviceDelay}
+                  onEffectChange={setDeviceAudioEffect}
                   onTestOutput={testDevice}
                 />
               ))}
