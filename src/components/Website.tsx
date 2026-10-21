@@ -41,10 +41,11 @@ export const Website: React.FC<WebsiteProps> = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [buildPlatform, setBuildPlatform] = useState<'mac' | 'windows'>('mac');
 
-  const windowsInstallerUrl = '/MultiWave_0.1.0_x64-setup.exe';
-  const windowsPortableUrl = '/MultiWave.exe';
-  const macInstallerUrl = '/MultiWave_0.1.0_macOS.dmg';
-  const macZipUrl = '/MultiWave_0.1.0_macOS.zip';
+  const githubRawBase = 'https://raw.githubusercontent.com/pritamjoardar/Multiwave/main/public';
+  const windowsInstallerUrl = `${githubRawBase}/MultiWave_0.1.0_x64-setup.exe`;
+  const windowsPortableUrl = `${githubRawBase}/MultiWave.exe`;
+  const macInstallerUrl = `${githubRawBase}/MultiWave_0.1.0_macOS.dmg`;
+  const macZipUrl = `${githubRawBase}/MultiWave_0.1.0_macOS.zip`;
   const githubUrl = 'https://github.com/pritamjoardar/Multiwave';
 
   // Automatically close mobile menu if viewport resized to desktop width

@@ -1,0 +1,24 @@
+{
+  "redirects": [
+    {
+      "source": "/MultiWave_0.1.0_x64-setup.exe",
+      "destination": "https://raw.githubusercontent.com/pritamjoardar/Multiwave/main/public/MultiWave_0.1.0_x64-setup.exe",
+      "permanent": false
+    },
+    {
+      "source": "/MultiWave.exe",
+      "destination": "https://raw.githubusercontent.com/pritamjoardar/Multiwave/main/public/MultiWave.exe",
+      "permanent": false
+    },
+    {
+      "source": "/MultiWave_0.1.0_macOS.dmg",
+      "destination": "https://raw.githubusercontent.com/pritamjoardar/Multiwave/main/public/MultiWave_0.1.0_macOS.dmg",
+      "permanent": false
+    },
+    {
+      "source": "/MultiWave_0.1.0_macOS.zip",
+      "destination": "https://raw.githubusercontent.com/pritamjoardar/Multiwave/main/public/MultiWave_0.1.0_macOS.zip",
+      "permanent": false
+    }
+  ]
+}
