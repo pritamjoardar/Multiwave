@@ -10,46 +10,46 @@
   :root,
   [data-theme="dark"] {
     color-scheme: dark;
-    --color-studio-950: 10 13 20;     /* #0a0d14 */
-    --color-studio-900: 15 20 32;     /* #0f1420 */
-    --color-studio-850: 20 27 43;     /* #141b2b */
-    --color-studio-800: 26 35 55;     /* #1a2337 */
-    --color-studio-700: 38 52 80;     /* #263450 */
-    --color-studio-600: 57 77 117;    /* #394d75 */
-    --color-studio-500: 82 109 159;   /* #526d9f */
+    --color-studio-950: 8 12 21;      /* #080c15 deep obsidian dark */
+    --color-studio-900: 13 19 33;     /* #0d1321 card surface */
+    --color-studio-850: 19 27 46;     /* #131b2e elevated surface */
+    --color-studio-800: 30 42 69;     /* #1e2a45 border */
+    --color-studio-700: 47 64 102;    /* #2f4066 hover border */
+    --color-studio-600: 75 99 150;    /* #4b6396 secondary text */
+    --color-studio-500: 110 141 204;  /* #6e8dcc accent lines */
   }
 
   [data-theme="light"] {
     color-scheme: light;
-    --color-studio-950: 241 245 249;  /* #f1f5f9 page background */
-    --color-studio-900: 255 255 255;  /* #ffffff pure white card background */
-    --color-studio-850: 248 250 252;  /* #f8fafc */
-    --color-studio-800: 226 232 240;  /* #e2e8f0 borders and buttons */
-    --color-studio-700: 203 213 225;  /* #cbd5e1 card borders */
+    --color-studio-950: 248 250 252;  /* #f8fafc page background */
+    --color-studio-900: 255 255 255;  /* #ffffff pure white card */
+    --color-studio-850: 241 245 249;  /* #f1f5f9 surface */
+    --color-studio-800: 226 232 240;  /* #e2e8f0 border */
+    --color-studio-700: 203 213 225;  /* #cbd5e1 card border */
     --color-studio-600: 148 163 184;  /* #94a3b8 */
     --color-studio-500: 100 116 139;  /* #64748b */
   }
 
   [data-theme="midnight"] {
     color-scheme: dark;
-    --color-studio-950: 7 11 22;      /* #070b16 */
-    --color-studio-900: 12 18 36;     /* #0c1224 */
-    --color-studio-850: 17 26 50;     /* #111a32 */
-    --color-studio-800: 24 37 72;     /* #182548 */
-    --color-studio-700: 35 53 103;    /* #233567 */
-    --color-studio-600: 52 78 152;    /* #344e98 */
-    --color-studio-500: 75 112 219;   /* #4b70db */
+    --color-studio-950: 6 9 18;       /* #060912 midnight abyss */
+    --color-studio-900: 11 16 31;     /* #0b101f */
+    --color-studio-850: 16 23 44;     /* #10172c */
+    --color-studio-800: 24 35 64;     /* #182340 */
+    --color-studio-700: 37 54 96;     /* #253660 */
+    --color-studio-600: 58 83 145;    /* #3a5391 */
+    --color-studio-500: 88 122 208;   /* #587ad0 */
   }
 
   [data-theme="cyberpunk"] {
     color-scheme: dark;
-    --color-studio-950: 14 7 24;      /* #0e0718 */
-    --color-studio-900: 23 11 38;     /* #170b26 */
-    --color-studio-850: 33 16 54;     /* #211036 */
-    --color-studio-800: 46 22 75;     /* #2e164b */
-    --color-studio-700: 71 34 116;    /* #472274 */
-    --color-studio-600: 105 50 172;   /* #6932ac */
-    --color-studio-500: 153 73 250;   /* #9949fa */
+    --color-studio-950: 13 8 23;      /* #0d0817 deep plum */
+    --color-studio-900: 21 12 36;     /* #150c24 */
+    --color-studio-850: 31 18 52;     /* #1f1234 */
+    --color-studio-800: 45 25 74;     /* #2d194a */
+    --color-studio-700: 70 38 114;    /* #462672 */
+    --color-studio-600: 106 56 170;   /* #6a38aa */
+    --color-studio-500: 154 81 247;   /* #9a51f7 */
   }
   
   body {
@@ -60,12 +60,13 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
+    letter-spacing: -0.01em;
     transition: background-color 0.25s ease, color 0.25s ease;
   }
 
   h1, h2, h3, h4, .font-display {
     font-family: Outfit, 'Plus Jakarta Sans', Inter, sans-serif;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.025em;
   }
 }
 

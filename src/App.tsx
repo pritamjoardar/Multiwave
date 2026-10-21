@@ -123,14 +123,35 @@ export default function App() {
         )}
 
         {/* Output Devices Header */}
-        <div className="pt-1">
-          <h2 className="text-lg font-bold text-white flex items-center gap-2">
-            <Volume2 className="w-5 h-5 text-cyan-400" />
-            Audio Output Devices
-          </h2>
-          <p className="text-xs text-slate-400 mt-0.5">
-            Select multiple outputs to route audio simultaneously with independent gain, delay sync, and live visualizer meters.
-          </p>
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-1">
+          <div>
+            <h2 className="text-lg sm:text-xl font-bold text-white flex items-center gap-2 font-display">
+              <Volume2 className="w-5 h-5 text-cyan-400" />
+              Connected Audio Endpoints
+            </h2>
+            <p className="text-xs text-slate-400 mt-0.5">
+              Click any output card to toggle routing. Adjust volume and acoustic profiles independently with zero latency mismatch.
+            </p>
+          </div>
+
+          {physicalDevices.length > 0 && (
+            <div className="flex items-center gap-2 shrink-0">
+              <button
+                type="button"
+                onClick={() => {
+                  const allSelected = physicalDevices.every(d => d.is_selected);
+                  physicalDevices.forEach(d => {
+                    if (allSelected ? d.is_selected : !d.is_selected) {
+                      toggleDeviceSelection(d.id);
+                    }
+                  });
+                }}
+                className="px-3 py-1.5 rounded-xl text-xs font-semibold bg-studio-850 hover:bg-studio-800 border border-studio-800 text-slate-300 hover:text-white transition-colors cursor-pointer"
+              >
+                {physicalDevices.every(d => d.is_selected) ? 'Disconnect All' : 'Broadcast to All'}
+              </button>
+            </div>
+          )}
         </div>
 
         {/* Output Device Grid */}

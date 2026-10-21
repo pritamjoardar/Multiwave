@@ -8,7 +8,6 @@ import {
   Volume2,
   VolumeX,
   Play,
-  Check,
   Zap,
   Mic,
   Radio,
@@ -137,6 +136,7 @@ export const LiveSimulator: React.FC<LiveSimulatorProps> = ({ className = '' }) 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4 text-left">
         {simDevices.map((dev) => {
           const volPercent = Math.round(dev.volume * 100);
+          const isDevStreaming = Boolean(dev.isSelected && !dev.isMuted && dev.volume > 0);
           return (
             <div
               key={dev.id}
@@ -145,23 +145,24 @@ export const LiveSimulator: React.FC<LiveSimulatorProps> = ({ className = '' }) 
                 if (target.closest('button, input, select, textarea, [data-prevent-card-toggle]')) return;
                 toggleSimDevice(dev.id);
               }}
-              className={`relative rounded-xl p-4 transition-all duration-200 border cursor-pointer select-none ${
+              className={`group relative rounded-2xl p-4 sm:p-5 transition-all duration-200 border cursor-pointer select-none ${
                 dev.isSelected
-                  ? 'bg-studio-900/90 border-cyan-500/50 shadow-[0_0_25px_rgba(0,242,254,0.08)]'
-                  : 'bg-studio-900/40 border-studio-700/50 hover:border-cyan-500/40 hover:bg-studio-900/60 opacity-85 hover:opacity-100'
+                  ? 'bg-studio-900/95 border-cyan-500/50 shadow-[0_0_28px_rgba(6,182,212,0.12)] ring-1 ring-cyan-500/30'
+                  : 'bg-studio-900/40 border-studio-800/80 hover:border-studio-700 hover:bg-studio-900/60 opacity-85 hover:opacity-100'
               }`}
             >
-              <div className="flex items-start justify-between gap-2.5">
-                <div className="flex items-start gap-2.5 min-w-0">
+              {/* Header: Device Icon, Name & Status Switch Pill */}
+              <div className="flex items-start justify-between gap-3">
+                <div className="flex items-start gap-3 min-w-0">
                   <div
-                    className={`p-2 rounded-xl border flex items-center justify-center shrink-0 ${
+                    className={`p-2.5 rounded-xl border flex items-center justify-center shrink-0 transition-all ${
                       dev.isSelected
-                        ? 'bg-studio-800 border-cyan-500/40'
-                        : 'bg-studio-850 border-studio-700/60'
+                        ? 'bg-studio-850 border-cyan-500/40 shadow-[0_0_12px_rgba(6,182,212,0.2)]'
+                        : 'bg-studio-850/80 border-studio-800'
                     }`}
                   >
                     {dev.type === 'bluetooth' ? (
-                      <Bluetooth className="w-4 h-4 text-cyan-400" />
+                      <Bluetooth className="w-4 h-4 text-sky-400" />
                     ) : dev.type === 'hdmidisplayport' ? (
                       <Tv className="w-4 h-4 text-amber-400" />
                     ) : (
@@ -169,38 +170,41 @@ export const LiveSimulator: React.FC<LiveSimulatorProps> = ({ className = '' }) 
                     )}
                   </div>
                   <div className="min-w-0">
-                    <h4 className="text-xs font-semibold text-white truncate" title={dev.name}>
+                    <h4 className="text-sm font-bold text-white truncate group-hover:text-cyan-200 transition-colors" title={dev.name}>
                       {dev.name}
                     </h4>
-                    <div className="text-[10px] text-slate-400 font-mono mt-0.5">
+                    <div className="text-xs text-slate-400 font-medium mt-0.5">
                       {dev.format}
                     </div>
                   </div>
                 </div>
 
-                {/* Selection Checkbox */}
+                {/* Tactile Status Switch Pill */}
                 <button
                   type="button"
                   onClick={() => toggleSimDevice(dev.id)}
-                  className={`shrink-0 flex items-center justify-center w-6 h-6 rounded-lg border transition-all cursor-pointer ${
+                  className={`shrink-0 flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold tracking-wider transition-all duration-200 border cursor-pointer active:scale-95 ${
                     dev.isSelected
-                      ? 'bg-cyan-500 border-cyan-400 text-studio-950 shadow-[0_0_10px_rgba(0,242,254,0.45)]'
-                      : 'border-studio-700 bg-studio-850 hover:border-cyan-500/50 text-slate-500'
+                      ? isDevStreaming
+                        ? 'bg-emerald-500 text-studio-950 border-emerald-400 shadow-[0_0_12px_rgba(16,185,129,0.45)]'
+                        : 'bg-cyan-500 text-studio-950 border-cyan-400 shadow-[0_0_12px_rgba(6,182,212,0.4)]'
+                      : 'border-studio-800 bg-studio-850 hover:border-studio-700 text-slate-400 hover:text-slate-200'
                   }`}
-                  title={dev.isSelected ? 'Unselect card' : 'Select card'}
+                  title={dev.isSelected ? 'Click to disconnect' : 'Click to route audio'}
                 >
-                  {dev.isSelected ? (
-                    <Check className="w-3.5 h-3.5 stroke-[2.75]" />
-                  ) : (
-                    <div className="w-1.5 h-1.5 rounded-full bg-slate-600" />
-                  )}
+                  <span className={`w-1.5 h-1.5 rounded-full ${
+                    dev.isSelected
+                      ? isDevStreaming ? 'bg-studio-950 animate-ping' : 'bg-studio-950'
+                      : 'bg-slate-500'
+                  }`} />
+                  <span>{dev.isSelected ? (isDevStreaming ? 'LIVE' : 'ACTIVE') : 'IDLE'}</span>
                 </button>
               </div>
 
               {/* Live Reactive Studio Spectrum Visualizer */}
-              <div className="mt-3">
+              <div className="mt-3.5 bg-studio-950/80 rounded-xl p-2.5 border border-studio-800/80 shadow-inner">
                 <DeviceWaveVisualizer
-                  isActive={dev.isSelected && !dev.isMuted && dev.volume > 0}
+                  isActive={isDevStreaming}
                   isSelected={dev.isSelected}
                   isTesting={dev.isTesting}
                   isMuted={dev.isMuted}
@@ -212,13 +216,13 @@ export const LiveSimulator: React.FC<LiveSimulatorProps> = ({ className = '' }) 
               </div>
 
               {/* DSP Acoustic Effect Profile Selector */}
-              <div className="mt-2.5 pt-2 border-t border-studio-800/70">
-                <div className="flex items-center justify-between text-[10px] mb-1 font-mono">
-                  <span className="text-slate-300 font-medium flex items-center gap-1 font-sans">
-                    <SlidersHorizontal className="w-2.5 h-2.5 text-cyan-400" />
+              <div className="mt-3">
+                <div className="flex items-center justify-between text-[11px] mb-1.5 font-medium text-slate-400">
+                  <span className="flex items-center gap-1 text-slate-300">
+                    <SlidersHorizontal className="w-3 h-3 text-cyan-400" />
                     Acoustic Profile
                   </span>
-                  <span className="text-[9px] text-cyan-400/90 font-mono capitalize">
+                  <span className="text-[10px] font-mono text-cyan-400/90 font-semibold capitalize">
                     {dev.audioEffect === 'spatial_3d'
                       ? '3D Spatial'
                       : dev.audioEffect === 'bass_boost'
@@ -227,18 +231,18 @@ export const LiveSimulator: React.FC<LiveSimulatorProps> = ({ className = '' }) 
                       ? 'Concert Hall'
                       : dev.audioEffect === 'vocal_clarity'
                       ? 'Vocal Clarity'
-                      : 'Studio Master'}
+                      : 'Studio'}
                   </span>
                 </div>
 
-                <div className="grid grid-cols-5 gap-1">
+                <div className="bg-studio-950/70 p-1 rounded-xl border border-studio-800/80 grid grid-cols-5 gap-1">
                   {(
                     [
-                      { id: 'studio', label: 'Studio', icon: <Sliders className="w-2.5 h-2.5" /> },
-                      { id: 'spatial_3d', label: '3D', icon: <Radio className="w-2.5 h-2.5" /> },
-                      { id: 'bass_boost', label: 'Bass', icon: <Zap className="w-2.5 h-2.5" /> },
-                      { id: 'concert_hall', label: 'Concert', icon: <Music className="w-2.5 h-2.5" /> },
-                      { id: 'vocal_clarity', label: 'Vocal', icon: <Mic className="w-2.5 h-2.5" /> },
+                      { id: 'studio', label: 'Studio', icon: <Sliders className="w-3 h-3" /> },
+                      { id: 'spatial_3d', label: '3D', icon: <Radio className="w-3 h-3" /> },
+                      { id: 'bass_boost', label: 'Bass', icon: <Zap className="w-3 h-3" /> },
+                      { id: 'concert_hall', label: 'Concert', icon: <Music className="w-3 h-3" /> },
+                      { id: 'vocal_clarity', label: 'Vocal', icon: <Mic className="w-3 h-3" /> },
                     ] as const
                   ).map((eff) => {
                     const isCur = dev.audioEffect === eff.id;
@@ -248,22 +252,22 @@ export const LiveSimulator: React.FC<LiveSimulatorProps> = ({ className = '' }) 
                         type="button"
                         disabled={!dev.isSelected}
                         onClick={() => setSimEffect(dev.id, eff.id)}
-                        className={`py-1 px-0.5 rounded text-[9px] font-medium border flex flex-col items-center justify-center gap-0.5 transition-all cursor-pointer ${
+                        className={`py-1.5 px-1 rounded-lg text-[10px] font-semibold flex flex-col items-center justify-center gap-0.5 transition-all cursor-pointer ${
                           isCur && dev.isSelected
                             ? eff.id === 'spatial_3d'
-                              ? 'bg-purple-950/80 border-purple-500/70 text-purple-200 shadow-[0_0_8px_rgba(192,132,252,0.25)] font-semibold'
+                              ? 'bg-purple-500/20 text-purple-300 border border-purple-500/50 shadow-sm'
                               : eff.id === 'bass_boost'
-                              ? 'bg-amber-950/80 border-amber-500/70 text-amber-200 shadow-[0_0_8px_rgba(245,158,11,0.25)] font-semibold'
+                              ? 'bg-amber-500/20 text-amber-300 border border-amber-500/50 shadow-sm'
                               : eff.id === 'concert_hall'
-                              ? 'bg-emerald-950/80 border-emerald-500/70 text-emerald-200 shadow-[0_0_8px_rgba(16,185,129,0.25)] font-semibold'
+                              ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/50 shadow-sm'
                               : eff.id === 'vocal_clarity'
-                              ? 'bg-rose-950/80 border-rose-500/70 text-rose-200 shadow-[0_0_8px_rgba(251,113,133,0.25)] font-semibold'
-                              : 'bg-cyan-950/80 border-cyan-500/70 text-cyan-200 shadow-[0_0_8px_rgba(6,182,212,0.25)] font-semibold'
-                            : 'bg-studio-850/60 border-studio-800 text-slate-400 hover:text-slate-200 hover:bg-studio-800'
+                              ? 'bg-rose-500/20 text-rose-300 border border-rose-500/50 shadow-sm'
+                              : 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/50 shadow-sm'
+                            : 'text-slate-400 hover:text-slate-200 hover:bg-studio-850/60 border border-transparent'
                         } disabled:opacity-30 disabled:cursor-not-allowed`}
                       >
                         {eff.icon}
-                        <span className="truncate w-full text-center text-[8px]">{eff.label}</span>
+                        <span className="truncate w-full text-center text-[9px]">{eff.label}</span>
                       </button>
                     );
                   })}
@@ -271,55 +275,57 @@ export const LiveSimulator: React.FC<LiveSimulatorProps> = ({ className = '' }) 
               </div>
 
               {/* Volume & Test Controls */}
-              <div className="mt-3 space-y-2">
-                <div className="flex items-center justify-between text-[11px]">
-                  <span className="text-slate-300 font-medium flex items-center gap-1">
-                    <Sliders className="w-3 h-3 text-cyan-400" />
-                    Gain
+              <div className="mt-3.5 space-y-2">
+                <div className="flex items-center justify-between text-xs">
+                  <span className="text-slate-300 font-medium flex items-center gap-1.5">
+                    <Volume2 className="w-3.5 h-3.5 text-cyan-400" />
+                    Output Gain
                   </span>
-                  <span className={`font-mono font-semibold ${dev.isMuted ? 'text-rose-400' : 'text-cyan-300'}`}>
+                  <span className={`font-mono text-xs font-bold ${dev.isMuted ? 'text-rose-400' : 'text-cyan-300'}`}>
                     {dev.isMuted ? 'MUTED' : `${volPercent}%`}
                   </span>
                 </div>
 
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2.5">
                   <button
                     type="button"
                     onClick={() => toggleSimMute(dev.id)}
                     disabled={!dev.isSelected}
-                    className={`p-1.5 rounded-lg border transition-all ${
+                    className={`p-2 rounded-xl border transition-all cursor-pointer ${
                       dev.isMuted
-                        ? 'bg-rose-950/60 border-rose-500/50 text-rose-300'
-                        : 'bg-studio-800 border-studio-700 text-slate-300'
+                        ? 'bg-rose-950/60 border-rose-500/50 text-rose-300 hover:bg-rose-900/60 shadow-sm'
+                        : 'bg-studio-850 border-studio-800 text-slate-300 hover:text-white hover:bg-studio-800'
                     } disabled:opacity-40 disabled:cursor-not-allowed`}
                     title={dev.isMuted ? 'Unmute' : 'Mute'}
                   >
-                    {dev.isMuted ? <VolumeX className="w-3.5 h-3.5" /> : <Volume2 className="w-3.5 h-3.5" />}
+                    {dev.isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
                   </button>
 
-                  <input
-                    type="range"
-                    min="0"
-                    max="1"
-                    step="0.05"
-                    value={dev.volume}
-                    disabled={!dev.isSelected}
-                    onChange={(e) => setSimVolume(dev.id, parseFloat(e.target.value))}
-                    className="w-full volume-slider disabled:opacity-40"
-                  />
+                  <div className="relative flex-1 flex items-center">
+                    <input
+                      type="range"
+                      min="0"
+                      max="1"
+                      step="0.01"
+                      value={dev.volume}
+                      disabled={!dev.isSelected}
+                      onChange={(e) => setSimVolume(dev.id, parseFloat(e.target.value))}
+                      className="w-full volume-slider disabled:opacity-40"
+                    />
+                  </div>
 
                   <button
                     type="button"
                     onClick={() => testSimDevice(dev.id)}
                     disabled={dev.isTesting}
-                    className={`px-2.5 py-1.5 rounded-lg text-[10px] font-medium border flex items-center gap-1 transition-all ${
+                    className={`px-3 py-1.5 rounded-xl text-xs font-bold border flex items-center gap-1.5 transition-all cursor-pointer ${
                       dev.isTesting
-                        ? 'bg-cyan-500 text-studio-950 border-cyan-400 font-semibold'
-                        : 'bg-studio-800 hover:bg-studio-700 border-studio-700 text-slate-300'
+                        ? 'bg-cyan-500 text-studio-950 border-cyan-400 animate-pulse shadow-[0_0_12px_rgba(6,182,212,0.4)]'
+                        : 'bg-studio-850 hover:bg-studio-800 border-studio-800 text-slate-300 hover:text-white'
                     }`}
-                    title="Test chime"
+                    title="Play 3-second test chime on this output"
                   >
-                    <Play className="w-3 h-3 fill-current" />
+                    <Play className={`w-3.5 h-3.5 fill-current ${dev.isTesting ? 'animate-bounce' : ''}`} />
                     <span>{dev.isTesting ? 'Testing' : 'Test'}</span>
                   </button>
                 </div>

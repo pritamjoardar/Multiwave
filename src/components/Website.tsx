@@ -67,13 +67,13 @@ export const Website: React.FC<WebsiteProps> = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#070b14] text-slate-100 flex flex-col font-sans selection:bg-cyan-500/30 selection:text-cyan-200 overflow-x-hidden">
+    <div className="min-h-screen bg-studio-950 text-slate-100 flex flex-col font-sans selection:bg-cyan-500/30 selection:text-cyan-200 overflow-x-hidden">
       {/* Ambient Glow Effects */}
       <div className="fixed top-0 left-1/2 -translate-x-1/2 w-full max-w-[800px] h-[300px] sm:h-[400px] bg-gradient-to-b from-cyan-500/15 via-blue-600/10 to-transparent blur-[90px] sm:blur-[120px] pointer-events-none -z-10" />
       <div className="fixed bottom-0 right-0 w-[300px] sm:w-[500px] h-[300px] sm:h-[400px] bg-gradient-to-t from-purple-600/10 to-transparent blur-[100px] sm:blur-[140px] pointer-events-none -z-10" />
 
       {/* Navigation Bar */}
-      <header className="fixed top-0 inset-x-0 z-50 border-b border-studio-700/60 bg-[#070b14]/75 backdrop-blur-md px-4 sm:px-6 py-3 sm:py-3.5 transition-all shadow-lg shadow-black/30">
+      <header className="fixed top-0 inset-x-0 z-50 border-b border-studio-800/80 bg-studio-950/80 backdrop-blur-xl px-4 sm:px-6 py-3 sm:py-3.5 transition-all shadow-lg shadow-black/20">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <a href="#" className="flex items-center gap-2.5 sm:gap-3 group">
             <img
@@ -316,7 +316,7 @@ export const Website: React.FC<WebsiteProps> = () => {
 
         {/* Live Device Flow Visualizer Banner (Architecture) */}
         <div id="architecture" className="scroll-mt-24 mt-12 sm:mt-14 w-full max-w-4xl p-1 rounded-2xl sm:rounded-3xl bg-gradient-to-r from-cyan-500/30 via-blue-500/20 to-purple-500/30 shadow-[0_0_50px_rgba(6,182,212,0.15)]">
-          <div className="bg-[#0b101d] rounded-[18px] sm:rounded-[22px] p-5 sm:p-8 flex flex-col md:flex-row items-center justify-between gap-5 sm:gap-6 border border-studio-700/60">
+          <div className="bg-studio-900 rounded-[18px] sm:rounded-[22px] p-5 sm:p-8 flex flex-col md:flex-row items-center justify-between gap-5 sm:gap-6 border border-studio-800/80">
             {/* Source */}
             <div className="flex flex-col items-center md:items-start text-center md:text-left gap-1.5 sm:gap-2 min-w-[150px] sm:min-w-[160px]">
               <span className="text-[11px] sm:text-xs uppercase tracking-wider text-slate-400 font-mono font-semibold">1. Audio Source</span>
@@ -697,7 +697,7 @@ export const Website: React.FC<WebsiteProps> = () => {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-studio-800 bg-[#060911] px-4 sm:px-6 py-8 sm:py-10 mt-auto">
+      <footer className="border-t border-studio-800/80 bg-studio-950 px-4 sm:px-6 py-8 sm:py-10 mt-auto">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-5 sm:gap-6 text-center sm:text-left">
           <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-3">
             <div className="flex items-center gap-2">

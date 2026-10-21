@@ -9,7 +9,6 @@ import {
   Volume2,
   VolumeX,
   Play,
-  Check,
   AlertCircle,
   Clock,
   Sliders,
@@ -41,19 +40,19 @@ interface DeviceCardProps {
 function getDeviceIcon(type: DeviceType) {
   switch (type) {
     case 'bluetooth':
-      return <Bluetooth className="w-5 h-5 text-cyan-400" />;
+      return <Bluetooth className="w-4 h-4 text-sky-400" />;
     case 'usb':
-      return <Usb className="w-5 h-5 text-emerald-400" />;
+      return <Usb className="w-4 h-4 text-emerald-400" />;
     case 'headset':
-      return <Headphones className="w-5 h-5 text-purple-400" />;
+      return <Headphones className="w-4 h-4 text-purple-400" />;
     case 'hdmidisplayport':
-      return <Tv className="w-5 h-5 text-amber-400" />;
+      return <Tv className="w-4 h-4 text-amber-400" />;
     case 'auxline':
-      return <Speaker className="w-5 h-5 text-teal-400" />;
+      return <Speaker className="w-4 h-4 text-teal-400" />;
     case 'virtual':
-      return <Radio className="w-5 h-5 text-pink-400" />;
+      return <Radio className="w-4 h-4 text-pink-400" />;
     default:
-      return <Speaker className="w-5 h-5 text-slate-400" />;
+      return <Speaker className="w-4 h-4 text-slate-400" />;
   }
 }
 
@@ -95,80 +94,80 @@ export const DeviceCard: React.FC<DeviceCardProps> = ({
         if (target.closest('button, input, select, textarea, [data-prevent-card-toggle]')) return;
         onToggleSelect(device.id);
       }}
-      className={`relative rounded-xl p-5 transition-all duration-200 border cursor-pointer select-none ${
+      className={`group relative rounded-2xl p-4 sm:p-5 transition-all duration-200 border cursor-pointer select-none ${
         device.is_selected
-          ? 'bg-studio-900/90 border-cyan-500/50 shadow-[0_0_25px_rgba(0,242,254,0.08)]'
-          : 'bg-studio-900/40 border-studio-700/50 hover:border-cyan-500/40 hover:bg-studio-900/60 opacity-85 hover:opacity-100'
+          ? 'bg-studio-900/95 border-cyan-500/50 shadow-[0_0_28px_rgba(6,182,212,0.12)] ring-1 ring-cyan-500/30'
+          : 'bg-studio-900/40 border-studio-800/80 hover:border-studio-700 hover:bg-studio-900/60 opacity-85 hover:opacity-100'
       }`}
     >
-      {/* Top Row: Icon, Name, Checkbox */}
+      {/* Top Row: Device Icon, Name & Status Switch Pill */}
       <div className="flex items-start justify-between gap-3">
-        <div className="flex items-start gap-3.5 min-w-0">
+        <div className="flex items-start gap-3 min-w-0">
           <div
-            className={`p-2.5 rounded-xl border flex items-center justify-center shrink-0 ${
+            className={`p-2.5 rounded-xl border flex items-center justify-center shrink-0 transition-all ${
               device.is_selected
-                ? 'bg-studio-800 border-cyan-500/40 shadow-inner'
-                : 'bg-studio-850 border-studio-700/60'
+                ? 'bg-studio-850 border-cyan-500/40 shadow-[0_0_12px_rgba(6,182,212,0.2)]'
+                : 'bg-studio-850/80 border-studio-800'
             }`}
           >
             {getDeviceIcon(device.device_type)}
           </div>
 
           <div className="min-w-0">
-            <div className="flex items-center gap-2 flex-wrap">
-              <h3 className="text-sm font-semibold text-white truncate max-w-[240px] sm:max-w-[320px]" title={device.name}>
+            <div className="flex items-center gap-1.5 flex-wrap">
+              <h3 className="text-sm font-bold text-white truncate max-w-[200px] sm:max-w-[260px] group-hover:text-cyan-200 transition-colors" title={device.name}>
                 {device.name}
               </h3>
               {device.is_default && (
-                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-950/80 text-emerald-300 border border-emerald-500/40">
-                  Default Output
+                <span className="text-[9px] font-mono px-1.5 py-0.5 rounded-md bg-emerald-950/80 text-emerald-300 border border-emerald-500/40 font-semibold">
+                  Default
                 </span>
               )}
               {device.is_default_comm && !device.is_default && (
-                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-purple-950/80 text-purple-300 border border-purple-500/40">
-                  Default Comm
+                <span className="text-[9px] font-mono px-1.5 py-0.5 rounded-md bg-purple-950/80 text-purple-300 border border-purple-500/40 font-semibold">
+                  Comm
                 </span>
               )}
             </div>
 
-            <div className="flex items-center gap-2 mt-1 text-[11px] text-slate-400 font-mono">
+            <div className="flex items-center gap-1.5 mt-0.5 text-xs text-slate-400 font-medium">
               <span className="capitalize">{device.device_type}</span>
+              <span>•</span>
+              <span>{device.channels === 2 ? 'Stereo' : device.channels === 1 ? 'Mono' : `${device.channels}ch`}</span>
               {device.sample_rate && (
                 <>
                   <span>•</span>
-                  <span>{(device.sample_rate / 1000).toFixed(1)} kHz</span>
-                </>
-              )}
-              {device.channels && (
-                <>
-                  <span>•</span>
-                  <span>{device.channels === 2 ? 'Stereo' : device.channels === 1 ? 'Mono' : `${device.channels}ch`}</span>
+                  <span className="font-mono text-[11px] text-slate-500">{(device.sample_rate / 1000).toFixed(1)}kHz</span>
                 </>
               )}
             </div>
           </div>
         </div>
 
-        {/* Selection Button */}
+        {/* Tactile Status Switch Pill */}
         <button
+          type="button"
           onClick={() => onToggleSelect(device.id)}
-          className={`shrink-0 flex items-center justify-center w-7 h-7 rounded-lg border transition-all duration-200 cursor-pointer ${
+          className={`shrink-0 flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold tracking-wider transition-all duration-200 border cursor-pointer active:scale-95 ${
             device.is_selected
-              ? 'bg-cyan-500 border-cyan-400 text-studio-950 shadow-[0_0_12px_rgba(0,242,254,0.45)] hover:bg-cyan-400 active:scale-95'
-              : 'border-studio-700 bg-studio-850 hover:border-cyan-500/50 hover:bg-studio-800 text-slate-500 hover:text-cyan-400 active:scale-95'
+              ? isAudioWorking
+                ? 'bg-emerald-500 text-studio-950 border-emerald-400 shadow-[0_0_12px_rgba(16,185,129,0.45)]'
+                : 'bg-cyan-500 text-studio-950 border-cyan-400 shadow-[0_0_12px_rgba(6,182,212,0.4)]'
+              : 'border-studio-800 bg-studio-850 hover:border-studio-700 text-slate-400 hover:text-slate-200'
           }`}
-          title={device.is_selected ? 'Output Enabled (Click to disconnect)' : 'Click to route audio to this output'}
+          title={device.is_selected ? 'Click to disconnect this output' : 'Click to route audio to this output'}
         >
-          {device.is_selected ? (
-            <Check className="w-4 h-4 stroke-[2.75]" />
-          ) : (
-            <div className="w-1.5 h-1.5 rounded-full bg-slate-600 group-hover:bg-cyan-400 transition-colors" />
-          )}
+          <span className={`w-1.5 h-1.5 rounded-full ${
+            device.is_selected
+              ? isAudioWorking ? 'bg-studio-950 animate-ping' : 'bg-studio-950'
+              : 'bg-slate-500'
+          }`} />
+          <span>{device.is_selected ? (isAudioWorking ? 'LIVE' : 'ACTIVE') : 'IDLE'}</span>
         </button>
       </div>
 
-      {/* Studio Segmented LED Spectrum & Peak Meter on this device card */}
-      <div className="mt-4">
+      {/* Studio Segmented LED Spectrum Display */}
+      <div className="mt-3.5 bg-studio-950/80 rounded-xl p-2.5 border border-studio-800/80 shadow-inner">
         <DeviceWaveVisualizer
           isActive={isAudioWorking}
           isSelected={device.is_selected}
@@ -181,14 +180,14 @@ export const DeviceCard: React.FC<DeviceCardProps> = ({
         />
       </div>
 
-      {/* DSP Acoustic Effect Profile Selector */}
-      <div className="mt-3 pt-2.5 border-t border-studio-800/70">
-        <div className="flex items-center justify-between text-[11px] mb-1.5 font-mono">
-          <span className="text-slate-300 font-medium flex items-center gap-1.5 font-sans">
+      {/* DSP Acoustic Effect Profiles (Segmented Control) */}
+      <div className="mt-3">
+        <div className="flex items-center justify-between text-[11px] mb-1.5 font-medium text-slate-400">
+          <span className="flex items-center gap-1 text-slate-300">
             <SlidersHorizontal className="w-3 h-3 text-cyan-400" />
             Acoustic Profile
           </span>
-          <span className="text-[10px] text-cyan-400/90 font-mono capitalize">
+          <span className="text-[10px] font-mono text-cyan-400/90 font-semibold capitalize">
             {device.audio_effect === 'spatial_3d'
               ? '3D Spatial'
               : device.audio_effect === 'bass_boost'
@@ -197,18 +196,18 @@ export const DeviceCard: React.FC<DeviceCardProps> = ({
               ? 'Concert Hall'
               : device.audio_effect === 'vocal_clarity'
               ? 'Vocal Clarity'
-              : 'Studio Master'}
+              : 'Studio'}
           </span>
         </div>
 
-        <div className="grid grid-cols-5 gap-1.5">
+        <div className="bg-studio-950/70 p-1 rounded-xl border border-studio-800/80 grid grid-cols-5 gap-1">
           {(
             [
-              { id: 'studio', label: 'Studio', icon: <Sliders className="w-3 h-3" />, desc: 'Linear reference response & mastering soft-limiter' },
-              { id: 'spatial_3d', label: '3D Spatial', icon: <Radio className="w-3 h-3" />, desc: 'Binaural crossfeed & wide immersive soundstage' },
-              { id: 'bass_boost', label: 'Bass', icon: <Zap className="w-3 h-3" />, desc: 'Low-frequency punch & harmonic warmth' },
-              { id: 'concert_hall', label: 'Concert', icon: <Music className="w-3 h-3" />, desc: 'Amphitheater acoustic reverb & reflections' },
-              { id: 'vocal_clarity', label: 'Vocal', icon: <Mic className="w-3 h-3" />, desc: 'Dialogue presence boost for clear voice' },
+              { id: 'studio', label: 'Studio', icon: <Sliders className="w-3 h-3" /> },
+              { id: 'spatial_3d', label: '3D', icon: <Radio className="w-3 h-3" /> },
+              { id: 'bass_boost', label: 'Bass', icon: <Zap className="w-3 h-3" /> },
+              { id: 'concert_hall', label: 'Concert', icon: <Music className="w-3 h-3" /> },
+              { id: 'vocal_clarity', label: 'Vocal', icon: <Mic className="w-3 h-3" /> },
             ] as const
           ).map((eff) => {
             const isCur = (device.audio_effect || 'studio') === eff.id;
@@ -218,23 +217,22 @@ export const DeviceCard: React.FC<DeviceCardProps> = ({
                 type="button"
                 disabled={!device.is_selected}
                 onClick={() => onEffectChange?.(device.id, eff.id)}
-                className={`py-1 px-1 rounded-lg text-[10px] font-medium border flex flex-col items-center justify-center gap-0.5 transition-all cursor-pointer ${
+                className={`py-1.5 px-1 rounded-lg text-[10px] font-semibold flex flex-col items-center justify-center gap-0.5 transition-all cursor-pointer ${
                   isCur && device.is_selected
                     ? eff.id === 'spatial_3d'
-                      ? 'bg-purple-950/80 border-purple-500/70 text-purple-200 shadow-[0_0_10px_rgba(192,132,252,0.25)] font-semibold'
+                      ? 'bg-purple-500/20 text-purple-300 border border-purple-500/50 shadow-sm'
                       : eff.id === 'bass_boost'
-                      ? 'bg-amber-950/80 border-amber-500/70 text-amber-200 shadow-[0_0_10px_rgba(245,158,11,0.25)] font-semibold'
+                      ? 'bg-amber-500/20 text-amber-300 border border-amber-500/50 shadow-sm'
                       : eff.id === 'concert_hall'
-                      ? 'bg-emerald-950/80 border-emerald-500/70 text-emerald-200 shadow-[0_0_10px_rgba(16,185,129,0.25)] font-semibold'
+                      ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/50 shadow-sm'
                       : eff.id === 'vocal_clarity'
-                      ? 'bg-rose-950/80 border-rose-500/70 text-rose-200 shadow-[0_0_10px_rgba(251,113,133,0.25)] font-semibold'
-                      : 'bg-cyan-950/80 border-cyan-500/70 text-cyan-200 shadow-[0_0_10px_rgba(6,182,212,0.25)] font-semibold'
-                    : 'bg-studio-850/60 border-studio-800 text-slate-400 hover:text-slate-200 hover:bg-studio-800'
+                      ? 'bg-rose-500/20 text-rose-300 border border-rose-500/50 shadow-sm'
+                      : 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/50 shadow-sm'
+                    : 'text-slate-400 hover:text-slate-200 hover:bg-studio-850/60 border border-transparent'
                 } disabled:opacity-30 disabled:cursor-not-allowed`}
-                title={`${eff.label}: ${eff.desc}`}
               >
                 {eff.icon}
-                <span className="truncate w-full text-center tracking-tight text-[9px]">{eff.label}</span>
+                <span className="truncate w-full text-center text-[9px]">{eff.label}</span>
               </button>
             );
           })}
@@ -242,27 +240,25 @@ export const DeviceCard: React.FC<DeviceCardProps> = ({
       </div>
 
       {/* Main Volume Controls */}
-      <div className="mt-4 space-y-3">
+      <div className="mt-3.5 space-y-2">
         <div className="flex items-center justify-between text-xs">
           <span className="text-slate-300 font-medium flex items-center gap-1.5">
-            <Sliders className="w-3.5 h-3.5 text-cyan-400" />
-            Software Gain
+            <Volume2 className="w-3.5 h-3.5 text-cyan-400" />
+            Output Gain
           </span>
-          <div className="flex items-center gap-2 font-mono">
-            <span className={`font-semibold ${isMuted ? 'text-rose-400' : 'text-cyan-300'}`}>
-              {isMuted ? 'MUTED' : `${volPercent}%`}
-            </span>
-          </div>
+          <span className={`font-mono text-xs font-bold ${isMuted ? 'text-rose-400' : 'text-cyan-300'}`}>
+            {isMuted ? 'MUTED' : `${volPercent}%`}
+          </span>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2.5">
           <button
             onClick={() => onToggleMute(device.id)}
             disabled={!device.is_selected}
-            className={`p-2 rounded-lg border transition-all ${
+            className={`p-2 rounded-xl border transition-all cursor-pointer ${
               isMuted
-                ? 'bg-rose-950/60 border-rose-500/50 text-rose-300 hover:bg-rose-900/60'
-                : 'bg-studio-800 border-studio-700 text-slate-300 hover:text-white hover:bg-studio-700/80'
+                ? 'bg-rose-950/60 border-rose-500/50 text-rose-300 hover:bg-rose-900/60 shadow-sm'
+                : 'bg-studio-850 border-studio-800 text-slate-300 hover:text-white hover:bg-studio-800'
             } disabled:opacity-40 disabled:cursor-not-allowed`}
             title={isMuted ? 'Unmute Device' : 'Mute Device'}
           >
@@ -285,24 +281,24 @@ export const DeviceCard: React.FC<DeviceCardProps> = ({
           <button
             onClick={() => onTestOutput(device.id)}
             disabled={isTesting}
-            className={`px-3 py-2 rounded-lg text-xs font-medium border flex items-center gap-1.5 transition-all ${
+            className={`px-3 py-1.5 rounded-xl text-xs font-bold border flex items-center gap-1.5 transition-all cursor-pointer ${
               isTesting
-                ? 'bg-cyan-500 text-studio-950 border-cyan-400 animate-pulse font-semibold shadow-[0_0_12px_rgba(0,242,254,0.4)]'
-                : 'bg-studio-800 hover:bg-studio-700/80 border-studio-700 text-slate-300 hover:text-white'
+                ? 'bg-cyan-500 text-studio-950 border-cyan-400 animate-pulse shadow-[0_0_12px_rgba(6,182,212,0.4)]'
+                : 'bg-studio-850 hover:bg-studio-800 border-studio-800 text-slate-300 hover:text-white'
             }`}
             title="Play an isolated 3-second test chime on this output only"
           >
             <Play className={`w-3.5 h-3.5 fill-current ${isTesting ? 'animate-bounce' : ''}`} />
-            <span>{isTesting ? 'Testing...' : 'Test'}</span>
+            <span>{isTesting ? 'Testing' : 'Test'}</span>
           </button>
         </div>
       </div>
 
       {/* Advanced Drawer: Bluetooth Sync Delay & Hardware Info */}
-      <div className="mt-4 pt-3 border-t border-studio-800/80">
+      <div className="mt-3.5 pt-2.5 border-t border-studio-800/80">
         <button
           onClick={() => setShowAdvanced(!showAdvanced)}
-          className="flex items-center justify-between w-full text-[11px] text-slate-400 hover:text-slate-200 transition-colors"
+          className="flex items-center justify-between w-full text-[11px] font-medium text-slate-400 hover:text-slate-200 transition-colors cursor-pointer"
         >
           <span className="flex items-center gap-1.5">
             <Clock className="w-3.5 h-3.5 text-cyan-400" />
@@ -315,11 +311,11 @@ export const DeviceCard: React.FC<DeviceCardProps> = ({
         </button>
 
         {showAdvanced && (
-          <div data-prevent-card-toggle className="mt-3 p-3 rounded-lg bg-studio-950/70 border border-studio-800/80 space-y-3 cursor-default">
+          <div data-prevent-card-toggle className="mt-2.5 p-3 rounded-xl bg-studio-950/80 border border-studio-800/80 space-y-3 cursor-default">
             <div>
               <div className="flex items-center justify-between text-[11px] mb-1 font-mono">
                 <span className="text-slate-400">Delay Compensation</span>
-                <span className="text-cyan-400 font-semibold">{device.sync_delay_ms} ms</span>
+                <span className="text-cyan-400 font-bold">{device.sync_delay_ms} ms</span>
               </div>
               <input
                 type="range"
@@ -335,11 +331,11 @@ export const DeviceCard: React.FC<DeviceCardProps> = ({
               </p>
             </div>
 
-            {/* System Hardware Volume Indicator (Separate from Software Gain) */}
+            {/* System Hardware Volume Indicator */}
             {device.system_volume !== undefined && device.system_volume !== null && (
               <div className="pt-2 border-t border-studio-800 flex items-center justify-between text-[10px] text-slate-400 font-mono">
                 <span>Windows HW Endpoint Volume:</span>
-                <span className="text-slate-300">
+                <span className="text-slate-300 font-semibold">
                   {Math.round((device.system_volume ?? 1) * 100)}% {device.system_mute ? '(HW Muted)' : ''}
                 </span>
               </div>
@@ -350,7 +346,7 @@ export const DeviceCard: React.FC<DeviceCardProps> = ({
 
       {/* Error state if any */}
       {device.error_message && (
-        <div className="mt-3 p-2 rounded bg-rose-950/40 border border-rose-500/30 text-rose-300 text-xs flex items-center gap-1.5">
+        <div className="mt-2.5 p-2 rounded-xl bg-rose-950/40 border border-rose-500/30 text-rose-300 text-xs flex items-center gap-1.5">
           <AlertCircle className="w-3.5 h-3.5 shrink-0" />
           <span className="truncate">{device.error_message}</span>
         </div>
