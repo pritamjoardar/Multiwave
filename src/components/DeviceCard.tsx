@@ -90,10 +90,15 @@ export const DeviceCard: React.FC<DeviceCardProps> = ({
 
   return (
     <div
-      className={`relative rounded-xl p-5 transition-all duration-200 border ${
+      onClick={(e) => {
+        const target = e.target as HTMLElement;
+        if (target.closest('button, input, select, textarea, [data-prevent-card-toggle]')) return;
+        onToggleSelect(device.id);
+      }}
+      className={`relative rounded-xl p-5 transition-all duration-200 border cursor-pointer select-none ${
         device.is_selected
           ? 'bg-studio-900/90 border-cyan-500/50 shadow-[0_0_25px_rgba(0,242,254,0.08)]'
-          : 'bg-studio-900/40 border-studio-700/50 hover:border-studio-600/70 opacity-85 hover:opacity-100'
+          : 'bg-studio-900/40 border-studio-700/50 hover:border-cyan-500/40 hover:bg-studio-900/60 opacity-85 hover:opacity-100'
       }`}
     >
       {/* Top Row: Icon, Name, Checkbox */}
@@ -310,7 +315,7 @@ export const DeviceCard: React.FC<DeviceCardProps> = ({
         </button>
 
         {showAdvanced && (
-          <div className="mt-3 p-3 rounded-lg bg-studio-950/70 border border-studio-800/80 space-y-3">
+          <div data-prevent-card-toggle className="mt-3 p-3 rounded-lg bg-studio-950/70 border border-studio-800/80 space-y-3 cursor-default">
             <div>
               <div className="flex items-center justify-between text-[11px] mb-1 font-mono">
                 <span className="text-slate-400">Delay Compensation</span>

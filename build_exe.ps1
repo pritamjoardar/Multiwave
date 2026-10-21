@@ -72,7 +72,10 @@ if ($Installer) {
     Write-Host "   SUCCESS: Installer .exe successfully built!   " -ForegroundColor Green
     Write-Host "==================================================" -ForegroundColor Green
     if ($InstallerExe) {
+        $PublicInstaller = Join-Path $ScriptDir "public\MultiWave_0.1.0_x64-setup.exe"
+        Copy-Item -Path $InstallerExe.FullName -Destination $PublicInstaller -Force
         Write-Host "Location : $($InstallerExe.FullName)" -ForegroundColor White
+        Write-Host "Public   : $PublicInstaller" -ForegroundColor Cyan
         Write-Host "File Size: $([math]::Round($InstallerExe.Length / 1MB, 2)) MB" -ForegroundColor Gray
     } else {
         Write-Host "Location : src-tauri\target\release\bundle\nsis\" -ForegroundColor White
@@ -93,7 +96,10 @@ if ($Installer) {
     Write-Host "==================================================" -ForegroundColor Green
     if (Test-Path $ExePath) {
         $Item = Get-Item $ExePath
+        $PublicExe = Join-Path $ScriptDir "public\MultiWave.exe"
+        Copy-Item -Path $ExePath -Destination $PublicExe -Force
         Write-Host "Location : $($Item.FullName)" -ForegroundColor White
+        Write-Host "Public   : $PublicExe" -ForegroundColor Cyan
         Write-Host "File Size: $([math]::Round($Item.Length / 1MB, 2)) MB" -ForegroundColor Gray
     } else {
         Write-Host "Location : src-tauri\target\release\multiwave.exe" -ForegroundColor White

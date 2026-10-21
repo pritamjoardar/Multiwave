@@ -124,7 +124,7 @@ export const LiveSimulator: React.FC<LiveSimulatorProps> = ({ className = '' }) 
             Interactive Audio Output &amp; DSP Effects Simulator
           </h3>
           <p className="text-xs text-slate-400 mt-0.5">
-            Click checkboxes to select or unselect devices. Toggle between Studio, 3D Spatial Surround, Bass Punch, Concert Hall, and Vocal Clarity acoustic profiles in real-time. Unselected devices immediately silence and stay IDLE.
+            Click any device card or checkbox to select or unselect outputs. Toggle between Studio, 3D Spatial Surround, Bass Punch, Concert Hall, and Vocal Clarity acoustic profiles in real-time. Unselected devices immediately silence and stay IDLE.
           </p>
         </div>
         <div className="flex items-center gap-2 text-xs font-mono text-cyan-400 bg-cyan-950/60 border border-cyan-500/30 px-3 py-1 rounded-lg shrink-0">
@@ -140,10 +140,15 @@ export const LiveSimulator: React.FC<LiveSimulatorProps> = ({ className = '' }) 
           return (
             <div
               key={dev.id}
-              className={`relative rounded-xl p-4 transition-all duration-200 border ${
+              onClick={(e) => {
+                const target = e.target as HTMLElement;
+                if (target.closest('button, input, select, textarea, [data-prevent-card-toggle]')) return;
+                toggleSimDevice(dev.id);
+              }}
+              className={`relative rounded-xl p-4 transition-all duration-200 border cursor-pointer select-none ${
                 dev.isSelected
                   ? 'bg-studio-900/90 border-cyan-500/50 shadow-[0_0_25px_rgba(0,242,254,0.08)]'
-                  : 'bg-studio-900/40 border-studio-700/50 hover:border-studio-600/70 opacity-85 hover:opacity-100'
+                  : 'bg-studio-900/40 border-studio-700/50 hover:border-cyan-500/40 hover:bg-studio-900/60 opacity-85 hover:opacity-100'
               }`}
             >
               <div className="flex items-start justify-between gap-2.5">

@@ -290,12 +290,12 @@ Output packages will be generated in:
 ### Q4: Where are the macOS and Windows download files and how do I build them?
 - **Official Website**: Visit [http://multiwave.pritamjoardar.com/](http://multiwave.pritamjoardar.com/) for online downloads, feature overviews, and updates.
 - **Ready-to-Use macOS Packages**:
-  - 🍏 **macOS Disk Image (`.dmg`)**: [`public/MultiWave_0.1.0_macOS.dmg`](file:///c:/Users/prita/OneDrive/Desktop/MultiWave/public/MultiWave_0.1.0_macOS.dmg) (15.6 MB)
-  - 📦 **macOS Portable Archive (`.zip`)**: [`public/MultiWave_0.1.0_macOS.zip`](file:///c:/Users/prita/OneDrive/Desktop/MultiWave/public/MultiWave_0.1.0_macOS.zip) (15.5 MB)
+  - 🍏 **macOS Disk Image (`.dmg`)**: [`public/MultiWave_0.1.0_macOS.dmg`](file:///c:/Users/prita/OneDrive/Desktop/MultiWave/public/MultiWave_0.1.0_macOS.dmg) (15.5 MB)
+  - 📦 **macOS Portable Archive (`.zip`)**: [`public/MultiWave_0.1.0_macOS.zip`](file:///c:/Users/prita/OneDrive/Desktop/MultiWave/public/MultiWave_0.1.0_macOS.zip) (15.4 MB)
   - 📱 **macOS App Bundle (`.app`)**: [`src-tauri/target/release/bundle/macos/MultiWave.app`](file:///c:/Users/prita/OneDrive/Desktop/MultiWave/src-tauri/target/release/bundle/macos/MultiWave.app)
 - **Ready-to-Use Windows Packages**:
-  - 🪟 **Windows Setup Installer (`.exe`)**: [`public/MultiWave_0.1.0_x64-setup.exe`](file:///c:/Users/prita/OneDrive/Desktop/MultiWave/public/MultiWave_0.1.0_x64-setup.exe) *(7.7 MB — with desktop shortcuts & virtual driver)*
-  - ⚡ **Portable Standalone (`.exe`)**: [`src-tauri/target/release/multiwave.exe`](file:///c:/Users/prita/OneDrive/Desktop/MultiWave/src-tauri/target/release/multiwave.exe)
+  - 🪟 **Windows Setup Installer (`.exe`)**: [`public/MultiWave_0.1.0_x64-setup.exe`](file:///c:/Users/prita/OneDrive/Desktop/MultiWave/public/MultiWave_0.1.0_x64-setup.exe) *(13.3 MB — with desktop shortcuts & virtual driver)*
+  - ⚡ **Portable Standalone (`.exe`)**: [`public/MultiWave.exe`](file:///c:/Users/prita/OneDrive/Desktop/MultiWave/public/MultiWave.exe) *(15.6 MB)*
 - **How to Rebuild macOS**:
   ```bash
   chmod +x build_mac.sh && ./build_mac.sh

@@ -42,6 +42,7 @@ export const Website: React.FC<WebsiteProps> = () => {
   const [buildPlatform, setBuildPlatform] = useState<'mac' | 'windows'>('mac');
 
   const windowsInstallerUrl = '/MultiWave_0.1.0_x64-setup.exe';
+  const windowsPortableUrl = '/MultiWave.exe';
   const macInstallerUrl = '/MultiWave_0.1.0_macOS.dmg';
   const macZipUrl = '/MultiWave_0.1.0_macOS.zip';
   const githubUrl = 'https://github.com/pritamjoardar/Multiwave';
@@ -270,14 +271,22 @@ export const Website: React.FC<WebsiteProps> = () => {
         </div>
 
         {/* Secondary options & quick links */}
-        <div className="mt-4 flex flex-wrap items-center justify-center gap-3 text-xs text-slate-400">
+        <div className="mt-4 flex flex-wrap items-center justify-center gap-2.5 sm:gap-3 text-xs text-slate-400">
           <span>Need portable format?</span>
           <a
             href={macZipUrl}
             download="MultiWave_0.1.0_macOS.zip"
             className="text-cyan-400 hover:text-cyan-300 underline underline-offset-4 decoration-cyan-500/40 hover:decoration-cyan-300 font-medium transition-colors"
           >
-            Download macOS (.zip)
+            macOS (.zip)
+          </a>
+          <span>•</span>
+          <a
+            href={windowsPortableUrl}
+            download="MultiWave.exe"
+            className="text-cyan-400 hover:text-cyan-300 underline underline-offset-4 decoration-cyan-500/40 hover:decoration-cyan-300 font-medium transition-colors"
+          >
+            Windows (.exe standalone)
           </a>
           <span>•</span>
           <a href="#demo" className="text-slate-300 hover:text-white transition-colors flex items-center gap-1">
@@ -491,7 +500,7 @@ export const Website: React.FC<WebsiteProps> = () => {
             </div>
             <h3 className="text-base sm:text-lg font-bold text-white font-display">Simultaneous Multi-Streaming</h3>
             <p className="mt-2 text-xs sm:text-sm text-slate-300/80 leading-relaxed">
-              Opens dedicated CoreAudio &amp; WASAPI shared-mode streams for all selected devices concurrently, broadcasting high-fidelity PCM audio without dropouts.
+              Opens dedicated CoreAudio &amp; WASAPI shared-mode streams for all selected devices concurrently, broadcasting high-fidelity PCM audio without dropouts. 1-click card selection instantly routes or disconnects audio outputs.
             </p>
           </div>
 
@@ -664,14 +673,22 @@ export const Website: React.FC<WebsiteProps> = () => {
             </a>
           </div>
 
-          <div className="mt-4 flex items-center justify-center gap-2 text-xs text-slate-400">
-            <span>Also available as</span>
+          <div className="mt-4 flex flex-wrap items-center justify-center gap-2.5 sm:gap-3 text-xs text-slate-400">
+            <span>Also available as portable:</span>
             <a
               href={macZipUrl}
               download="MultiWave_0.1.0_macOS.zip"
               className="text-cyan-400 hover:text-cyan-300 underline underline-offset-4 decoration-cyan-500/40"
             >
-              macOS Portable (.zip)
+              macOS (.zip)
+            </a>
+            <span>•</span>
+            <a
+              href={windowsPortableUrl}
+              download="MultiWave.exe"
+              className="text-cyan-400 hover:text-cyan-300 underline underline-offset-4 decoration-cyan-500/40"
+            >
+              Windows Standalone (.exe)
             </a>
           </div>
 

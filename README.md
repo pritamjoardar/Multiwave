@@ -183,16 +183,17 @@ cargo test
 
 | Platform | Format | File Name | Architecture | Download Link |
 |---|---|---|---|---|
-| **macOS** | Disk Image (`.dmg`) | `MultiWave_0.1.0_macOS.dmg` | Apple Silicon (M1-M4) & Intel | [**Download .dmg**](public/MultiWave_0.1.0_macOS.dmg) (15.6 MB) |
-| **macOS** | Portable (`.zip`) | `MultiWave_0.1.0_macOS.zip` | Universal macOS Application | [**Download .zip**](public/MultiWave_0.1.0_macOS.zip) (15.5 MB) |
-| **Windows** | Setup Installer (`.exe`) | `MultiWave_0.1.0_x64-setup.exe` | x64 (Windows 10 & 11) | [**Download .exe**](public/MultiWave_0.1.0_x64-setup.exe) (7.7 MB) |
-| **Windows** | Portable (`.exe`) | `multiwave.exe` | x64 Standalone Executable | [**Download Standalone**](src-tauri/target/release/multiwave.exe) (10.0 MB) |
+| **macOS** | Disk Image (`.dmg`) | `MultiWave_0.1.0_macOS.dmg` | Apple Silicon (M1-M4) & Intel | [**Download .dmg**](public/MultiWave_0.1.0_macOS.dmg) (15.5 MB) |
+| **macOS** | Portable (`.zip`) | `MultiWave_0.1.0_macOS.zip` | Universal macOS Application | [**Download .zip**](public/MultiWave_0.1.0_macOS.zip) (15.4 MB) |
+| **Windows** | Setup Installer (`.exe`) | `MultiWave_0.1.0_x64-setup.exe` | x64 (Windows 10 & 11) | [**Download .exe**](public/MultiWave_0.1.0_x64-setup.exe) (13.3 MB) |
+| **Windows** | Portable (`.exe`) | `MultiWave.exe` | x64 Standalone Executable | [**Download Standalone**](public/MultiWave.exe) (15.6 MB) |
 
 
 > [!TIP]
 > - 🌐 **Official Product Website**: [http://multiwave.pritamjoardar.com/](http://multiwave.pritamjoardar.com/)
 > - 🍏 **macOS Installer (`.dmg`)**: [`public/MultiWave_0.1.0_macOS.dmg`](file:///c:/Users/prita/OneDrive/Desktop/MultiWave/public/MultiWave_0.1.0_macOS.dmg)
 > - 🪟 **Windows Installer (`.exe`)**: [`public/MultiWave_0.1.0_x64-setup.exe`](file:///c:/Users/prita/OneDrive/Desktop/MultiWave/public/MultiWave_0.1.0_x64-setup.exe)
+> - ⚡ **Windows Portable (`.exe`)**: [`public/MultiWave.exe`](file:///c:/Users/prita/OneDrive/Desktop/MultiWave/public/MultiWave.exe)
 
 #### macOS Installation:
 1. Mount `MultiWave_0.1.0_macOS.dmg`.
