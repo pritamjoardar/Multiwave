@@ -87,7 +87,7 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen bg-studio-950 text-slate-100 flex flex-col selection:bg-cyan-500 selection:text-studio-950 transition-colors duration-200">
+    <div className="min-h-dvh bg-studio-950 text-slate-100 flex flex-col selection:bg-cyan-500 selection:text-studio-950 transition-colors duration-200">
       {/* Top Application Header */}
       <Header
         totalDevices={physicalDevices.length}
@@ -105,11 +105,11 @@ export default function App() {
       <main className="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 space-y-6">
         {/* Error Notification Banner */}
         {errorMessage && (
-          <div className="rounded-xl p-4 bg-rose-950/80 border border-rose-500/50 text-rose-200 flex items-start justify-between gap-3 shadow-lg animate-in fade-in slide-in-from-top-2 duration-200">
+          <div className="rounded-xl p-4 bg-rose-950/80 border border-rose-500/50 text-rose-200 flex items-start justify-between gap-3 animate-in fade-in slide-in-from-top-2 duration-200">
             <div className="flex items-start gap-3">
               <AlertTriangle className="w-5 h-5 text-rose-400 shrink-0 mt-0.5" />
               <div>
-                <h4 className="text-xs font-bold uppercase tracking-wider text-rose-300">Audio Engine Notice</h4>
+                <h4 className="text-xs font-bold text-rose-300">Audio Engine Notice</h4>
                 <p className="text-xs text-rose-200 mt-0.5 leading-relaxed">{errorMessage}</p>
               </div>
             </div>
@@ -160,7 +160,7 @@ export default function App() {
             <div className="p-12 text-center rounded-2xl border border-studio-800 bg-studio-900/40 space-y-3">
               <RefreshCw className="w-8 h-8 text-cyan-400 animate-spin mx-auto" />
               <p className="text-sm text-slate-300 font-medium">Enumerating Windows Core Audio endpoints...</p>
-              <p className="text-xs text-slate-500 font-mono">Querying IMMDeviceEnumerator & WASAPI formats</p>
+              <p className="text-xs text-slate-500">Querying IMMDeviceEnumerator & WASAPI formats</p>
             </div>
           ) : physicalDevices.length === 0 ? (
             <div className="p-12 text-center rounded-2xl border border-studio-800 bg-studio-900/40 space-y-4">

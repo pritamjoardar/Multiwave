@@ -10,8 +10,8 @@ export const PerAppRoutingModal: React.FC<PerAppRoutingModalProps> = ({ isOpen, 
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-in fade-in duration-200">
-      <div className="relative w-full max-w-2xl rounded-2xl bg-studio-900 border border-studio-700/80 p-6 shadow-2xl max-h-[90vh] overflow-y-auto">
+    <div data-ui="modal" className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 animate-in fade-in duration-200">
+      <div className="relative w-full max-w-2xl rounded-2xl bg-studio-900 border border-studio-700 p-6 max-h-[90vh] overflow-y-auto">
         {/* Header */}
         <div className="flex items-center justify-between pb-4 border-b border-studio-800">
           <div className="flex items-center gap-3">
@@ -58,7 +58,7 @@ export const PerAppRoutingModal: React.FC<PerAppRoutingModalProps> = ({ isOpen, 
               Starting in Windows 10 (Build 20348+) and Windows 11, Microsoft introduced official support for capturing individual process audio streams using:
             </p>
 
-            <div className="p-3 rounded-lg bg-studio-950 font-mono text-[11px] text-cyan-300 border border-studio-800">
+            <pre className="p-3 rounded-lg bg-studio-950 text-[11px] text-cyan-300 border border-studio-800 overflow-x-auto">
               <code>
                 AUDIOCLIENT_ACTIVATION_PARAMS params = &#123;<br />
                 &nbsp;&nbsp;.ActivationType = AUDIOCLIENT_ACTIVATION_TYPE_PROCESS_LOOPBACK,<br />
@@ -67,7 +67,7 @@ export const PerAppRoutingModal: React.FC<PerAppRoutingModalProps> = ({ isOpen, 
                 &#125;;<br />
                 ActivateAudioInterfaceAsync(VIRTUAL_AUDIO_DEVICE_PROCESS_LOOPBACK, ...);
               </code>
-            </div>
+            </pre>
           </div>
 
           <div className="space-y-2">
@@ -110,7 +110,7 @@ export const PerAppRoutingModal: React.FC<PerAppRoutingModalProps> = ({ isOpen, 
         </div>
 
         {/* Footer */}
-        <div className="mt-6 pt-4 border-t border-studio-800 flex justify-end">
+        <div className="mt-6 pt-2 flex justify-end">
           <button
             onClick={onClose}
             className="px-4 py-2 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-studio-950 font-semibold text-xs transition-colors"

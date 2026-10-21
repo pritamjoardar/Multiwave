@@ -178,14 +178,15 @@ export const DeviceWaveVisualizer: React.FC<DeviceWaveVisualizerProps> = ({
 
   return (
     <div
-      className={`px-3 py-2.5 rounded-xl border transition-all duration-200 select-none ${
+      data-ui="audio-visualizer"
+      className={`px-3 py-2.5 rounded-xl border transition-colors select-none ${
         activeVisual
-          ? 'border-studio-700/80 bg-studio-950/80 shadow-[0_0_20px_rgba(0,0,0,0.35)]'
-          : 'border-studio-800/60 bg-studio-950/40 opacity-75'
+          ? 'border-studio-700 bg-studio-950'
+          : 'border-studio-800 bg-studio-950/40 opacity-75'
       }`}
     >
       {/* Telemetry Header */}
-      <div className="flex items-center justify-between mb-2 text-[10px] font-mono">
+      <div className="flex items-center justify-between mb-2 text-[10px]">
         <div className="flex items-center gap-1.5 min-w-0">
           {isMuted && isSelected ? (
             <VolumeX className="w-3.5 h-3.5 text-rose-400 shrink-0" />
@@ -218,10 +219,10 @@ export const DeviceWaveVisualizer: React.FC<DeviceWaveVisualizerProps> = ({
         {/* State Badge: Strictly IDLE when unselected */}
         <div className="flex items-center gap-1.5 shrink-0">
           {activeVisual && (
-            <span className={`w-1.5 h-1.5 rounded-full animate-ping ${theme.glowDot}`} />
+            <span className={`w-1.5 h-1.5 rounded-full ${theme.glowDot}`} />
           )}
           <span
-            className={`font-semibold font-mono text-[9px] uppercase tracking-wider transition-colors duration-150 ${
+            className={`font-semibold text-[9px] tabular-nums transition-colors duration-150 ${
               isTesting
                 ? 'text-cyan-300'
                 : activeVisual
@@ -260,7 +261,7 @@ export const DeviceWaveVisualizer: React.FC<DeviceWaveVisualizerProps> = ({
                   {/* Floating Peak-Hold Needle Cap */}
                   {activeVisual && peakSegment >= 0 && (
                     <div
-                      className="absolute w-full h-[2px] rounded-full transition-all duration-75 shadow-sm"
+                      className="absolute w-full h-[2px] rounded-full transition-transform duration-75"
                       style={{
                         bottom: `${Math.min(94, Math.max(6, (peakCaps[bandIdx] / 100) * 88))}%`,
                         background:
@@ -269,7 +270,6 @@ export const DeviceWaveVisualizer: React.FC<DeviceWaveVisualizerProps> = ({
                             : peakSegment >= 4
                             ? '#f59e0b'
                             : theme.peakColor,
-                        boxShadow: `0 0 6px ${theme.peakColor}`,
                       }}
                     />
                   )}
@@ -282,7 +282,7 @@ export const DeviceWaveVisualizer: React.FC<DeviceWaveVisualizerProps> = ({
                     return (
                       <div
                         key={segIdx}
-                        className="w-full h-1 rounded-[1.5px] transition-all duration-75"
+                        className="w-full h-1 rounded-[1.5px] transition-opacity duration-75"
                         style={{
                           background: isLit
                             ? segFromBottom === LED_SEGMENTS - 1
@@ -294,7 +294,6 @@ export const DeviceWaveVisualizer: React.FC<DeviceWaveVisualizerProps> = ({
                               : '#10b981' // Green nominal base
                             : '#1e293b', // Dim studio standby
                           opacity: isLit ? 1.0 : 0.22,
-                          boxShadow: isLit ? `0 0 4px ${theme.ledColor}55` : 'none',
                         }}
                       />
                     );
@@ -305,7 +304,7 @@ export const DeviceWaveVisualizer: React.FC<DeviceWaveVisualizerProps> = ({
           </div>
 
           {/* Micro Frequency Scale Labels */}
-          <div className="flex justify-between text-[7px] text-slate-500 font-mono px-0.5 pt-0.5 select-none">
+          <div className="flex justify-between text-[7px] text-slate-500 tabular-nums font-medium px-0.5 pt-0.5 select-none">
             <span>40Hz</span>
             <span>250Hz</span>
             <span>1kHz</span>
@@ -316,18 +315,18 @@ export const DeviceWaveVisualizer: React.FC<DeviceWaveVisualizerProps> = ({
         </div>
       ) : (
         /* ================= Mode 2: Stereo Dual VU Decibel Rack ================= */
-        <div className="space-y-1.5 py-0.5 px-0.5 font-mono text-[9px]">
+        <div className="space-y-1.5 py-0.5 px-0.5 text-[9px] tabular-nums">
           {/* Channel L */}
           <div className="flex items-center gap-2">
             <span className="w-3 text-slate-400 font-bold text-[8px]">L</span>
             <div className="flex-1 h-3 rounded bg-studio-900 border border-studio-800 p-0.5 relative overflow-hidden flex items-center">
               <div
-                className="h-full rounded-sm transition-all duration-75 bg-gradient-to-r from-emerald-500 via-cyan-400 to-rose-500"
+                className="h-full rounded-sm transition-opacity duration-75 bg-emerald-500"
                 style={{ width: `${activeVisual ? stereoL : 0}%`, opacity: activeVisual ? 0.95 : 0.15 }}
               />
               {activeVisual && (
                 <div
-                  className="absolute top-0 bottom-0 w-[2px] bg-rose-400 shadow-[0_0_6px_rgba(244,63,94,0.8)]"
+                  className="absolute top-0 bottom-0 w-[2px] bg-rose-400"
                   style={{ left: `${Math.min(98, peakL)}%` }}
                 />
               )}
@@ -342,12 +341,12 @@ export const DeviceWaveVisualizer: React.FC<DeviceWaveVisualizerProps> = ({
             <span className="w-3 text-slate-400 font-bold text-[8px]">R</span>
             <div className="flex-1 h-3 rounded bg-studio-900 border border-studio-800 p-0.5 relative overflow-hidden flex items-center">
               <div
-                className="h-full rounded-sm transition-all duration-75 bg-gradient-to-r from-emerald-500 via-cyan-400 to-rose-500"
+                className="h-full rounded-sm transition-opacity duration-75 bg-emerald-500"
                 style={{ width: `${activeVisual ? stereoR : 0}%`, opacity: activeVisual ? 0.95 : 0.15 }}
               />
               {activeVisual && (
                 <div
-                  className="absolute top-0 bottom-0 w-[2px] bg-rose-400 shadow-[0_0_6px_rgba(244,63,94,0.8)]"
+                  className="absolute top-0 bottom-0 w-[2px] bg-rose-400"
                   style={{ left: `${Math.min(98, peakR)}%` }}
                 />
               )}
@@ -402,11 +401,11 @@ function getEffectTheme(effect: AudioEffectType) {
       return {
         title: '3D Spatial Surround',
         badge: 'ACTIVE • 3D SPATIAL',
-        icon: <Radio className="w-3.5 h-3.5 text-purple-400" />,
-        accentText: 'text-purple-400',
-        ledColor: '#c084fc', // Purple/Violet
-        peakColor: '#e879f9',
-        glowDot: 'bg-purple-400',
+        icon: <Radio className="w-3.5 h-3.5 text-sky-400" />,
+        accentText: 'text-sky-400',
+        ledColor: '#38bdf8', // Sky blue
+        peakColor: '#7dd3fc',
+        glowDot: 'bg-sky-400',
       };
     case 'bass_boost':
       return {

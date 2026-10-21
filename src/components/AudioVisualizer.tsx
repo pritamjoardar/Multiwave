@@ -32,11 +32,11 @@ export const AudioVisualizer: React.FC<AudioVisualizerProps> = ({ status, active
   }, [isPlaying]);
 
   return (
-    <div className="flex items-center justify-center gap-1 h-9 px-4 rounded-xl bg-studio-950/60 border border-studio-800/80">
+    <div data-ui="visualizer" className="flex items-center justify-center gap-1 h-9 px-4 rounded-xl bg-studio-950/60 border border-studio-800">
       {bars.map((height, idx) => (
         <div
           key={idx}
-          className="w-1 rounded-full transition-all duration-75"
+          className="w-1 rounded-full transition-[height,background-color] duration-75"
           style={{
             height: `${isPlaying ? height : 15}%`,
             background: isPlaying
@@ -50,7 +50,7 @@ export const AudioVisualizer: React.FC<AudioVisualizerProps> = ({ status, active
           }}
         />
       ))}
-      <span className="ml-3 font-mono text-[10px] uppercase tracking-wider text-slate-400">
+      <span className="ml-3 text-[11px] font-semibold tabular-nums text-slate-400">
         {isPlaying ? `WASAPI MIX (${activeCount})` : 'IDLE'}
       </span>
     </div>

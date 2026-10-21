@@ -84,12 +84,12 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
   const firstPhysical = devices.find((d) => d.device_type !== 'virtual');
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-md animate-in fade-in duration-200">
-      <div className="relative w-full max-w-xl max-h-[92vh] overflow-y-auto rounded-2xl bg-studio-900 border border-studio-700/80 p-6 shadow-2xl">
+    <div data-ui="modal" className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 animate-in fade-in duration-200">
+      <div className="relative w-full max-w-xl max-h-[92vh] overflow-y-auto rounded-2xl bg-studio-900 border border-studio-700 p-6">
         {/* Header */}
         <div className="flex items-center justify-between pb-4 border-b border-studio-800">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl overflow-hidden border border-cyan-400/40 shadow-[0_0_15px_rgba(0,242,254,0.25)] shrink-0">
+            <div className="w-10 h-10 rounded-xl overflow-hidden border border-cyan-400/40 shrink-0">
               <img
                 src="/logo.png"
                 alt="MultiWave"
@@ -118,7 +118,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                 <Palette className="w-4 h-4 text-cyan-400" />
                 Application Theme & Style
               </label>
-              <span className="text-[10px] text-slate-400 font-mono">Live Preview Active</span>
+              <span className="text-[10px] text-slate-400 tabular-nums">Live Preview Active</span>
             </div>
 
             <div className="grid grid-cols-2 gap-3">
@@ -126,14 +126,14 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
               <button
                 type="button"
                 onClick={() => handleThemeChange('dark')}
-                className={`p-3.5 rounded-xl border flex items-center justify-between transition-all text-left ${
+                className={`p-3.5 rounded-xl border flex items-center justify-between transition-colors text-left ${
                   (localSettings.theme || 'dark') === 'dark'
-                    ? 'bg-studio-800 border-cyan-500 text-white shadow-[0_0_15px_rgba(0,242,254,0.15)] ring-1 ring-cyan-500/50'
+                    ? 'bg-studio-800 border-cyan-500 text-white ring-1 ring-cyan-500/50'
                     : 'bg-studio-950/70 border-studio-800 text-slate-400 hover:border-studio-700 hover:text-white'
                 }`}
               >
                 <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-lg bg-[#0a0d14] border border-[#263450] flex items-center justify-center text-cyan-400 shadow-inner">
+                  <div className="w-8 h-8 rounded-lg bg-[#0a0d14] border border-[#263450] flex items-center justify-center text-cyan-400">
                     <Moon className="w-4 h-4" />
                   </div>
                   <div>
@@ -150,14 +150,14 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
               <button
                 type="button"
                 onClick={() => handleThemeChange('light')}
-                className={`p-3.5 rounded-xl border flex items-center justify-between transition-all text-left ${
+                className={`p-3.5 rounded-xl border flex items-center justify-between transition-colors text-left ${
                   localSettings.theme === 'light'
-                    ? 'bg-studio-800 border-cyan-500 text-white shadow-[0_0_15px_rgba(0,242,254,0.15)] ring-1 ring-cyan-500/50'
+                    ? 'bg-studio-800 border-cyan-500 text-white ring-1 ring-cyan-500/50'
                     : 'bg-studio-950/70 border-studio-800 text-slate-400 hover:border-studio-700 hover:text-white'
                 }`}
               >
                 <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-lg bg-[#f8fafc] border border-[#cbd5e1] flex items-center justify-center text-amber-500 shadow-sm">
+                  <div className="w-8 h-8 rounded-lg bg-[#f8fafc] border border-[#cbd5e1] flex items-center justify-center text-amber-500">
                     <Sun className="w-4 h-4" />
                   </div>
                   <div>
@@ -180,7 +180,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                 System Default Audio Routing
               </label>
               <span
-                className={`text-[10px] font-mono px-2 py-0.5 rounded font-bold border ${
+                className={`text-[10px] tabular-nums px-2 py-0.5 rounded font-bold border ${
                   isVirtualDefault
                     ? 'bg-emerald-950 text-emerald-300 border-emerald-500/40'
                     : 'bg-amber-950 text-amber-300 border-amber-500/40'
@@ -204,7 +204,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                     await onInstallDriver();
                     setIsInstalling(false);
                   }}
-                  className="flex items-center justify-center gap-2 p-2.5 rounded-lg bg-cyan-600 hover:bg-cyan-500 text-white font-medium transition-all"
+                  className="flex items-center justify-center gap-2 p-2.5 rounded-lg bg-cyan-600 hover:bg-cyan-500 text-white font-medium transition-colors"
                 >
                   <Download className="w-4 h-4" />
                   <span>{isInstalling ? 'Setting up MultiWave Speaker...' : 'Enable MultiWave Virtual Speaker'}</span>
@@ -218,7 +218,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                     await onActivateRouting();
                     setIsRoutingAction(false);
                   }}
-                  className="flex items-center justify-center gap-2 p-2.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-semibold transition-all shadow-sm"
+                  className="flex items-center justify-center gap-2 p-2.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-semibold transition-colors"
                 >
                   <Volume2 className="w-4 h-4" />
                   <span>{isRoutingAction ? 'Routing...' : 'Activate MultiWave Routing'}</span>
@@ -231,7 +231,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                       await onRestoreDirect(firstPhysical.id);
                     }
                   }}
-                  className="flex items-center justify-center gap-2 p-2.5 rounded-lg bg-studio-800 hover:bg-studio-700 border border-studio-700 text-slate-200 transition-all"
+                  className="flex items-center justify-center gap-2 p-2.5 rounded-lg bg-studio-800 hover:bg-studio-700 border border-studio-700 text-slate-200 transition-colors"
                 >
                   <Radio className="w-4 h-4 text-amber-400" />
                   <span>Restore Direct Audio</span>
@@ -246,7 +246,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                   await onConfigureName();
                   setIsRenaming(false);
                 }}
-                className="flex items-center justify-center gap-2 p-2.5 rounded-lg bg-studio-800 hover:bg-studio-700 border border-studio-700 text-slate-200 transition-all"
+                className="flex items-center justify-center gap-2 p-2.5 rounded-lg bg-studio-800 hover:bg-studio-700 border border-studio-700 text-slate-200 transition-colors"
               >
                 <Tag className="w-3.5 h-3.5 text-cyan-400" />
                 <span>{isRenaming ? 'Setting Name...' : 'Configure Virtual Speaker'}</span>
@@ -255,7 +255,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
               <button
                 type="button"
                 onClick={onOpenSoundSettings}
-                className="col-span-1 sm:col-span-2 flex items-center justify-center gap-2 p-2 rounded-lg bg-studio-850 hover:bg-studio-800 border border-studio-700/60 text-slate-300 hover:text-white transition-all text-[11px]"
+                className="col-span-1 sm:col-span-2 flex items-center justify-center gap-2 p-2 rounded-lg bg-studio-850 hover:bg-studio-800 border border-studio-700/60 text-slate-300 hover:text-white transition-colors text-[11px]"
               >
                 <ExternalLink className="w-3.5 h-3.5" />
                 <span>Open System Sound Settings & Audio MIDI Setup</span>
@@ -280,9 +280,9 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
           </div>
 
           {/* About MultiWave & Author Credit Section */}
-          <div className="p-4 rounded-xl bg-studio-950/80 border border-studio-800 space-y-3.5">
+          <div data-ui="about-card" className="p-4 rounded-xl bg-studio-950/80 border border-studio-800 space-y-3.5">
             <div className="flex items-start gap-3.5">
-              <div className="w-12 h-12 rounded-xl overflow-hidden border border-cyan-400/40 shadow-[0_0_15px_rgba(0,242,254,0.25)] shrink-0">
+              <div className="w-12 h-12 rounded-xl overflow-hidden border border-cyan-400/40 shrink-0">
                 <img
                   src="/logo.png"
                   alt="MultiWave Logo"
@@ -295,7 +295,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                     <Info className="w-4 h-4 text-cyan-400" />
                     About MultiWave
                   </h3>
-                  <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-cyan-950 text-cyan-300 border border-cyan-500/40">
+                  <span className="text-[10px] tabular-nums font-medium px-2 py-0.5 rounded-full bg-cyan-950 text-cyan-300 border border-cyan-500/40">
                     v0.1.0 • Desktop Edition
                   </span>
                 </div>
@@ -305,10 +305,10 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
               </div>
             </div>
 
-            <div className="pt-3 border-t border-studio-800 flex items-center justify-between flex-wrap gap-2 text-xs">
+            <div className="pt-2 flex items-center justify-between flex-wrap gap-2 text-xs">
               <div className="flex items-center gap-1.5 text-slate-300">
                 <span>Made with</span>
-                <Heart className="w-3.5 h-3.5 text-rose-500 fill-rose-500 animate-pulse" />
+                <Heart className="w-3.5 h-3.5 text-rose-500 fill-rose-500" />
                 <span>by</span>
                 <button
                   type="button"
@@ -323,7 +323,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
               <button
                 type="button"
                 onClick={handleOpenWebsite}
-                className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-studio-850 hover:bg-studio-800 border border-studio-700/60 text-[11px] text-slate-300 hover:text-cyan-300 transition-all cursor-pointer"
+                className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-studio-850 hover:bg-studio-800 border border-studio-700/60 text-[11px] text-slate-300 hover:text-cyan-300 transition-colors cursor-pointer"
               >
                 <span>pritamjoardar.com</span>
                 <ExternalLink className="w-3 h-3 text-cyan-400" />
@@ -331,14 +331,14 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
             </div>
 
             {onOpenGuide && (
-              <div className="pt-3 border-t border-studio-800/80">
+              <div className="pt-2">
                 <button
                   type="button"
                   onClick={() => {
                     onClose();
                     onOpenGuide();
                   }}
-                  className="w-full flex items-center justify-center gap-2 p-2 rounded-xl bg-studio-850 hover:bg-studio-800 border border-cyan-500/30 text-cyan-300 hover:text-white transition-all font-medium text-xs shadow-sm"
+                  className="w-full flex items-center justify-center gap-2 p-2 rounded-xl bg-studio-850 hover:bg-studio-800 border border-cyan-500/30 text-cyan-300 hover:text-white transition-colors font-medium text-xs"
                 >
                   <HelpCircle className="w-4 h-4 text-cyan-400" />
                   <span>Open Interactive Step-by-Step User Guide</span>
@@ -348,7 +348,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
           </div>
 
           {/* Technical Diagnostics */}
-          <div className="p-3.5 rounded-xl bg-studio-950/80 border border-studio-800 space-y-2 font-mono text-[11px]">
+          <div className="p-3.5 rounded-xl bg-studio-950/80 border border-studio-800 space-y-2 text-[11px]">
             <div className="flex items-center justify-between text-slate-400">
               <span className="flex items-center gap-1.5">
                 <Cpu className="w-3.5 h-3.5 text-cyan-400" />
@@ -362,13 +362,13 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
             </div>
             <div className="flex items-center justify-between text-slate-400">
               <span>Configuration Store:</span>
-              <span className="text-cyan-400">%APPDATA%\MultiWave\settings.json</span>
+              <code className="text-cyan-400">%APPDATA%\MultiWave\settings.json</code>
             </div>
           </div>
         </div>
 
         {/* Footer */}
-        <div className="mt-6 pt-4 border-t border-studio-800 flex items-center justify-end gap-3">
+        <div className="mt-6 pt-2 flex items-center justify-end gap-3">
           <button
             onClick={onClose}
             className="px-4 py-2 rounded-xl text-xs text-slate-400 hover:text-white hover:bg-studio-800 transition-colors"
@@ -377,7 +377,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
           </button>
           <button
             onClick={handleSave}
-            className="flex items-center gap-1.5 px-5 py-2 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-studio-950 font-bold text-xs transition-colors shadow-md"
+            className="flex items-center gap-1.5 px-5 py-2 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-studio-950 font-bold text-xs transition-colors"
           >
             {savedSuccess ? (
               <>

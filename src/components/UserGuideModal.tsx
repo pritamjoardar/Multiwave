@@ -47,7 +47,7 @@ export const UserGuideModal: React.FC<UserGuideModalProps> = ({
             By default, your operating system (macOS / Windows) only sends sound to <strong className="text-white">one device</strong> at a time. If you connect headphones, your speakers go silent.
           </p>
           <div className="p-4 rounded-xl bg-studio-950/80 border border-studio-700/70 space-y-2">
-            <h4 className="text-xs font-bold text-cyan-300 uppercase tracking-wider flex items-center gap-2">
+            <h4 className="text-xs font-bold text-cyan-300 flex items-center gap-2">
               <Headphones className="w-4 h-4 text-cyan-400" />
               What MultiWave Does
             </h4>
@@ -80,12 +80,12 @@ export const UserGuideModal: React.FC<UserGuideModalProps> = ({
                 <ShieldCheck className="w-4 h-4 text-emerald-400" />
                 System Default Audio Routing
               </span>
-              <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-950 border border-emerald-500/40 text-emerald-300 font-bold">
+              <span className="text-[10px] px-2 py-0.5 rounded bg-emerald-950 border border-emerald-500/40 text-emerald-300 font-bold">
                 ONE-CLICK SETUP
               </span>
             </div>
             <p className="text-xs text-slate-400 leading-relaxed">
-              Open Settings (⚙️ in the top navbar) and click <strong className="text-white">&quot;Activate MultiWave Routing&quot;</strong>. Everything you play on your computer will automatically stream through MultiWave!
+              Open Settings (gear icon in the top navbar) and click <strong className="text-white">&quot;Activate MultiWave Routing&quot;</strong>. Everything you play on your computer will automatically stream through MultiWave!
             </p>
             {onOpenSettings && (
               <button
@@ -120,7 +120,7 @@ export const UserGuideModal: React.FC<UserGuideModalProps> = ({
             All your connected physical sound devices appear as interactive cards in the <strong className="text-white">Audio Output Devices</strong> grid.
           </p>
           <div className="grid grid-cols-2 gap-3 text-xs">
-            <div className="p-3.5 rounded-xl border border-cyan-400/60 bg-studio-850/80 space-y-1 shadow-[0_0_15px_rgba(0,242,254,0.1)]">
+            <div className="p-3.5 rounded-xl border border-cyan-400/60 bg-studio-850/80 space-y-1">
               <div className="flex items-center justify-between">
                 <span className="font-semibold text-white">Active Device</span>
                 <div className="w-4 h-4 rounded-md bg-cyan-400 text-studio-950 flex items-center justify-center">
@@ -138,7 +138,7 @@ export const UserGuideModal: React.FC<UserGuideModalProps> = ({
             </div>
           </div>
           <p className="text-xs text-slate-400">
-            Just connected a new Bluetooth headset? Click the <strong className="text-slate-200">Rescan (🔄)</strong> button on the navbar to detect it instantly.
+            Just connected a new Bluetooth headset? Click the <strong className="text-slate-200">Rescan</strong> button on the navbar to detect it instantly.
           </p>
         </div>
       ),
@@ -156,7 +156,7 @@ export const UserGuideModal: React.FC<UserGuideModalProps> = ({
             Click the <strong className="text-cyan-400 font-semibold">Play</strong> button in the top navbar. The button will switch to a glowing <strong className="text-white">Pause</strong> button, and the status will display <strong className="text-emerald-400">Playing</strong>.
           </p>
           <div className="p-4 rounded-xl bg-studio-950/80 border border-studio-700/70 space-y-3">
-            <h4 className="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-2">
+            <h4 className="text-xs font-bold text-white flex items-center gap-2">
               <Radio className="w-4 h-4 text-cyan-400" />
               Live Reactive Wave Visualizer
             </h4>
@@ -180,7 +180,7 @@ export const UserGuideModal: React.FC<UserGuideModalProps> = ({
       content: (
         <div className="space-y-4">
           <div className="space-y-2">
-            <h4 className="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-2">
+            <h4 className="text-xs font-bold text-white flex items-center gap-2">
               <SlidersHorizontal className="w-4 h-4 text-cyan-400" />
               Independent Volume Sliders
             </h4>
@@ -190,7 +190,7 @@ export const UserGuideModal: React.FC<UserGuideModalProps> = ({
           </div>
 
           <div className="p-4 rounded-xl bg-amber-950/30 border border-amber-500/30 space-y-2">
-            <h4 className="text-xs font-bold text-amber-300 uppercase tracking-wider flex items-center gap-2">
+            <h4 className="text-xs font-bold text-amber-300 flex items-center gap-2">
               <Clock className="w-4 h-4 text-amber-400" />
               Zero Bluetooth Echo (Delay Compensation)
             </h4>
@@ -198,7 +198,7 @@ export const UserGuideModal: React.FC<UserGuideModalProps> = ({
               Bluetooth audio naturally has a small ~120ms transmission lag compared to wired outputs. To make them match perfectly:
             </p>
             <p className="text-xs text-amber-200 font-medium">
-              👉 On your <strong className="text-white">wired / faster speaker</strong>, slide the <strong className="text-white">Sync Offset (ms)</strong> slider to <strong className="text-white">+120 ms to +160 ms</strong>. Both will play in perfect harmony!
+              On your <strong className="text-white">wired / faster speaker</strong>, slide the <strong className="text-white">Sync Offset (ms)</strong> slider to <strong className="text-white">+120 ms to +160 ms</strong>. Both will play in perfect harmony!
             </p>
           </div>
         </div>
@@ -211,8 +211,8 @@ export const UserGuideModal: React.FC<UserGuideModalProps> = ({
   const isLast = currentStep === steps.length - 1;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-md animate-in fade-in duration-200">
-      <div className="relative w-full max-w-xl rounded-2xl bg-studio-900 border border-studio-700/80 shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+    <div data-ui="guide-modal" className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 animate-in fade-in duration-200">
+      <div className="relative w-full max-w-xl rounded-2xl bg-studio-900 border border-studio-700 overflow-hidden flex flex-col max-h-[90vh]">
         {/* Top Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-studio-800 bg-studio-950/50">
           <div className="flex items-center gap-3">
@@ -220,7 +220,7 @@ export const UserGuideModal: React.FC<UserGuideModalProps> = ({
               <IconComponent className="w-5 h-5" />
             </div>
             <div>
-              <span className="text-[10px] font-mono uppercase tracking-wider text-cyan-400 font-semibold block">
+              <span className="text-xs text-cyan-400 font-semibold block">
                 {current.badge}
               </span>
               <h3 className="text-base font-bold text-white leading-tight">
@@ -229,7 +229,7 @@ export const UserGuideModal: React.FC<UserGuideModalProps> = ({
             </div>
           </div>
           <div className="flex items-center gap-2">
-            <span className="text-[11px] font-mono text-cyan-300 bg-studio-850 px-2.5 py-1 rounded-lg border border-studio-700/60 font-semibold">
+            <span className="text-[11px] text-cyan-300 bg-studio-850 px-2.5 py-1 rounded-lg border border-studio-700/60 font-semibold tabular-nums">
               Step {currentStep + 1} of {steps.length}
             </span>
           </div>
@@ -242,9 +242,9 @@ export const UserGuideModal: React.FC<UserGuideModalProps> = ({
               <button
                 key={index}
                 onClick={() => setCurrentStep(index)}
-                className={`h-1.5 rounded-full transition-all ${
+                className={`h-1.5 rounded-full transition-colors ${
                   index === currentStep
-                    ? 'bg-cyan-400 shadow-[0_0_8px_rgba(0,242,254,0.6)]'
+                    ? 'bg-cyan-400'
                     : index < currentStep
                     ? 'bg-cyan-700/60'
                     : 'bg-studio-800'
@@ -261,14 +261,14 @@ export const UserGuideModal: React.FC<UserGuideModalProps> = ({
         </div>
 
         {/* Footer Navigation */}
-        <div className="flex items-center justify-between px-6 py-4 border-t border-studio-800 bg-studio-950/60">
+        <div className="flex items-center justify-between px-6 py-4 bg-studio-950/60">
           <div className="text-xs text-slate-400 font-medium">
             {!isLast ? (
               <span>Follow the steps to get started</span>
             ) : (
               <span className="text-emerald-400 font-semibold flex items-center gap-1.5">
                 <Check className="w-3.5 h-3.5 stroke-[3]" />
-                All steps completed! Click Get Started
+                All steps completed! Click Start Audio Routing
               </span>
             )}
           </div>
@@ -289,7 +289,7 @@ export const UserGuideModal: React.FC<UserGuideModalProps> = ({
               <button
                 type="button"
                 onClick={() => setCurrentStep((prev) => prev + 1)}
-                className="flex items-center gap-1.5 px-5 py-2 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-studio-950 text-xs font-semibold transition-all shadow-[0_0_12px_rgba(0,242,254,0.25)] active:scale-95"
+                className="flex items-center gap-1.5 px-5 py-2 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-studio-950 text-xs font-semibold transition-colors active:scale-95"
               >
                 <span>Next</span>
                 <ChevronRight className="w-3.5 h-3.5" />
@@ -298,10 +298,10 @@ export const UserGuideModal: React.FC<UserGuideModalProps> = ({
               <button
                 type="button"
                 onClick={handleFinish}
-                className="flex items-center gap-1.5 px-6 py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 hover:brightness-110 text-studio-950 text-xs font-bold transition-all shadow-[0_0_18px_rgba(16,185,129,0.35)] active:scale-95"
+                className="flex items-center gap-1.5 px-6 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-studio-950 text-xs font-bold transition-colors active:scale-95"
               >
                 <Check className="w-4 h-4 stroke-[3]" />
-                <span>Get Started</span>
+                <span>Start Audio Routing</span>
               </button>
             )}
           </div>

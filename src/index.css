@@ -56,7 +56,7 @@
     @apply bg-studio-950 text-slate-100 antialiased font-sans select-none overflow-x-hidden;
     margin: 0;
     padding: 0;
-    font-family: 'Plus Jakarta Sans', Outfit, Inter, system-ui, -apple-system, sans-serif;
+    font-family: 'Public Sans', 'Jost', -apple-system, BlinkMacSystemFont, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
@@ -65,7 +65,7 @@
   }
 
   h1, h2, h3, h4, .font-display {
-    font-family: Outfit, 'Plus Jakarta Sans', Inter, sans-serif;
+    font-family: 'Jost', 'Public Sans', sans-serif;
     letter-spacing: -0.025em;
   }
 }
@@ -100,18 +100,12 @@
   color: #94a3b8 !important;
 }
 
-/* Glass panel & cards in light mode */
-[data-theme="light"] .glass-panel {
-  background: rgba(255, 255, 255, 0.95) !important;
-  border: 1px solid rgba(226, 232, 240, 0.9) !important;
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.02) !important;
-}
+
 
 [data-theme="light"] .bg-studio-900\/95,
 [data-theme="light"] .bg-studio-900\/90 {
   background-color: #ffffff !important;
   border-color: #06b6d4 !important;
-  box-shadow: 0 4px 20px -2px rgba(6, 182, 212, 0.15), 0 2px 6px -1px rgba(0, 0, 0, 0.04) !important;
 }
 
 [data-theme="light"] .bg-studio-950\/80 {
@@ -127,7 +121,6 @@
 [data-theme="light"] .bg-studio-900\/40 {
   background-color: #ffffff !important;
   border-color: #e2e8f0 !important;
-  box-shadow: 0 2px 8px -2px rgba(0, 0, 0, 0.04) !important;
 }
 
 [data-theme="light"] .bg-studio-900\/50,
@@ -188,18 +181,6 @@
   color: #d97706 !important;
 }
 
-[data-theme="light"] .bg-purple-950,
-[data-theme="light"] .bg-purple-950\/80 {
-  background-color: #faf5ff !important;
-  color: #6b21a8 !important;
-  border-color: #e9d5ff !important;
-}
-
-[data-theme="light"] .text-purple-300,
-[data-theme="light"] .text-purple-400 {
-  color: #7c3aed !important;
-}
-
 [data-theme="light"] .bg-pink-950,
 [data-theme="light"] .bg-pink-950\/80 {
   background-color: #fdf2f8 !important;
@@ -232,7 +213,6 @@
 
 [data-theme="light"] input[type="range"].volume-slider::-webkit-slider-thumb {
   background: #06b6d4 !important;
-  box-shadow: 0 0 8px rgba(6, 182, 212, 0.4), 0 2px 4px rgba(0, 0, 0, 0.1) !important;
   border: 2px solid #ffffff !important;
 }
 
@@ -276,7 +256,7 @@ input[type="range"].volume-slider {
   background: rgba(38, 52, 80, 0.7);
   outline: none;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: background 0.2s ease;
 }
 
 input[type="range"].volume-slider::-webkit-slider-thumb {
@@ -287,14 +267,12 @@ input[type="range"].volume-slider::-webkit-slider-thumb {
   border-radius: 50%;
   background: #00f2fe;
   cursor: pointer;
-  box-shadow: 0 0 10px rgba(0, 242, 254, 0.6);
   border: 2px solid #ffffff;
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  transition: transform 0.15s ease;
 }
 
 input[type="range"].volume-slider::-webkit-slider-thumb:hover {
   transform: scale(1.15);
-  box-shadow: 0 0 14px rgba(0, 242, 254, 0.9);
 }
 
 input[type="range"].volume-slider:disabled {
@@ -302,19 +280,5 @@ input[type="range"].volume-slider:disabled {
   cursor: not-allowed;
 }
 
-/* Glassmorphic card surface */
-.glass-panel {
-  background: rgba(20, 27, 43, 0.75);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(57, 77, 117, 0.35);
-}
 
-.glass-panel-hover {
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-}
 
-.glass-panel-hover:hover {
-  border-color: rgba(0, 242, 254, 0.4);
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35), 0 0 20px rgba(0, 242, 254, 0.08);
-}

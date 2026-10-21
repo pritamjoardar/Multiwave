@@ -104,3 +104,7 @@ $RECYCLE.BIN/
 *.sln
 *.sw?
 *.bak
+
+# Taste skill tooling
+.taste-skill/
+taste-skill/

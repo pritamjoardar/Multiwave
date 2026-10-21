@@ -41,11 +41,11 @@ export const Website: React.FC<WebsiteProps> = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [buildPlatform, setBuildPlatform] = useState<'mac' | 'windows'>('mac');
 
-  const githubRawBase = 'https://raw.githubusercontent.com/pritamjoardar/Multiwave/main/public';
-  const windowsInstallerUrl = `${githubRawBase}/MultiWave_0.1.0_x64-setup.exe`;
-  const windowsPortableUrl = `${githubRawBase}/MultiWave.exe`;
-  const macInstallerUrl = `${githubRawBase}/MultiWave_0.1.0_macOS.dmg`;
-  const macZipUrl = `${githubRawBase}/MultiWave_0.1.0_macOS.zip`;
+  // Direct package binary download paths
+  const windowsInstallerUrl = '/MultiWave_0.1.0_x64-setup.exe';
+  const windowsPortableUrl = '/MultiWave.exe';
+  const macInstallerUrl = '/MultiWave_0.1.0_macOS.dmg';
+  const macZipUrl = '/MultiWave_0.1.0_macOS.zip';
   const githubUrl = 'https://github.com/pritamjoardar/Multiwave';
 
   // Automatically close mobile menu if viewport resized to desktop width
@@ -67,25 +67,21 @@ export const Website: React.FC<WebsiteProps> = () => {
   };
 
   return (
-    <div className="min-h-screen bg-studio-950 text-slate-100 flex flex-col font-sans selection:bg-cyan-500/30 selection:text-cyan-200 overflow-x-hidden">
-      {/* Ambient Glow Effects */}
-      <div className="fixed top-0 left-1/2 -translate-x-1/2 w-full max-w-[800px] h-[300px] sm:h-[400px] bg-gradient-to-b from-cyan-500/15 via-blue-600/10 to-transparent blur-[90px] sm:blur-[120px] pointer-events-none -z-10" />
-      <div className="fixed bottom-0 right-0 w-[300px] sm:w-[500px] h-[300px] sm:h-[400px] bg-gradient-to-t from-purple-600/10 to-transparent blur-[100px] sm:blur-[140px] pointer-events-none -z-10" />
-
+    <div className="min-h-dvh bg-studio-950 text-slate-100 flex flex-col font-sans selection:bg-cyan-500 selection:text-studio-950 overflow-x-hidden">
       {/* Navigation Bar */}
-      <header className="fixed top-0 inset-x-0 z-50 border-b border-studio-800/80 bg-studio-950/80 backdrop-blur-xl px-4 sm:px-6 py-3 sm:py-3.5 transition-all shadow-lg shadow-black/20">
+      <header className="fixed top-0 inset-x-0 z-50 bg-studio-900/95 px-4 sm:px-6 py-3 transition-colors">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <a href="#" className="flex items-center gap-2.5 sm:gap-3 group">
             <img
               src="/logo.png"
               alt="MultiWave Logo"
-              className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl shadow-[0_0_15px_rgba(6,182,212,0.35)] ring-1 ring-cyan-500/30 object-cover group-hover:scale-105 transition-transform"
+              className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl ring-1 ring-cyan-500/30 object-cover group-hover:scale-105 transition-transform"
             />
             <div className="flex items-center">
-              <span className="font-bold text-base sm:text-lg tracking-tight bg-gradient-to-r from-white via-slate-100 to-cyan-400 bg-clip-text text-transparent">
+              <span className="font-bold text-base sm:text-lg tracking-tight text-white font-display">
                 MultiWave
               </span>
-              <span className="hidden xs:inline-flex ml-2 text-[10px] uppercase font-mono px-1.5 py-0.5 rounded bg-cyan-950/60 text-cyan-400 border border-cyan-500/30 font-semibold whitespace-nowrap">
+              <span className="hidden xs:inline-flex ml-2 text-[10px] font-semibold px-2 py-0.5 rounded bg-studio-850 text-cyan-300 border border-studio-700 whitespace-nowrap">
                 Open Source
               </span>
             </div>
@@ -105,7 +101,7 @@ export const Website: React.FC<WebsiteProps> = () => {
               href={githubUrl}
               target="_blank"
               rel="noreferrer"
-              className="hidden sm:inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-studio-850 hover:bg-studio-800 border border-studio-600/70 text-slate-200 hover:text-white transition-all shadow-sm active:scale-95"
+              className="hidden sm:inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-studio-850 hover:bg-studio-800 border border-studio-700 text-slate-200 hover:text-white transition-colors"
               title="View on GitHub"
             >
               <svg className="w-4 h-4 fill-current text-slate-300" viewBox="0 0 24 24">
@@ -118,7 +114,7 @@ export const Website: React.FC<WebsiteProps> = () => {
               <a
                 href={macInstallerUrl}
                 download="MultiWave_0.1.0_macOS.dmg"
-                className="inline-flex items-center gap-1.5 px-2.5 py-1.5 sm:px-3 sm:py-2 rounded-xl text-xs sm:text-sm font-bold bg-studio-800 hover:bg-studio-750 border border-studio-600/80 text-white hover:text-cyan-300 transition-all shadow-sm active:scale-95"
+                className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs sm:text-sm font-bold bg-studio-800 hover:bg-studio-750 border border-studio-700 text-white hover:text-cyan-300 transition-colors"
                 title="Download for macOS (.dmg)"
               >
                 <AppleIcon className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-cyan-400" />
@@ -128,7 +124,7 @@ export const Website: React.FC<WebsiteProps> = () => {
               <a
                 href={windowsInstallerUrl}
                 download="MultiWave_0.1.0_x64-setup.exe"
-                className="inline-flex items-center gap-1.5 sm:gap-2 px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl text-xs sm:text-sm font-bold bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 shadow-[0_0_20px_rgba(6,182,212,0.4)] hover:shadow-[0_0_25px_rgba(6,182,212,0.6)] transition-all active:scale-95"
+                className="inline-flex items-center gap-1.5 sm:gap-2 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold bg-cyan-500 hover:bg-cyan-400 text-slate-950 transition-colors"
                 title="Download for Windows (.exe)"
               >
                 <WindowsIcon className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
@@ -140,7 +136,7 @@ export const Website: React.FC<WebsiteProps> = () => {
             <button
               type="button"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden flex items-center justify-center w-9 h-9 rounded-xl bg-studio-850 hover:bg-studio-800 border border-studio-700/80 text-slate-200 hover:text-white transition-colors"
+              className="md:hidden flex items-center justify-center w-9 h-9 rounded-xl bg-studio-850 hover:bg-studio-800 border border-studio-700 text-slate-200 hover:text-white transition-colors"
               aria-label="Toggle navigation menu"
               aria-expanded={mobileMenuOpen}
             >
@@ -151,12 +147,12 @@ export const Website: React.FC<WebsiteProps> = () => {
 
         {/* Mobile Dropdown Drawer */}
         {mobileMenuOpen && (
-          <div className="md:hidden pt-4 pb-2 border-t border-studio-700/60 mt-3 flex flex-col gap-2 max-h-[calc(100vh-80px)] overflow-y-auto animate-in fade-in slide-in-from-top-2 duration-200">
+          <div className="md:hidden pt-4 pb-2 mt-3 flex flex-col gap-2 max-h-[calc(100vh-80px)] overflow-y-auto animate-in fade-in slide-in-from-top-2 duration-200">
             <nav className="flex flex-col gap-1">
               <a
                 href="#features"
                 onClick={() => setMobileMenuOpen(false)}
-                className="flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-medium text-slate-200 hover:text-cyan-400 hover:bg-studio-850/80 transition-colors"
+                className="flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-medium text-slate-200 hover:text-cyan-400 hover:bg-studio-850 transition-colors"
               >
                 <span>Features</span>
                 <ChevronRight className="w-4 h-4 text-slate-500" />
@@ -164,7 +160,7 @@ export const Website: React.FC<WebsiteProps> = () => {
               <a
                 href="#demo"
                 onClick={() => setMobileMenuOpen(false)}
-                className="flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-medium text-slate-200 hover:text-cyan-400 hover:bg-studio-850/80 transition-colors"
+                className="flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-medium text-slate-200 hover:text-cyan-400 hover:bg-studio-850 transition-colors"
               >
                 <span>Walkthrough &amp; Video</span>
                 <ChevronRight className="w-4 h-4 text-slate-500" />
@@ -172,7 +168,7 @@ export const Website: React.FC<WebsiteProps> = () => {
               <a
                 href="#architecture"
                 onClick={() => setMobileMenuOpen(false)}
-                className="flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-medium text-slate-200 hover:text-cyan-400 hover:bg-studio-850/80 transition-colors"
+                className="flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-medium text-slate-200 hover:text-cyan-400 hover:bg-studio-850 transition-colors"
               >
                 <span>How It Works</span>
                 <ChevronRight className="w-4 h-4 text-slate-500" />
@@ -180,18 +176,18 @@ export const Website: React.FC<WebsiteProps> = () => {
               <a
                 href="#specs"
                 onClick={() => setMobileMenuOpen(false)}
-                className="flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-medium text-slate-200 hover:text-cyan-400 hover:bg-studio-850/80 transition-colors"
+                className="flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-medium text-slate-200 hover:text-cyan-400 hover:bg-studio-850 transition-colors"
               >
                 <span>Open Source &amp; CLI</span>
                 <ChevronRight className="w-4 h-4 text-slate-500" />
               </a>
             </nav>
 
-            <div className="pt-2 border-t border-studio-800 flex flex-col gap-2">
+            <div className="pt-2 flex flex-col gap-2">
               <a
                 href={macInstallerUrl}
                 download="MultiWave_0.1.0_macOS.dmg"
-                className="flex items-center justify-center gap-2 w-full py-2.5 rounded-xl font-bold text-xs bg-studio-800 hover:bg-studio-750 border border-cyan-500/50 text-white shadow-md"
+                className="flex items-center justify-center gap-2 w-full py-2.5 rounded-xl font-bold text-xs bg-studio-800 hover:bg-studio-750 border border-studio-700 text-white"
               >
                 <AppleIcon className="w-4 h-4 text-cyan-400" />
                 <span>Download for macOS (.dmg)</span>
@@ -200,7 +196,7 @@ export const Website: React.FC<WebsiteProps> = () => {
               <a
                 href={windowsInstallerUrl}
                 download="MultiWave_0.1.0_x64-setup.exe"
-                className="flex items-center justify-center gap-2 w-full py-2.5 rounded-xl font-bold text-xs bg-gradient-to-r from-cyan-400 to-blue-500 text-slate-950 shadow-md"
+                className="flex items-center justify-center gap-2 w-full py-2.5 rounded-xl font-bold text-xs bg-cyan-500 hover:bg-cyan-400 text-slate-950"
               >
                 <WindowsIcon className="w-4 h-4" />
                 <span>Download for Windows (.exe)</span>
@@ -215,7 +211,7 @@ export const Website: React.FC<WebsiteProps> = () => {
                 <svg className="w-4 h-4 fill-current text-slate-300" viewBox="0 0 24 24">
                   <path fillRule="evenodd" clipRule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
                 </svg>
-                <span>GitHub Repository (Star &amp; Fork)</span>
+                <span>GitHub Repository</span>
               </a>
             </div>
           </div>
@@ -223,22 +219,18 @@ export const Website: React.FC<WebsiteProps> = () => {
       </header>
 
       {/* Hero Section */}
-      <section className="relative pt-24 sm:pt-32 pb-16 sm:pb-20 px-4 sm:px-6 max-w-7xl mx-auto text-center flex flex-col items-center">
-        {/* Release Tag */}
-        <div className="inline-flex items-center gap-2 px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full bg-cyan-950/60 border border-cyan-500/40 text-cyan-300 text-[11px] sm:text-xs font-medium mb-5 sm:mb-6 backdrop-blur-md max-w-full text-center">
-          <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse shrink-0" />
-          <span className="truncate">MultiWave 2.0.1 • 100% Free &amp; Open Source</span>
+      <section className="relative pt-28 sm:pt-36 pb-16 sm:pb-20 px-4 sm:px-6 max-w-7xl mx-auto text-center flex flex-col items-center">
+        {/* Release Pill */}
+        <div className="inline-flex items-center gap-2 px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full bg-studio-900 border border-studio-700 text-cyan-300 text-xs font-semibold mb-6">
+          <span className="w-2 h-2 rounded-full bg-cyan-400 shrink-0" />
+          <span>MultiWave 2.0 • Free &amp; Open Source</span>
         </div>
 
-        <h1 className="text-3xl xs:text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-white max-w-4xl leading-[1.12]">
-          Play Mac &amp; Windows Audio Across{' '}
-          <span className="bg-gradient-to-r from-cyan-400 via-teal-300 to-blue-500 bg-clip-text text-transparent">
-            All Your Speakers
-          </span>{' '}
-          Simultaneously
+        <h1 className="text-3xl xs:text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-white max-w-4xl leading-[1.12] font-display">
+          Play Mac &amp; Windows Audio Across All Your Speakers Simultaneously
         </h1>
 
-        <p className="mt-4 sm:mt-6 text-sm sm:text-lg md:text-xl text-slate-300/90 max-w-2xl leading-relaxed">
+        <p className="mt-5 text-sm sm:text-lg md:text-xl text-slate-300 max-w-2xl leading-relaxed">
           An open-source desktop audio engine for individual use. Stream crystal-clear audio to your AirPods, Bluetooth speakers, wired headphones, USB DACs, and HDMI displays at the same time with <strong>zero echo or delay mismatch</strong>.
         </p>
 
@@ -248,12 +240,12 @@ export const Website: React.FC<WebsiteProps> = () => {
           <a
             href={macInstallerUrl}
             download="MultiWave_0.1.0_macOS.dmg"
-            className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 sm:gap-3 px-6 sm:px-7 py-3.5 sm:py-4 rounded-2xl font-bold text-sm sm:text-base bg-studio-800 hover:bg-studio-750 border border-cyan-500/60 hover:border-cyan-400 text-white shadow-[0_0_25px_rgba(6,182,212,0.3)] hover:shadow-[0_0_35px_rgba(6,182,212,0.5)] transition-all transform hover:-translate-y-0.5 active:translate-y-0 text-center"
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-3 px-7 py-4 rounded-xl font-bold text-sm sm:text-base bg-studio-800 hover:bg-studio-750 border border-studio-700 hover:border-cyan-500/60 text-white transition-colors text-center"
           >
             <AppleIcon className="w-5 h-5 text-cyan-400 shrink-0" />
             <div className="flex flex-col items-start text-left">
-              <span className="text-[10px] font-mono text-cyan-300 uppercase tracking-wider leading-none">Apple Silicon &amp; Intel</span>
-              <span className="leading-snug">Download for macOS (.dmg)</span>
+              <span className="text-[10px] text-cyan-300 font-semibold leading-none">macOS 10.15+ (Apple Silicon &amp; Intel)</span>
+              <span className="leading-snug text-white font-bold">Download for macOS (.dmg)</span>
             </div>
           </a>
 
@@ -261,19 +253,19 @@ export const Website: React.FC<WebsiteProps> = () => {
           <a
             href={windowsInstallerUrl}
             download="MultiWave_0.1.0_x64-setup.exe"
-            className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 sm:gap-3 px-6 sm:px-7 py-3.5 sm:py-4 rounded-2xl font-bold text-sm sm:text-base bg-gradient-to-r from-cyan-400 via-cyan-500 to-blue-600 hover:from-cyan-300 hover:to-blue-500 text-slate-950 shadow-[0_0_30px_rgba(6,182,212,0.45)] hover:shadow-[0_0_40px_rgba(6,182,212,0.65)] transition-all transform hover:-translate-y-0.5 active:translate-y-0 text-center"
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-3 px-7 py-4 rounded-xl font-bold text-sm sm:text-base bg-cyan-500 hover:bg-cyan-400 text-slate-950 transition-colors text-center"
           >
             <WindowsIcon className="w-5 h-5 shrink-0" />
             <div className="flex flex-col items-start text-left">
-              <span className="text-[10px] font-mono text-slate-900/80 uppercase tracking-wider leading-none">Windows 10 &amp; 11</span>
-              <span className="leading-snug">Download for Windows (.exe)</span>
+              <span className="text-[10px] text-slate-900 font-semibold leading-none">Windows 10 &amp; 11 (64-bit)</span>
+              <span className="leading-snug font-bold">Download for Windows (.exe)</span>
             </div>
           </a>
         </div>
 
         {/* Secondary options & quick links */}
         <div className="mt-4 flex flex-wrap items-center justify-center gap-2.5 sm:gap-3 text-xs text-slate-400">
-          <span>Need portable format?</span>
+          <span>Portable binaries:</span>
           <a
             href={macZipUrl}
             download="MultiWave_0.1.0_macOS.zip"
@@ -287,18 +279,17 @@ export const Website: React.FC<WebsiteProps> = () => {
             download="MultiWave.exe"
             className="text-cyan-400 hover:text-cyan-300 underline underline-offset-4 decoration-cyan-500/40 hover:decoration-cyan-300 font-medium transition-colors"
           >
-            Windows (.exe standalone)
+            Windows Standalone (.exe)
           </a>
           <span>•</span>
           <a href="#demo" className="text-slate-300 hover:text-white transition-colors flex items-center gap-1">
             <BookOpen className="w-3.5 h-3.5 text-cyan-400" />
-            <span>Watch Demo &amp; Guide</span>
+            <span>Interactive Simulator</span>
           </a>
         </div>
 
-
-        {/* Compatibility badge */}
-        <div className="mt-6 sm:mt-8 flex flex-wrap items-center justify-center gap-3 sm:gap-6 text-[11px] sm:text-xs text-slate-400 font-medium">
+        {/* Compatibility facts */}
+        <div className="mt-8 flex flex-wrap items-center justify-center gap-3 sm:gap-6 text-xs text-slate-400 font-medium">
           <span className="flex items-center gap-1.5">
             <AppleIcon className="w-3.5 h-3.5 text-cyan-400 shrink-0" /> macOS 10.15+ (Apple Silicon &amp; Intel)
           </span>
@@ -313,46 +304,45 @@ export const Website: React.FC<WebsiteProps> = () => {
           </span>
         </div>
 
-
-        {/* Live Device Flow Visualizer Banner (Architecture) */}
-        <div id="architecture" className="scroll-mt-24 mt-12 sm:mt-14 w-full max-w-4xl p-1 rounded-2xl sm:rounded-3xl bg-gradient-to-r from-cyan-500/30 via-blue-500/20 to-purple-500/30 shadow-[0_0_50px_rgba(6,182,212,0.15)]">
-          <div className="bg-studio-900 rounded-[18px] sm:rounded-[22px] p-5 sm:p-8 flex flex-col md:flex-row items-center justify-between gap-5 sm:gap-6 border border-studio-800/80">
+        {/* Architecture Flow Banner */}
+        <div id="architecture" className="scroll-mt-24 mt-12 sm:mt-14 w-full max-w-4xl rounded-2xl bg-studio-900 border border-studio-800 p-5 sm:p-8">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-5 sm:gap-6">
             {/* Source */}
             <div className="flex flex-col items-center md:items-start text-center md:text-left gap-1.5 sm:gap-2 min-w-[150px] sm:min-w-[160px]">
-              <span className="text-[11px] sm:text-xs uppercase tracking-wider text-slate-400 font-mono font-semibold">1. Audio Source</span>
+              <span className="text-xs text-slate-400 font-semibold">Audio Source</span>
               <div className="flex items-center gap-2.5 sm:gap-3 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-studio-850 border border-studio-700">
                 <Music className="w-4 h-4 sm:w-5 sm:h-5 text-cyan-400" />
-                <span className="font-bold text-white text-xs sm:text-sm">Spotify / YouTube</span>
+                <span className="font-bold text-white text-xs sm:text-sm">Spotify / YouTube / Games</span>
               </div>
             </div>
 
             {/* Bridge */}
             <div className="flex flex-col items-center gap-1.5 sm:gap-2">
-              <span className="text-[10px] sm:text-[11px] font-mono text-cyan-400 bg-cyan-950/80 px-2.5 py-1 rounded-full border border-cyan-500/30">
-                MultiWave CoreAudio &amp; WASAPI Bridge
+              <span className="text-[11px] text-cyan-400 bg-studio-850 px-3 py-1 rounded-full border border-studio-700">
+                MultiWave CoreAudio &amp; WASAPI Engine
               </span>
-              <div className="flex items-center gap-2 text-cyan-400 animate-pulse">
-                <div className="w-6 sm:w-16 h-0.5 bg-gradient-to-r from-cyan-500 to-transparent" />
+              <div className="flex items-center gap-2 text-cyan-400">
+                <div className="w-6 sm:w-16 h-0.5 bg-cyan-500/50" />
                 <Radio className="w-4 h-4 sm:w-5 sm:h-5" />
-                <div className="w-6 sm:w-16 h-0.5 bg-gradient-to-l from-cyan-500 to-transparent" />
+                <div className="w-6 sm:w-16 h-0.5 bg-cyan-500/50" />
               </div>
             </div>
 
             {/* Destination Devices */}
             <div className="grid grid-cols-2 gap-2 w-full sm:w-auto max-w-sm">
-              <div className="flex items-center justify-center sm:justify-start gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1.5 rounded-lg bg-studio-850 border border-studio-700 text-[11px] sm:text-xs text-slate-200">
-                <Headphones className="w-3.5 h-3.5 text-blue-400 shrink-0" />
+              <div className="flex items-center justify-center sm:justify-start gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1.5 rounded-lg bg-studio-850 border border-studio-700 text-xs text-slate-200">
+                <Headphones className="w-3.5 h-3.5 text-sky-400 shrink-0" />
                 <span className="truncate">Bluetooth</span>
               </div>
-              <div className="flex items-center justify-center sm:justify-start gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1.5 rounded-lg bg-studio-850 border border-studio-700 text-[11px] sm:text-xs text-slate-200">
-                <Laptop className="w-3.5 h-3.5 text-purple-400 shrink-0" />
+              <div className="flex items-center justify-center sm:justify-start gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1.5 rounded-lg bg-studio-850 border border-studio-700 text-xs text-slate-200">
+                <Laptop className="w-3.5 h-3.5 text-sky-400 shrink-0" />
                 <span className="truncate">Laptop Speakers</span>
               </div>
-              <div className="flex items-center justify-center sm:justify-start gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1.5 rounded-lg bg-studio-850 border border-studio-700 text-[11px] sm:text-xs text-slate-200">
+              <div className="flex items-center justify-center sm:justify-start gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1.5 rounded-lg bg-studio-850 border border-studio-700 text-xs text-slate-200">
                 <Volume2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
                 <span className="truncate">USB Soundbar</span>
               </div>
-              <div className="flex items-center justify-center sm:justify-start gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1.5 rounded-lg bg-studio-850 border border-studio-700 text-[11px] sm:text-xs text-slate-200">
+              <div className="flex items-center justify-center sm:justify-start gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1.5 rounded-lg bg-studio-850 border border-studio-700 text-xs text-slate-200">
                 <Tv className="w-3.5 h-3.5 text-amber-400 shrink-0" />
                 <span className="truncate">HDMI Monitor</span>
               </div>
@@ -364,17 +354,17 @@ export const Website: React.FC<WebsiteProps> = () => {
       {/* Interactive Showcase & Video Section */}
       <section id="demo" className="scroll-mt-24 py-12 sm:py-16 px-4 sm:px-6 max-w-6xl mx-auto w-full">
         <div className="text-center mb-8 sm:mb-10">
-          <h2 className="text-2xl sm:text-4xl font-extrabold text-white tracking-tight">
+          <h2 className="text-2xl sm:text-4xl font-extrabold text-white tracking-tight font-display">
             See MultiWave in Action
           </h2>
-          <p className="mt-2.5 sm:mt-3 text-slate-400 text-sm sm:text-base max-w-xl mx-auto">
-            Watch the official 22-second product introduction, then test live audio routing and acoustic DSP effects in the interactive simulator below.
+          <p className="mt-2.5 text-slate-400 text-sm sm:text-base max-w-xl mx-auto">
+            Watch the official product introduction, then test live audio routing and acoustic DSP effects in the interactive simulator below.
           </p>
         </div>
 
         {/* Video Player Container */}
-        <div className="rounded-2xl sm:rounded-3xl border border-studio-700/80 bg-studio-900/90 shadow-2xl overflow-hidden p-2 sm:p-4 backdrop-blur-xl">
-          <div className="relative aspect-video rounded-xl sm:rounded-2xl overflow-hidden bg-black flex items-center justify-center">
+        <div className="rounded-2xl border border-studio-800 bg-studio-900 p-2 sm:p-4">
+          <div className="relative aspect-video rounded-xl overflow-hidden bg-black flex items-center justify-center">
             <video
               src="/multiwave.mp4"
               controls
@@ -386,16 +376,16 @@ export const Website: React.FC<WebsiteProps> = () => {
           </div>
         </div>
 
-        {/* Live Simulator Component - Displayed Directly at the Bottom of the Video */}
+        {/* Live Simulator Component */}
         <div className="mt-8">
           <LiveSimulator />
         </div>
 
         {/* Interactive Screenshots & Routing Explorer */}
-        <div className="mt-12 pt-8 border-t border-studio-800">
+        <div className="mt-16 pt-4">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-6">
             <div>
-              <h3 className="text-lg sm:text-xl font-bold text-white flex items-center gap-2">
+              <h3 className="text-lg sm:text-xl font-bold text-white flex items-center gap-2 font-display">
                 <Monitor className="w-5 h-5 text-cyan-400" />
                 App Screenshots &amp; Routing Explorer
               </h3>
@@ -404,12 +394,12 @@ export const Website: React.FC<WebsiteProps> = () => {
               </p>
             </div>
 
-            <div className="flex p-1 rounded-xl bg-studio-900 border border-studio-700/70 gap-1 shrink-0">
+            <div className="flex p-1 rounded-xl bg-studio-900 border border-studio-700 gap-1 shrink-0">
               <button
                 onClick={() => setGalleryTab('screenshots')}
-                className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 ${
+                className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors flex items-center gap-1.5 ${
                   galleryTab === 'screenshots'
-                    ? 'bg-cyan-500 text-slate-950 font-bold shadow-md'
+                    ? 'bg-cyan-500 text-slate-950 font-bold'
                     : 'text-slate-400 hover:text-white'
                 }`}
               >
@@ -418,9 +408,9 @@ export const Website: React.FC<WebsiteProps> = () => {
               </button>
               <button
                 onClick={() => setGalleryTab('routing')}
-                className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 ${
+                className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors flex items-center gap-1.5 ${
                   galleryTab === 'routing'
-                    ? 'bg-cyan-500 text-slate-950 font-bold shadow-md'
+                    ? 'bg-cyan-500 text-slate-950 font-bold'
                     : 'text-slate-400 hover:text-white'
                 }`}
               >
@@ -430,10 +420,10 @@ export const Website: React.FC<WebsiteProps> = () => {
             </div>
           </div>
 
-          <div className="rounded-2xl sm:rounded-3xl border border-studio-700/80 bg-studio-900/90 shadow-xl overflow-hidden p-3 sm:p-5 backdrop-blur-xl">
+          <div className="rounded-2xl border border-studio-800 bg-studio-900 p-3 sm:p-5">
             {galleryTab === 'screenshots' ? (
               <div className="flex flex-col gap-3 sm:gap-4">
-                <div className="relative aspect-[16/10] rounded-xl sm:rounded-2xl overflow-hidden bg-studio-950 border border-studio-700/60">
+                <div className="relative aspect-[16/10] rounded-xl overflow-hidden bg-studio-950 border border-studio-800">
                   <img
                     src={selectedScreenshot}
                     alt="MultiWave App Screen"
@@ -452,14 +442,14 @@ export const Website: React.FC<WebsiteProps> = () => {
                     <button
                       key={thumb.src}
                       onClick={() => setSelectedScreenshot(thumb.src)}
-                      className={`relative rounded-xl overflow-hidden border p-1 text-left transition-all ${
+                      className={`relative rounded-xl overflow-hidden border p-1 text-left transition-colors ${
                         selectedScreenshot === thumb.src
-                          ? 'border-cyan-400 ring-2 ring-cyan-500/30 bg-cyan-950/20'
-                          : 'border-studio-700 hover:border-studio-600 bg-studio-850'
+                          ? 'border-cyan-400 bg-studio-850'
+                          : 'border-studio-700 hover:border-studio-600 bg-studio-900'
                       }`}
                     >
                       <img src={thumb.src} alt={thumb.title} className="rounded-lg w-full h-14 sm:h-16 object-cover" />
-                      <span className="block text-[10px] sm:text-[11px] font-semibold text-slate-300 mt-1 truncate">
+                      <span className="block text-[11px] font-semibold text-slate-300 mt-1 truncate">
                         {thumb.title}
                       </span>
                     </button>
@@ -467,7 +457,7 @@ export const Website: React.FC<WebsiteProps> = () => {
                 </div>
               </div>
             ) : (
-              <div className="relative aspect-video rounded-xl sm:rounded-2xl overflow-hidden bg-studio-950 border border-studio-700/60 p-2 sm:p-4 flex items-center justify-center">
+              <div className="relative aspect-video rounded-xl overflow-hidden bg-studio-950 border border-studio-800 p-2 sm:p-4 flex items-center justify-center">
                 <img
                   src="/images/windows_audio_routing.png"
                   alt="MultiWave Audio Routing Architecture"
@@ -482,96 +472,95 @@ export const Website: React.FC<WebsiteProps> = () => {
       {/* Feature Grid */}
       <section id="features" className="scroll-mt-24 py-14 sm:py-20 px-4 sm:px-6 max-w-7xl mx-auto">
         <div className="text-center mb-12 sm:mb-16">
-          <span className="text-cyan-400 text-xs font-mono font-bold tracking-wider uppercase">
+          <span className="text-cyan-400 text-xs font-semibold tracking-wide">
             Built For macOS &amp; Windows 10/11
           </span>
           <h2 className="text-2xl sm:text-4xl md:text-5xl font-extrabold text-white tracking-tight mt-2 font-display">
-            Engineered For Pure Audio Perfection
+            Engineered For Pure Audio Precision
           </h2>
-          <p className="mt-3 sm:mt-4 text-sm sm:text-base text-slate-400 max-w-2xl mx-auto">
+          <p className="mt-3 text-sm sm:text-base text-slate-400 max-w-2xl mx-auto">
             Traditional audio splitters suffer from delay drift, stuttering resamplers, and painful configuration. MultiWave was purpose-built to eliminate every single one.
           </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           {/* Feature 1 */}
-          <div className="rounded-2xl sm:rounded-3xl border border-studio-700/70 bg-studio-900/60 p-5 sm:p-7 hover:border-cyan-500/40 transition-all hover:-translate-y-1">
-            <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-cyan-950/80 border border-cyan-500/30 flex items-center justify-center text-cyan-400 mb-4 sm:mb-5">
+          <div className="rounded-2xl border border-studio-800 bg-studio-900 p-5 sm:p-7 hover:border-studio-700 transition-colors">
+            <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-xl bg-studio-850 border border-studio-700 flex items-center justify-center text-cyan-400 mb-4 sm:mb-5">
               <Radio className="w-5 h-5 sm:w-6 sm:h-6" />
             </div>
             <h3 className="text-base sm:text-lg font-bold text-white font-display">Simultaneous Multi-Streaming</h3>
-            <p className="mt-2 text-xs sm:text-sm text-slate-300/80 leading-relaxed">
+            <p className="mt-2 text-xs sm:text-sm text-slate-300 leading-relaxed">
               Opens dedicated CoreAudio &amp; WASAPI shared-mode streams for all selected devices concurrently, broadcasting high-fidelity PCM audio without dropouts. 1-click card selection instantly routes or disconnects audio outputs.
             </p>
           </div>
 
           {/* Feature 2 */}
-          <div className="rounded-2xl sm:rounded-3xl border border-studio-700/70 bg-studio-900/60 p-5 sm:p-7 hover:border-cyan-500/40 transition-all hover:-translate-y-1">
-            <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-blue-950/80 border border-blue-500/30 flex items-center justify-center text-blue-400 mb-4 sm:mb-5">
+          <div className="rounded-2xl border border-studio-800 bg-studio-900 p-5 sm:p-7 hover:border-studio-700 transition-colors">
+            <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-xl bg-studio-850 border border-studio-700 flex items-center justify-center text-sky-400 mb-4 sm:mb-5">
               <Clock className="w-5 h-5 sm:w-6 sm:h-6" />
             </div>
             <h3 className="text-base sm:text-lg font-bold text-white font-display">Bluetooth Delay Sync (0-500ms)</h3>
-            <p className="mt-2 text-xs sm:text-sm text-slate-300/80 leading-relaxed">
+            <p className="mt-2 text-xs sm:text-sm text-slate-300 leading-relaxed">
               Wireless Bluetooth speakers naturally lag by 120–180ms. MultiWave lets you delay wired speakers so sound hits your ears with zero echo.
             </p>
           </div>
 
           {/* Feature 3 */}
-          <div className="rounded-2xl sm:rounded-3xl border border-studio-700/70 bg-studio-900/60 p-5 sm:p-7 hover:border-cyan-500/40 transition-all hover:-translate-y-1">
-            <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-purple-950/80 border border-purple-500/30 flex items-center justify-center text-purple-400 mb-4 sm:mb-5">
+          <div className="rounded-2xl border border-studio-800 bg-studio-900 p-5 sm:p-7 hover:border-studio-700 transition-colors">
+            <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-xl bg-studio-850 border border-studio-700 flex items-center justify-center text-sky-400 mb-4 sm:mb-5">
               <Sliders className="w-5 h-5 sm:w-6 sm:h-6" />
             </div>
             <h3 className="text-base sm:text-lg font-bold text-white font-display">Per-Device Software Gain</h3>
-            <p className="mt-2 text-xs sm:text-sm text-slate-300/80 leading-relaxed">
-              Independent volume sliders mapped to perceptual cubic curves (v²·⁵) with built-in soft-limiters to prevent digital clipping.
+            <p className="mt-2 text-xs sm:text-sm text-slate-300 leading-relaxed">
+              Independent volume sliders mapped to perceptual cubic curves with built-in soft-limiters to prevent digital clipping.
             </p>
           </div>
 
           {/* Feature 4 */}
-          <div className="rounded-2xl sm:rounded-3xl border border-studio-700/70 bg-studio-900/60 p-5 sm:p-7 hover:border-cyan-500/40 transition-all hover:-translate-y-1">
-            <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-emerald-950/80 border border-emerald-500/30 flex items-center justify-center text-emerald-400 mb-4 sm:mb-5">
+          <div className="rounded-2xl border border-studio-800 bg-studio-900 p-5 sm:p-7 hover:border-studio-700 transition-colors">
+            <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-xl bg-studio-850 border border-studio-700 flex items-center justify-center text-emerald-400 mb-4 sm:mb-5">
               <Activity className="w-5 h-5 sm:w-6 sm:h-6" />
             </div>
             <h3 className="text-base sm:text-lg font-bold text-white font-display">Studio Spectrum &amp; 5 DSP Effects</h3>
-            <p className="mt-2 text-xs sm:text-sm text-slate-300/80 leading-relaxed">
+            <p className="mt-2 text-xs sm:text-sm text-slate-300 leading-relaxed">
               16-Band high-resolution LED spectrum meters with floating peak-hold bars and Dual Stereo VU meters. Real-time acoustic profiles: 3D Spatial Surround soundstage widening, Studio Mastering, Bass Boost, Concert Hall convolution diffusion, and Vocal Dialogue clarity.
             </p>
           </div>
 
           {/* Feature 5 */}
-          <div className="rounded-2xl sm:rounded-3xl border border-studio-700/70 bg-studio-900/60 p-5 sm:p-7 hover:border-cyan-500/40 transition-all hover:-translate-y-1">
-            <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-amber-950/80 border border-amber-500/30 flex items-center justify-center text-amber-400 mb-4 sm:mb-5">
+          <div className="rounded-2xl border border-studio-800 bg-studio-900 p-5 sm:p-7 hover:border-studio-700 transition-colors">
+            <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-xl bg-studio-850 border border-studio-700 flex items-center justify-center text-amber-400 mb-4 sm:mb-5">
               <Music className="w-5 h-5 sm:w-6 sm:h-6" />
             </div>
             <h3 className="text-base sm:text-lg font-bold text-white font-display">Built-in Multi-Tone Chimes</h3>
-            <p className="mt-2 text-xs sm:text-sm text-slate-300/80 leading-relaxed">
+            <p className="mt-2 text-xs sm:text-sm text-slate-300 leading-relaxed">
               Built-in harmonic C-Major chords, melodic arpeggios, and pink noise generators let you verify any speaker with a single click.
             </p>
           </div>
 
           {/* Feature 6 */}
-          <div className="rounded-2xl sm:rounded-3xl border border-studio-700/70 bg-studio-900/60 p-5 sm:p-7 hover:border-cyan-500/40 transition-all hover:-translate-y-1">
-            <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-teal-950/80 border border-teal-500/30 flex items-center justify-center text-teal-400 mb-4 sm:mb-5">
+          <div className="rounded-2xl border border-studio-800 bg-studio-900 p-5 sm:p-7 hover:border-studio-700 transition-colors">
+            <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-xl bg-studio-850 border border-studio-700 flex items-center justify-center text-teal-400 mb-4 sm:mb-5">
               <Monitor className="w-5 h-5 sm:w-6 sm:h-6" />
             </div>
             <h3 className="text-base sm:text-lg font-bold text-white font-display">Automated Driver Bundling</h3>
-            <p className="mt-2 text-xs sm:text-sm text-slate-300/80 leading-relaxed">
+            <p className="mt-2 text-xs sm:text-sm text-slate-300 leading-relaxed">
               Ships natively with virtual audio loopback drivers (BlackHole for macOS &amp; VB-Audio for Windows) and 1-click automated setup. No manual driver hunting needed.
             </p>
           </div>
         </div>
-
       </section>
 
-      {/* Rebuild / CLI Option for Developers */}
+      {/* Developer Build / CLI Section */}
       <section id="specs" className="scroll-mt-24 py-12 sm:py-16 px-4 sm:px-6 max-w-5xl mx-auto w-full">
-        <div className="rounded-2xl sm:rounded-3xl border border-studio-700/80 bg-studio-900/70 p-5 sm:p-8 md:p-10 backdrop-blur-xl">
+        <div className="rounded-2xl border border-studio-800 bg-studio-900 p-5 sm:p-8 md:p-10">
           <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
             <div className="w-full md:w-auto">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-950/60 border border-cyan-500/30 text-cyan-300 text-[11px] sm:text-xs font-mono font-semibold mb-2">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-studio-850 border border-studio-700 text-cyan-300 text-xs font-semibold mb-2">
                 <span>OPEN SOURCE FOR INDIVIDUAL USE</span>
               </div>
-              <h3 className="text-xl sm:text-2xl font-bold text-white mt-1">Want to inspect the code or compile yourself?</h3>
+              <h3 className="text-xl sm:text-2xl font-bold text-white mt-1 font-display">Want to inspect the code or compile yourself?</h3>
               <p className="text-xs sm:text-sm text-slate-300 mt-2 max-w-lg leading-relaxed">
                 MultiWave is a 100% open-source project for individual use. Check out the source code, contribute, report issues, or build the Rust &amp; React application locally.
               </p>
@@ -580,7 +569,7 @@ export const Website: React.FC<WebsiteProps> = () => {
                   href={githubUrl}
                   target="_blank"
                   rel="noreferrer"
-                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-studio-800 hover:bg-studio-750 border border-cyan-500/40 text-cyan-300 hover:text-white transition-all shadow-sm hover:scale-[1.02] active:scale-100"
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-studio-850 hover:bg-studio-800 border border-studio-700 text-cyan-300 hover:text-white transition-colors"
                 >
                   <svg className="w-4 h-4 fill-current shrink-0" viewBox="0 0 24 24">
                     <path fillRule="evenodd" clipRule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
@@ -596,9 +585,9 @@ export const Website: React.FC<WebsiteProps> = () => {
                 <button
                   type="button"
                   onClick={() => setBuildPlatform('mac')}
-                  className={`px-2.5 py-1 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-all ${
+                  className={`px-2.5 py-1 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-colors ${
                     buildPlatform === 'mac'
-                      ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 shadow-sm'
+                      ? 'bg-studio-800 text-cyan-300 border border-studio-700'
                       : 'bg-studio-850 text-slate-400 hover:text-slate-200 border border-transparent'
                   }`}
                 >
@@ -609,9 +598,9 @@ export const Website: React.FC<WebsiteProps> = () => {
                 <button
                   type="button"
                   onClick={() => setBuildPlatform('windows')}
-                  className={`px-2.5 py-1 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-all ${
+                  className={`px-2.5 py-1 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-colors ${
                     buildPlatform === 'windows'
-                      ? 'bg-blue-500/20 text-blue-300 border border-blue-500/40 shadow-sm'
+                      ? 'bg-studio-800 text-blue-300 border border-studio-700'
                       : 'bg-studio-850 text-slate-400 hover:text-slate-200 border border-transparent'
                   }`}
                 >
@@ -620,12 +609,12 @@ export const Website: React.FC<WebsiteProps> = () => {
                 </button>
               </div>
 
-              <div className="flex items-center justify-between bg-studio-950 border border-studio-700 rounded-xl px-3 sm:px-4 py-2.5 sm:py-3 font-mono text-xs text-cyan-300 gap-2 sm:gap-4 overflow-hidden">
-                <span className="truncate">{buildPlatform === 'mac' ? './build_mac.sh' : '.\\build_exe.ps1 -Installer'}</span>
+              <div data-ui="terminal" className="flex items-center justify-between bg-studio-950 border border-studio-700 rounded-xl px-3 sm:px-4 py-2.5 sm:py-3 text-xs text-cyan-300 gap-2 sm:gap-4 overflow-hidden">
+                <code className="truncate">{buildPlatform === 'mac' ? './build_mac.sh' : '.\\build_exe.ps1 -Installer'}</code>
                 <button
                   type="button"
                   onClick={copyBuildCmd}
-                  className="shrink-0 px-2.5 py-1 rounded-md bg-studio-800 hover:bg-studio-700 text-slate-300 hover:text-white transition-all text-[11px] font-sans font-semibold"
+                  className="shrink-0 px-2.5 py-1 rounded-md bg-studio-800 hover:bg-studio-700 text-slate-300 hover:text-white transition-colors text-[11px] font-semibold"
                 >
                   {copiedCmd ? (
                     <span className="flex items-center gap-1 text-emerald-400">
@@ -641,14 +630,13 @@ export const Website: React.FC<WebsiteProps> = () => {
         </div>
       </section>
 
-      {/* Download Banner Callout */}
+      {/* Download Action Section */}
       <section className="py-14 sm:py-20 px-4 sm:px-6 max-w-4xl mx-auto text-center">
-        <div className="rounded-2xl sm:rounded-3xl bg-gradient-to-b from-studio-900 via-studio-850 to-studio-900 border border-cyan-500/40 p-6 sm:p-10 md:p-14 relative overflow-hidden shadow-[0_0_50px_rgba(6,182,212,0.2)]">
-          <div className="absolute top-0 right-0 w-64 h-64 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none" />
-          <h2 className="text-2xl sm:text-4xl md:text-5xl font-extrabold text-white tracking-tight">
+        <div className="rounded-2xl bg-studio-900 border border-studio-800 p-8 sm:p-12">
+          <h2 className="text-2xl sm:text-4xl md:text-5xl font-extrabold text-white tracking-tight font-display">
             Ready to Sync Your Audio?
           </h2>
-          <p className="mt-3 sm:mt-4 text-sm sm:text-base md:text-lg text-slate-300 max-w-xl mx-auto">
+          <p className="mt-4 text-sm sm:text-base md:text-lg text-slate-300 max-w-xl mx-auto">
             Download MultiWave for macOS &amp; Windows today. Free and open-source project for individual use with Desktop shortcuts, CoreAudio loopback, and virtual audio driver included.
           </p>
 
@@ -657,9 +645,9 @@ export const Website: React.FC<WebsiteProps> = () => {
             <a
               href={macInstallerUrl}
               download="MultiWave_0.1.0_macOS.dmg"
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 sm:gap-3 px-6 sm:px-8 py-3.5 sm:py-4 rounded-2xl font-bold text-sm sm:text-base bg-studio-800 hover:bg-studio-750 border border-cyan-500/60 hover:border-cyan-400 text-white shadow-[0_0_30px_rgba(6,182,212,0.35)] transition-all hover:scale-105 active:scale-100 text-center"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-3 px-8 py-4 rounded-xl font-bold text-sm sm:text-base bg-studio-800 hover:bg-studio-750 border border-studio-700 text-white transition-colors text-center"
             >
-              <AppleIcon className="w-4 h-4 sm:w-5 sm:h-5 text-cyan-400 shrink-0" />
+              <AppleIcon className="w-5 h-5 text-cyan-400 shrink-0" />
               <span>Download for macOS (.dmg)</span>
             </a>
 
@@ -667,9 +655,9 @@ export const Website: React.FC<WebsiteProps> = () => {
             <a
               href={windowsInstallerUrl}
               download="MultiWave_0.1.0_x64-setup.exe"
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 sm:gap-3 px-6 sm:px-8 py-3.5 sm:py-4 rounded-2xl font-bold text-sm sm:text-base bg-gradient-to-r from-cyan-400 to-blue-600 hover:from-cyan-300 hover:to-blue-500 text-slate-950 shadow-[0_0_30px_rgba(6,182,212,0.5)] transition-all hover:scale-105 active:scale-100 text-center"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-3 px-8 py-4 rounded-xl font-bold text-sm sm:text-base bg-cyan-500 hover:bg-cyan-400 text-slate-950 transition-colors text-center"
             >
-              <WindowsIcon className="w-4 h-4 sm:w-5 sm:h-5 shrink-0" />
+              <WindowsIcon className="w-5 h-5 shrink-0" />
               <span>Download for Windows (.exe)</span>
             </a>
           </div>
@@ -692,26 +680,24 @@ export const Website: React.FC<WebsiteProps> = () => {
               Windows Standalone (.exe)
             </a>
           </div>
-
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-studio-800/80 bg-studio-950 px-4 sm:px-6 py-8 sm:py-10 mt-auto">
+      <footer data-ui="footer" className="bg-studio-950 px-4 sm:px-6 py-8 sm:py-10 mt-auto">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-5 sm:gap-6 text-center sm:text-left">
           <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-3">
             <div className="flex items-center gap-2">
               <img src="/logo.png" alt="MultiWave" className="w-7 h-7 rounded-lg object-cover" />
-              <span className="font-bold text-white text-sm">MultiWave</span>
+              <span className="font-bold text-white text-sm font-display">MultiWave</span>
             </div>
-            <span className="text-[11px] sm:text-xs text-slate-400 sm:border-l sm:border-studio-800 sm:pl-3">
+            <span className="text-xs text-slate-400 sm:pl-3">
               Open-source project for individual use • macOS &amp; Windows Audio Output Router
             </span>
           </div>
 
-
-          <div className="text-[11px] sm:text-xs text-slate-400 flex flex-wrap items-center justify-center gap-4 sm:gap-6">
-            <span>Crafted with ❤️ by <strong className="text-slate-200">Pritam Joardar</strong></span>
+          <div className="text-xs text-slate-400 flex flex-wrap items-center justify-center gap-4 sm:gap-6">
+            <span>Crafted by <strong className="text-slate-200">Pritam Joardar</strong></span>
             <a
               href={githubUrl}
               target="_blank"
